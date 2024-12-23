@@ -5,9 +5,9 @@ import MoveScanCard from '../../components/shared/MoveScanCard'; // MoveScanCard
 
 const LibraryScreen = () => {
   return (
-    <View className="flex-1 bg-white">
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <MainHeader />
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ScrollView contentContainerStyle={{ paddingTop: 530 }} > 
         <MoveScanCard /> {/* MoveScanCard 컴포넌트 추가 */}
       </ScrollView>
     </View>
