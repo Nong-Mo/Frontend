@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import MainHeader from '../../components/navigations/header/MainHeader';
 
-const MainScreen = () => {
+const LibraryScreen = () => {
   return (
     <View className="flex-1 bg-white">
       <MainHeader />
@@ -11,4 +11,4 @@ const MainScreen = () => {
   );
 };
 
-export default MainScreen;
+export default LibraryScreen;

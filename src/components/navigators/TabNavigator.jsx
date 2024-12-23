@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MainScreen from '../../screens/main/MainScreen';
+import LiabraryScreen from '../../screens/library/LibraryScreen';
 import ScanScreen from '../../screens/scan/ScanScreen';
 import PlayerScreen from '../../screens/player/PlayerScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -24,8 +24,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Main"
-        component={MainScreen}
+        name="Library"
+        component={LibraryScreen}
         options={{
           tabBarLabel: '내 서재',
           tabBarIcon: ({ color, size }) => (
