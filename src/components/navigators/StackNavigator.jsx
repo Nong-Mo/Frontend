@@ -13,7 +13,7 @@ const StackNavigator = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Library" component={TabNavigator} />
+      <Stack.Screen name="Main" component={TabNavigator} />
       <Stack.Screen name="Scan" component={ScanScreen} />
       <Stack.Screen name="Player" component={PlayerScreen} />
     </Stack.Navigator>
