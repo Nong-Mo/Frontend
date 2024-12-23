@@ -34,3 +34,4 @@ const ScanBottomBar = ({ onTakePicture }) => {
 };
 
 export default ScanBottomBar;
+
