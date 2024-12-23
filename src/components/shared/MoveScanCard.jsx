@@ -13,17 +13,11 @@ const MoveScanCard = () => {
   return (
     <View className="flex items-center">
       {/* 카메라 아이콘 */}
-      <View className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
-        <Icon name="camera-alt" size={48} color="#9CA3AF" />{' '}
-        {/* Material Icon */}
-      </View>
-
-      {/* 스캔 버튼 */}
-      <TouchableOpacity
-        onPress={handleNavigateToScan}
-        className="bg-blue-500 px-6 py-2 rounded-full"
-      >
-        <Text className="text-white font-bold">스캔 화면으로 이동</Text>
+      {/* 터치 시 handleNavigateToScan 함수 실행 스캔 스크린으로 이동 */}
+      <TouchableOpacity onPress={handleNavigateToScan}>
+        <View className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
+          <Icon name="camera-alt" size={48} color="#9CA3AF" />{' '} {/* Material Icons 사용 */} 
+        </View>
       </TouchableOpacity>
     </View>
   );
