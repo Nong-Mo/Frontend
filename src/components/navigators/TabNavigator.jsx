@@ -35,7 +35,7 @@ const TabNavigator = () => {
             marginBottom: 0,
           },
           tabBarLabelStyle: {
-            marginBottom: 5
+            marginBottom: 10
           }
         }}
       />
@@ -51,7 +51,7 @@ const TabNavigator = () => {
             marginBottom: 0,
           },
           tabBarLabelStyle: {
-            marginBottom: 5
+            marginBottom: 10
           },
           tabBarStyle: { display: 'none' } // 탭 바 숨기기
         }}
@@ -68,7 +68,7 @@ const TabNavigator = () => {
             marginBottom: 0,
           },
           tabBarLabelStyle: {
-            marginBottom: 5
+            marginBottom: 10,
           },
           tabBarStyle: { display: 'none' } // 탭 바 숨기기
         }}
