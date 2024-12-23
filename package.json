@@ -1,0 +1,46 @@
+{
+  "name": "nongmo-front",
+  "license": "0BSD",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write '**/*.{js,jsx,json,md}'"
+  },
+  "dependencies": {
+    "@react-navigation/bottom-tabs": "^7.2.0",
+    "@react-navigation/native": "^7.0.14",
+    "@react-navigation/stack": "^7.1.1",
+    "babel-preset-expo": "^12.0.4",
+    "expo": "~52.0.20",
+    "expo-camera": "^16.0.10",
+    "expo-status-bar": "~2.0.0",
+    "install": "^0.13.0",
+    "nativewind": "^2.0.11",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-gesture-handler": "^2.21.2",
+    "react-native-safe-area-context": "^5.0.0",
+    "react-native-screens": "^4.4.0",
+    "react-native-status-bar-height": "^2.6.0",
+    "react-native-vector-icons": "^10.2.0",
+    "react-native-web": "^0.19.13",
+    "tailwindcss": "^3.3.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.25.9",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-native": "^4.1.0",
+    "prettier": "^3.4.2"
+  },
+  "private": true
+}
