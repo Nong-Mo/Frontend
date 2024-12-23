@@ -23,7 +23,7 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="Main"
+        name="Library"
         component={MainScreen}
         options={{
           tabBarLabel: '내 서재',
