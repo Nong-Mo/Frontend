@@ -17,13 +17,7 @@ const MoveScanCard = () => {
         <Icon name="camera-alt" size={48} color="#9CA3AF" />{' '}
         {/* Material Icon */}
       </View>
-      {/* 안내 텍스트 */}
-      <Text className="text-lg font-bold text-gray-800 mb-2">
-        내 서재가 비어 있습니다
-      </Text>
-      <Text className="text-sm text-gray-500 mb-6">
-        파일을 추가하려면 아래 버튼을 눌러주세요.
-      </Text>
+
       {/* 스캔 버튼 */}
       <TouchableOpacity
         onPress={handleNavigateToScan}
