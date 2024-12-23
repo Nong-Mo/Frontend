@@ -10,14 +10,22 @@ const MoveScanCard = () => {
     navigation.navigate('ScanScreen'); // 스캔 스크린으로 이동
   };
 
-  return (
-    <View className="flex items-center">
-      {/* 카메라 아이콘 */}
-      {/* 터치 시 handleNavigateToScan 함수 실행 스캔 스크린으로 이동 */}
-      <TouchableOpacity onPress={handleNavigateToScan}>
-        <View className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
-          <Icon name="camera-alt" size={48} color="#9CA3AF" />{' '} {/* Material Icons 사용 */} 
-        </View>
+  return ( 
+    <View style={{ position: 'absolute', top: 10, left: 15 }}>
+       <TouchableOpacity
+        onPress={handleNavigateToScan} 
+        style={{
+          width: 150,
+          height: 150,
+          backgroundColor: '#e0e0e0',
+          borderRadius: 15,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 15,
+          margin: 15,
+        }}
+      >
+        <Icon name="camera-alt" size={48} color="#9CA3AF" />
       </TouchableOpacity>
     </View>
   );
