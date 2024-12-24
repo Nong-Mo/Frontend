@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PlayerHeader from '../../components/navigations/header/PlayerHeader';
 import PlayerBottomBar from '../../components/navigations/bottom-bar/PlayerBottomBar';
-import ImageViewer from '../../components/player/ImageViewer';
 import BookInfoViewer from '../../components/player/BookInfoViewer';
 
 // For Debug
