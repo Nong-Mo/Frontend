@@ -39,15 +39,9 @@ const PlayerBottomBar = () => {
 const styles = StyleSheet.create({
   audioPlayerContainer: {
     width: '100%',
-    borderColor: 'black',
-    borderRadius: 10,
-    borderWidth: 1,
   },
   audioInfoContainer: {
     height: '50%',
-    borderColor: 'black',
-    borderRadius: 10,
-    borderWidth: 1,
   },
   buttonContainer: {
     justifyContent: 'space-around',
