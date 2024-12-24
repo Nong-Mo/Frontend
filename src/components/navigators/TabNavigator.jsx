@@ -35,8 +35,8 @@ const TabNavigator = () => {
             marginBottom: 0,
           },
           tabBarLabelStyle: {
-            marginBottom: 10
-          }
+            marginBottom: 10,
+          },
         }}
       />
       <Tab.Screen
@@ -51,9 +51,9 @@ const TabNavigator = () => {
             marginBottom: 0,
           },
           tabBarLabelStyle: {
-            marginBottom: 10
+            marginBottom: 10,
           },
-          tabBarStyle: { display: 'none' } // 탭 바 숨기기
+          tabBarStyle: { display: 'none' }, // 탭 바 숨기기
         }}
       />
       <Tab.Screen
@@ -70,7 +70,6 @@ const TabNavigator = () => {
           tabBarLabelStyle: {
             marginBottom: 10,
           },
-          tabBarStyle: { display: 'none' } // 탭 바 숨기기
         }}
       />
     </Tab.Navigator>
