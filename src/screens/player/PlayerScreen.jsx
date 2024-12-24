@@ -3,22 +3,27 @@ import { View, StyleSheet } from 'react-native';
 import PlayerHeader from '../../components/navigations/header/PlayerHeader';
 import PlayerBottomBar from '../../components/navigations/bottom-bar/PlayerBottomBar';
 import BookInfoViewer from '../../components/player/BookInfoViewer';
+import { ImageBackground } from 'expo-image';
 
 // For Debug
-const PlaceholderImage = require('../../../assets/icon.png');
+const PlaceholderImage = {
+  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzHkYKhAY3bOezbjl7Z871NdSs45J5_6i1qA&s',
+};
 
 const PlayerScreen = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <PlayerHeader />
-      <View style={styles.container}>
-        <View style={styles.ImageViewerContainer}>
-          <BookInfoViewer
-            book={{ title: '내 작은 서재', imgSource: PlaceholderImage }}
-          />
-          <PlayerBottomBar />
+    <View style={styles.container}>
+      <ImageBackground source={PlaceholderImage} style={styles.container}>
+        <PlayerHeader />
+        <View style={styles.container}>
+          <View style={styles.ImageViewerContainer}>
+            <BookInfoViewer
+              book={{ title: '소년이 온다', imgSource: PlaceholderImage }}
+            />
+            <PlayerBottomBar />
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 };
@@ -27,9 +32,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    borderColor: 'black',
-    borderRadius: 10,
-    borderWidth: 1,
   },
   ImageViewerContainer: {
     flex: 1,
