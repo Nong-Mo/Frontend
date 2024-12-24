@@ -13,6 +13,7 @@
     "format": "prettier --write '**/*.{js,jsx,json,md}'"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~4.0.0",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
@@ -28,10 +29,11 @@
     "react-native-safe-area-context": "^5.0.0",
     "react-native-screens": "^4.4.0",
     "react-native-status-bar-height": "^2.6.0",
+    "react-native-track-player": "^4.1.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "^0.19.13",
-    "tailwindcss": "^3.3.2",
-    "@expo/metro-runtime": "~4.0.0"
+    "shaka-player": "^4.12.5",
+    "tailwindcss": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
