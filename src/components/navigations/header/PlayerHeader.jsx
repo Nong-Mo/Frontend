@@ -9,10 +9,13 @@ const PlayerHeader = () => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView>
       <HeaderContainer>
         <View className="flex-row justify-between items-center w-full h-14 bg-white px-4">
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            style={{ flex: 1 }}
+            onPress={() => navigation.goBack()}
+          >
             <Icon name="arrow-back" size={24} />
           </TouchableOpacity>
           <View className="flex-row gap-4 justify-end">
