@@ -15,21 +15,16 @@ import "./App.css";
 
 const App = () => {
   return (
-    <div className="wrapper">
+    <div className="main-wrapper flex justify-center min-h-screen bg-gray-100">
       <Router>
-        <div className="content-container">
-          <Sidebar leftSidebar="Left" />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-          </main>
-          <Sidebar rightSidebar="Right" />
-        </div>
+        <main className="content-container flex justify-center bg-red-400">
+          <Routes>
+            <Route path="/" element={<Navigate to="/signin" replace />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="*" element={<Navigate to="/signin" replace />} />
+          </Routes>
+        </main>
       </Router>
     </div>
   );
