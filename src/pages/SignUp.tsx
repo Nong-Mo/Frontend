@@ -69,56 +69,58 @@ const Signup = () => {
   };
 
   return (
-      <FormContainer inputRoundClass="rounded-lg" buttonRoundClass="rounded-full">
-        <div className="mb-6 text-left">
-          <h1 className="text-3xl font-extrabold text-gray-800">
-            환영합니다! 🤗
-          </h1>
-          <h1 className="text-3xl font-extrabold text-gray-800">회원가입을 해볼까요?</h1>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <InputField
-              label="닉네임"
-              type="text"
-              name="nickname"
-              value={formData.nickname}
-              onChange={handleChange}
-              placeholder="닉네임을 입력하세요"
-              error={errors.nickname}
-          />
-          <InputField
-              label="이메일"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@domain.com"
-              error={errors.email}
-          />
-          <InputField
-              label="비밀번호"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="8~20자 비밀번호"
-              error={errors.password}
-          />
-          <InputField
-              label="비밀번호 확인"
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="비밀번호 재확인"
-              error={errors.confirmPassword}
-          />
-          <SubmitButton className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-            회원가입
-          </SubmitButton>
-        </form>
-      </FormContainer>
+      <div className="page-container">
+          <FormContainer inputRoundClass="rounded-lg" buttonRoundClass="rounded-full">
+              <div className="mb-6 text-left">
+                  <h1 className="text-3xl font-extrabold text-gray-800">
+                      환영합니다! 🤗
+                  </h1>
+                  <h1 className="text-3xl font-extrabold text-gray-800">회원가입을 해볼까요?</h1>
+              </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                  <InputField
+                      label="닉네임"
+                      type="text"
+                      name="nickname"
+                      value={formData.nickname}
+                      onChange={handleChange}
+                      placeholder="닉네임을 입력하세요."
+                      error={errors.nickname}
+                  />
+                  <InputField
+                      label="이메일"
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="example@domain.com"
+                      error={errors.email}
+                  />
+                  <InputField
+                      label="비밀번호"
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      placeholder="8~20자 비밀번호를 입력하세요."
+                      error={errors.password}
+                  />
+                  <InputField
+                      label="비밀번호 확인"
+                      type="password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      placeholder="비밀번호를 한 번 더 입력하세요."
+                      error={errors.confirmPassword}
+                  />
+                  <SubmitButton className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                      회원가입
+                  </SubmitButton>
+              </form>
+          </FormContainer>
+      </div>
   );
-};
+  };
 
 export default Signup;
