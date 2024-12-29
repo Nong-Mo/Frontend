@@ -1,12 +1,13 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/common.css";
 
 const Login: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="p-8 bg-white rounded-lg shadow-md">
+    <div className="page-container flex  items-center justify-center min-h-screen">
+      <div className="p-8 bg-white shadow-md">
         <h1 className="text-2xl font-bold mb-6">로그인</h1>
         <div className="space-y-4">
           <button
