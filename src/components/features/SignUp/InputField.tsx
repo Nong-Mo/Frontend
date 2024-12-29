@@ -8,7 +8,7 @@ const InputField = ({ label, type, name, value, onChange, placeholder, error }) 
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
-                className={`w-full border p-2 rounded ${
+                className={`w-full border p-2 rounded-full ${
                     error ? 'border-red-500' : 'border-gray-300'
                 }`}
                 required
