@@ -5,10 +5,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "../src/pages/Login";
-import SignIn from "../src/pages/SignIn";
-import SignUp from "../src/pages/SignUp";
-import Sidebar from "../src/components/common/Sidebar";
+import Login from "./pages/Login";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import Sidebar from "./components/common/Sidebar";
 
 // CSS
 import "./App.css";
