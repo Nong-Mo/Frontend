@@ -5,11 +5,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
-import Sidebar from "./components/common/Sidebar";
 
 // CSS
 import "./App.css";
