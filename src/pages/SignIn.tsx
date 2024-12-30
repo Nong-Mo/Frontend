@@ -44,16 +44,26 @@ const SignIn = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post('/auth/login', { email, password });
+        const response = await axios.post('https://e6be-118-34-210-78.ngrok-free.app/auth/signin', { email, password });
         if (response.status === 200) {
+          const { access_token, token_type } = response.data;
           alert('로그인에 성공했습니다!');
+          // Store the token if needed
+          // localStorage.setItem('token', `${token_type} ${access_token}`);
           navigate('/dashboard');
         }
       } catch (error) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          apiError: '이메일 또는 비밀번호가 잘못되었습니다.',
-        }));
+        if (error.response && error.response.status === 401) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            apiError: '로그인에 실패했습니다.',
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            apiError: '서버 오류가 발생했습니다. 다시 시도해주세요.',
+          }));
+        }
       }
     }
   };
