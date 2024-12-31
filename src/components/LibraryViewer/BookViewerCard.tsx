@@ -43,13 +43,13 @@ const BookViewerCard = ({
 
       {/* 제목 및 시간 */}
       <div className="absolute top-[72px] left-[20px] text-white">
-        <h2 className="w-[116px] h-[48px] text-[18px] leading-[24px] font-semibold">
+        <h2 className="w-[116px] h-[48px] text-[18px] leading-[24px] font-semibold truncate max-w-full">
           {title}
         </h2>
       </div>
 
-      <div className="absolute top-[150px] left-[20px] text-white">
-        <p className="text-[13px] w-[121px] h-[24px]">
+      <div className="absolute top-[150px] w-full text-white text-center">
+        <p className="text-[13px] w-[121px] h-[24px] whitespace-nowrap mx-auto">
           {createdAt.toLocaleDateString("ko-KR", {
             year: "2-digit",
             month: "2-digit",
