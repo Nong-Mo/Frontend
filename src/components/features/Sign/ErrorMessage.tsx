@@ -1,13 +1,12 @@
 import React from 'react';
 
 interface ErrorMessageProps {
-    message: string,
-    className: string
+    message: string;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({message, className}) => {
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
     return message ? (
-        <p className="text-red-500 text-sm mb-4">{message}</p>
+        <p className="text-[#FF5733] text-sm mt-2">{message}</p>
     ) : null;
 };
 

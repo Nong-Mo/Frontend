@@ -6,18 +6,18 @@ const LibraryViewer = () => {
   const [emptyTab, setEmptyTab] = useState(true);
 
   return (
-    <div className="page-container flex flex-col">
+    <div className="page-container flex flex-col z-10">
       {/*  상단 네비게이션 바 */}
       <NavBar title={"책 보관함"} />
 
       {/*  텍스트 영역 */}
       <div className="flex flex-col pl-[41px] pt-[4px]">
-        <h1 className="h1-primary-text">
-          {emptyTab ? "보관함이 비었어요" : "감상하고 싶은"}
-        </h1>
-        <h1 className="h1-primary-text">
+        <div className="h1-primary-text">
+          {emptyTab ? "보관함이 비었어요!" : "감상하고 싶은"}
+        </div>
+        <div className="h1-primary-text mt-[-5px]">
           {emptyTab ? "책을 추가해 주세요" : "책을 선택해 주세요"}
-        </h1>
+        </div>
       </div>
 
       {/*  Content 영역 */}
