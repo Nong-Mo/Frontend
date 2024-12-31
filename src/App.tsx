@@ -11,9 +11,9 @@ import Scan from "./pages/Scan";
 
 const App = () => {
   return (
-    <div className="main-wrapper flex justify-center min-h-screen bg-gray-100">
+    <div className="main-wrapper flex justify-center min-h-screen">
       <Router>
-        <main className="content-container flex justify-center bg-red-400">
+        <main className="content-container flex justify-center w-440">
           <Routes>
             <Route path="/" element={<Navigate to="/scan" replace />} />
             <Route path="/signin" element={<SignIn />} />
