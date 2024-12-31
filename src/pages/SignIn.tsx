@@ -50,7 +50,8 @@ const SignIn: React.FC = () => {
   };
 
   return (
-      <div className="w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
+
+      <div className="z-10 w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
         <div className="w-[400px] p-8 mt-[124px]">
           {/* Header */}
           <div className="mb-[53px] mb-8 text-left">
@@ -63,10 +64,13 @@ const SignIn: React.FC = () => {
           </div>
 
           {/* Form */}
-          <form className="space-y-[50px]" onSubmit={handleSubmit}>
+          <form className="w-full w-[400px] h-[390px] flex justify-between flex-col" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div className="relative">
-              <label htmlFor="email" className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]">
+              <label
+                  htmlFor="email"
+                  className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]"
+              >
                 이메일
               </label>
               <input
@@ -74,37 +78,54 @@ const SignIn: React.FC = () => {
                   id="email"
                   name="email"
                   placeholder="이메일을 입력하세요."
+                  autoComplete="off" /* 자동완성 비활성화 */
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] p-0 placeholder:text-[18px] placeholder:text-[#5E6272]"
+                  className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] mb-[8px] placeholder:text-[18px] placeholder:text-[#5E6272] appearance-none"
               />
             </div>
 
-            {/* Password Input */}
             <div className="relative">
-              <label htmlFor="password" className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]">
+              <label
+                  htmlFor="password"
+                  className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]"
+              >
                 비밀번호
               </label>
-              <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  placeholder="비밀번호를 입력하세요."
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] p-0 placeholder:text-[18px] placeholder:text-[#5E6272]"
-              />
-              <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center text-gray-400"
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
+              <div className="relative">
+                <label
+                    htmlFor="password"
+                    className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]"
+                >
+                </label>
+                <div className="relative">
+                  <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      placeholder="비밀번호를 입력하세요."
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] mb-4 placeholder:text-[18px] placeholder:text-[#5E6272] appearance-none"
+                  />
+                  <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute h-[25px] text-gray-400 right-[1px]"
+                  >
+                    {showPassword ? <FaEyeSlash/> : <FaEye/>}
+                  </button>
+                </div>
+              </div>
+
+
             </div>
 
+
             {/* Error Message */}
-            {error && <p className="text-[#246BFD] text-sm mt-0">{error}</p>}
+            <p className="text-[#246BFD] text-sm mt-[-30px] h-[20px]">
+              {error || ""}
+            </p>
 
             {/* Submit Button */}
             <button
@@ -115,7 +136,7 @@ const SignIn: React.FC = () => {
             </button>
 
             {/* Signup Link */}
-            <div className="text-center mt-4">
+            <div className="flex justify-center items-center mt-4 space-x-[10px]">
               <span className="text-[#FFFFFF] text-[12px] font-medium">계정이 없으신가요? </span>
               <a
                   href="/signup"
