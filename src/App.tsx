@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
 import LibraryViewer from "./pages/LibraryViewer.tsx";
+import Player from "./pages/Player.tsx";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/scan" element={<Scan />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/library" element={<LibraryViewer />} />
+            <Route path="/player" element={<Player />} />
             <Route path="*" element={<Navigate to="/signin" replace />} />
           </Routes>
         </main>
