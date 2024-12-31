@@ -1,11 +1,8 @@
 .main-wrapper {
-    min-height: 100vh;
+    background-color : darkgray;
 }
 
 .content-container {
-    display: flex;
-    width : 440px;
-    height: 100vh;
     background-color: #181a1f;
 }
 

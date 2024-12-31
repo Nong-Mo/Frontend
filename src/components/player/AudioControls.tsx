@@ -27,7 +27,7 @@ export const AudioControls: React.FC<AudioControlsProps> = ({
     toggleMute
 }) => {
     return (
-        <div className="absolute bottom-[135px] w-[356px] h-[85px] flex items-center justify-around ounded-full">
+        <div className="absolute bottom-[135px] w-[356px] h-[85px] flex items-center justify-around rounded-full">
             <img
                 src={isMuted ? mute : volumeSetting}
                 className="w-6 h-6 cursor-pointer"

@@ -1,0 +1,23 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="&#240;&#159;&#153;&#141;&#240;&#159;&#143;&#187;&#226;&#128;&#141;&#226;&#153;&#130;&#239;&#184;&#143;Avatar" clip-path="url(#clip0_397_425)">
+<g id="Avatar/01">
+<circle id="Mask" cx="24" cy="24" r="24" fill="url(#paint0_radial_397_425)"/>
+<mask id="mask0_397_425" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="48" height="48">
+<circle id="Mask_2" cx="24" cy="24" r="24" fill="white"/>
+</mask>
+<g mask="url(#mask0_397_425)">
+</g>
+</g>
+</g>
+<defs>
+<radialGradient id="paint0_radial_397_425" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(34.96 48) rotate(-128.046) scale(60.9508 62.7453)">
+<stop stop-color="#FFB8E0"/>
+<stop offset="0.38895" stop-color="#BE9EFF"/>
+<stop offset="0.673962" stop-color="#88C0FC"/>
+<stop offset="1" stop-color="#86FF99"/>
+</radialGradient>
+<clipPath id="clip0_397_425">
+<rect width="48" height="48" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -7,7 +7,7 @@ const mockAudioData: AudioData = {
   bookName: '책 이름',
   createdAt: '2024-12-31',
   audioUrl: '/music/woodz_buck.mp3',
-  bookCover: '/covers/ImageCover.png',
+  bookCover: '/covers/woodz_buck.png',
 };
 
 export const audioService = {
