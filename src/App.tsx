@@ -12,7 +12,7 @@ import Player from "./pages/Player";
 
 const App = () => {
   return (
-    <div className="pt-14 main-wrapper flex justify-center item-center min-h-screen">
+    <div className=" main-wrapper flex justify-center item-center min-h-screen">
       <Router>
         <main className="content-container flex justify-center w-440 h-[956px] relative">
           <Routes>
