@@ -9,9 +9,6 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
 
-// CSS
-import "./App.css";
-
 const App = () => {
   return (
     <div className="main-wrapper flex justify-center min-h-screen bg-gray-100">
