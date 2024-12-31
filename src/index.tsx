@@ -5,6 +5,10 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 
+import "./styles/reset.css";
+import "./styles/variables.css";
+import "./styles/global.css";
+
 const root = createRoot(document.getElementById("root") as HTMLElement);
 root.render(<App />);
 
