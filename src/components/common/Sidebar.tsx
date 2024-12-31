@@ -1,5 +1,4 @@
 import React from "react";
-import "../../styles/components/common/Sidebar.css";
 
 interface SidebarProps {
   leftSidebar?: React.ReactNode;
