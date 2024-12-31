@@ -23,7 +23,7 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
       {/*토글 버튼*/}
       <div className="flex gap-8 h-[32px] justify-center">
         <button
-          className={`px-4 py-2 transition-colors rounded-[16px] ${
+          className={`py-1.5 h-full w-[87px] transition-colors rounded-[16px] ${
             activeTab === "all" ? " bg-blue-500 text-white" : "text-gray-400 "
           }`}
           onClick={() => setActiveTab("all")}
@@ -31,7 +31,7 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
           전체 목록
         </button>
         <button
-          className={`px-4 py-2 transition-colors rounded-[16px] ${
+          className={`py-1.5 h-full w-[104px] transition-colors rounded-[16px] ${
             activeTab === "recent"
               ? " bg-blue-500 text-white"
               : "text-gray-400 "
