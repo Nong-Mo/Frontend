@@ -1,18 +1,19 @@
 import React from 'react';
 
 interface SubmitButtonProps {
-    onClick?: () => void,
-    children: React.ReactNode,
-    className: string
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    children: React.ReactNode;
 }
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({onClick, children, className}) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({ onClick, children }) => {
     return (
         <button
+            className="w-[350px] h-[55px] bg-[#246bfd] rounded-[25px] justify-center items-center gap-0.5 inline-flex my-[10px]"
             onClick={onClick}
-            className="bg-blue-500 text-white p-2 rounded-full w-full hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
         >
-            {children}
+            <div className="big-button-text">
+                {children}
+            </div>
         </button>
     );
 };
