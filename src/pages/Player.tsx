@@ -64,16 +64,14 @@ const Player: React.FC = () => {
               bookName={audioData.bookName}
               createdAt={audioData.createdAt}
             />
-          </div>
-   
-          {/* 프로그레스바와 컨트롤을 감싸는 컨테이너 */}
-          <div className="flex flex-col items-center gap-8">
             <ProgressBar
               currentTime={currentTime}
               duration={duration}
               onSeek={seek}
             />
+          </div>
    
+          <div className="flex flex-col items-center gap-8">
             <AudioControls
               isPlaying={isPlaying}
               onPlayPause={togglePlay}
