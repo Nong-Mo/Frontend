@@ -21,7 +21,7 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
       className="flex justify-start pt-[21px] flex-col"
     >
       {/*토글 버튼*/}
-      <div className="flex gap-8 h-[32px] justify-center">
+      <div className="flex gap-8 h-[32px] justify-center z-10">
         <button
           className={`py-1.5 h-full w-[87px] transition-colors rounded-[16px] ${
             activeTab === "all" ? " bg-blue-500 text-white" : "text-gray-400 "
