@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Camera } from "react-camera-pro";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../components/common/NavBar.tsx";
+import BookConvertModal from "../components/scan/BookConvertModal.tsx";
 
 interface GalleryItem {
   id: string;
@@ -11,6 +12,7 @@ interface GalleryItem {
 
 const Scan = () => {
   const camera = useRef<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [showPermissionRequest, setShowPermissionRequest] = useState(false);
@@ -53,6 +55,7 @@ const Scan = () => {
 
       // 저장 완료 알림
       alert("사진이 갤러리에 저장되었습니다.");
+      setIsModalOpen(true);
     } catch (error) {
       console.error("갤러리 저장 실패:", error);
       alert("사진 저장에 실패했습니다. 다시 시도해주세요.");
@@ -168,6 +171,10 @@ const Scan = () => {
           </button>
         </div>
       </div>
+      <BookConvertModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
