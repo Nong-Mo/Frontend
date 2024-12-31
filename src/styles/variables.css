@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .page-container {
-    @apply flex min-h-screen bg-gray-400;
+    @apply flex bg-gray-400 w-full;
 }

@@ -31,11 +31,30 @@ const SignIn: React.FC = () => {
       return;
     }
 
-    try {
-      const response = await axios.post('/auth/signin', formData);
-      if (response.status === 200) {
-        alert('로그인 성공!');
-        navigate('/home');
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post('https://e6be-118-34-210-78.ngrok-free.app/auth/signin', { email, password });
+        if (response.status === 200) {
+          const { access_token, token_type } = response.data;
+          alert('로그인에 성공했습니다!');
+          // Store the token if needed
+          // localStorage.setItem('token', `${token_type} ${access_token}`);
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            apiError: '로그인에 실패했습니다.',
+          }));
+        } else {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            apiError: '서버 오류가 발생했습니다. 다시 시도해주세요.',
+          }));
+        }
       }
     } catch (err) {
       setError('이메일과 비밀번호가 일치하지 않습니다.');

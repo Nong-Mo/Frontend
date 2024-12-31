@@ -24,12 +24,12 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   };
 
   return (
-    <div className="w-full"> {/* mb-4 제거 */}
-      <div
+    <div className="w-full mb-4">
+      <div 
         className="relative w-full h-2 bg-white rounded-full cursor-pointer"
         onClick={handleClick}
       >
-        <div
+        <div 
           className="absolute left-0 top-0 h-full bg-blue-600 rounded-full"
           style={{ width: `${(currentTime / duration) * 100}%` }}
         />
