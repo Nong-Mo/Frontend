@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import BookViewerCard from "./BookViewerCard.tsx";
 
 interface ViewerContentProps {
   width: number;
@@ -42,18 +43,37 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          {[...Array(6)].map((_, index) => (
-            <div
-              key={index}
-              className="relative aspect-square rounded-[12px] overflow-hidden bg-gray-800"
-            >
-              <div className="absolute top-4 left-4">
-                <div className="w-12 h-12 rounded-lg bg-purple-400" />
-              </div>
-              <button className="absolute top-4 right-4 text-white">⋮</button>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 gap-x-[7.5px] gap-y-[7px]">
+          <BookViewerCard
+            title="Test"
+            thumbnail={new URL("https://picsum.photos/156/196")}
+            createdAt={new Date("2024-12-30T22:30:00")}
+          />
+          <BookViewerCard
+            title="Test"
+            thumbnail={new URL("https://picsum.photos/156/196")}
+            createdAt={new Date("2024-12-30T22:30:00")}
+          />
+          <BookViewerCard
+            title="Test"
+            thumbnail={new URL("https://picsum.photos/156/196")}
+            createdAt={new Date("2024-12-30T22:30:00")}
+          />
+          <BookViewerCard
+            title="Test"
+            thumbnail={new URL("https://picsum.photos/156/196")}
+            createdAt={new Date("2024-12-30T22:30:00")}
+          />
+          <BookViewerCard
+            title="Test"
+            thumbnail={new URL("https://picsum.photos/156/196")}
+            createdAt={new Date("2024-12-30T22:30:00")}
+          />
+          <BookViewerCard
+            title="Test"
+            thumbnail={new URL("https://picsum.photos/156/196")}
+            createdAt={new Date("2024-12-30T22:30:00")}
+          />
         </div>
       </div>
     </div>
