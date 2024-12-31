@@ -8,6 +8,7 @@ import {
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
+import Home from "./pages/Home.tsx"
 
 // CSS
 import "./App.css";
@@ -19,6 +20,7 @@ const App = () => {
         <main className="content-container flex justify-center bg-red-400">
           <Routes>
             <Route path="/" element={<Navigate to="/scan" replace />} />
+            <Route path="/home" element={<Home/>} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/scan" element={<Scan />} />
             <Route path="/signup" element={<SignUp />} />
