@@ -25,7 +25,7 @@ const Home: React.FC = () => {
                 <div className="pl-[39px] pr-[39px]">
                     <h1 className="text-[40px] font-bold">
                         <div>안녕하세요,</div>
-                        <span className="text-blue-500" style={{ marginTop: '-10px', display: 'block' }}>커여운한비쿤 님!</span>
+                        <p className="text-blue-500" style={{ marginTop: '-10px', display: 'block' }}>커여운한비쿤 <span className="text-white">님!</span></p>
                     </h1>
                 </div>
                 
