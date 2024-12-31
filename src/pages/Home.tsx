@@ -4,18 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { HomeTitle } from '../components/Home/HomeTitle';
 import icon1 from '../icons/home/icon1.svg';
 import icon2 from '../icons/home/icon2.svg';
+import plus from '../icons/home/plus.svg';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const userName = '커여운한비쿤'; // 유저 닉네임
 
     const storageItems = [
-        { id: 1, title: '책 보관함', count: 16, icon: icon1, path: '/library' },
-        { id: 2, title: '사진 보관함', count: 32, icon: icon1, path: '/home' },
-        { id: 3, title: '손편지 보관함', count: 8, icon: icon1, path: '/home' },
-        { id: 4, title: '티켓 보관함', count: 100, icon: icon2, path: '/home' },
-        { id: 5, title: '그림 보관함', count: 40, icon: icon2, path: '/home' },
-        { id: 6, title: '영수증 보관함', count: 4, icon: icon2, path: '/home' },
+        { id: 1, title: '책 보관함', count: 16, icon: icon1, path: '/library', countColor: '#A5F59C' },
+        { id: 2, title: '사진 보관함', count: 32, icon: icon1, path: '/home', countColor: '#A5F59C' },
+        { id: 3, title: '손편지 보관함', count: 8, icon: icon1, path: '/home', countColor: '#A5F59C' },
+        { id: 4, title: '티켓 보관함', count: 100, icon: icon2, path: '/home', countColor: '#A06AF9' },
+        { id: 5, title: '그림 보관함', count: 40, icon: icon2, path: '/home', countColor: '#A06AF9' },
+        { id: 6, title: '영수증 보관함', count: 4, icon: icon2, path: '/home', countColor: '#A06AF9' },
     ];
 
     const handleBoxClick = (path: string) => {
@@ -43,8 +44,11 @@ const Home: React.FC = () => {
                 </div> */}
 
                 {/* "+" 버튼 */}
-                <div className="mx-[39px] mt-[41px] mb-[16px] bg-gray-800 h-[64px] rounded-lg flex justify-center items-center cursor-pointer">
-                    <span className="text-gray-400 text-2xl">+</span>
+                <div className="mx-[39px] mt-[41px] mb-[16px] bg-[#262A34] h-[64px] rounded-lg flex justify-center items-center cursor-pointer">
+                    <img
+                        src={plus}
+                        alt="플러스"
+                    />
                 </div>
 
                 {/* 보관함 리스트 */}
@@ -55,6 +59,7 @@ const Home: React.FC = () => {
                                 title={item.title}
                                 count={item.count}
                                 icon={item.icon}
+                                countColor={item.countColor}
                             />
                         </div>
                     ))}
