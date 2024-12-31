@@ -6,9 +6,9 @@ const Intro: FC = () => {
   const navigate = useNavigate();
 
   return (
-        <div className="page-container flex flex-col min-h-screen">
+        <div className="page-container flex flex-col min-h-screen z-10">
             <div className="w-full  text-blue-500 flex flex-col items-center mx-auto">
-                <img src={homeImage} alt="Home" className="w-full max-w-[500px] mb-[-10px]" /> {/* Image at the top, adjust max-w */}
+                <img src={homeImage} alt="Home" className="w-full max-w-[500px] mb-[20px]" /> {/* mb-[-10px] 제거 및 수정 */}
                 <div className="pl-[39px] pr-[39px] pb-[37px]">
                     <h1 className="font-bold text-left">
                         <div className="text-[32px]">Analog To Digital</div>
