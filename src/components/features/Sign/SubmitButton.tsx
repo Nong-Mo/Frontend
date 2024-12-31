@@ -1,16 +1,8 @@
-import React from 'react';
-
-interface SubmitButtonProps {
-    onClick?: () => void,
-    children: React.ReactNode,
-    className: string
-}
-
-const SubmitButton: React.FC<SubmitButtonProps> = ({onClick, children, className}) => {
+const SubmitButton = ({ children }: { children: React.ReactNode }) => {
     return (
         <button
-            onClick={onClick}
-            className="bg-blue-500 text-white p-2 rounded-full w-full hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            type="submit"
+            className="w-full py-3 bg-blue-500 rounded text-white font-semibold hover:bg-blue-600"
         >
             {children}
         </button>

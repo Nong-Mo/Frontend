@@ -1,103 +1,121 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../components/features/Sign/FormContainer';
-import InputField from '../components/features/Sign/InputField';
-import SubmitButton from '../components/features/Sign/SubmitButton';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    apiError: '',
-  });
-    
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-    let error = '';
-    if (name === 'email' && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)) {
-      error = '유효한 이메일 주소를 입력해주세요.';
-    }
-
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setError(''); // Clear error when user types
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { email, password } = formData;
-    const newErrors: { [key: string]: string } = {};
+    setError('');
 
-    if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-      newErrors.email = '유효한 이메일 주소를 입력해주세요.';
+    if (!formData.email || !formData.password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
     }
 
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await axios.post('/auth/login', { email, password });
-        if (response.status === 200) {
-          alert('로그인에 성공했습니다!');
-          navigate('/dashboard');
-        }
-      } catch (error) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          apiError: '이메일 또는 비밀번호가 잘못되었습니다.',
-        }));
+    try {
+      const response = await axios.post('/auth/signin', formData);
+      if (response.status === 200) {
+        alert('로그인 성공!');
+        navigate('/home');
       }
+    } catch (err) {
+      setError('이메일과 비밀번호가 일치하지 않습니다.');
     }
   };
 
   return (
       <div className="page-container">
-        <FormContainer>
-          <div className="mb-6 text-left">
-            <h1 className="text-3xl font-extrabold text-gray-800">
-              다시 만나 반가워요! 👋
-            </h1>
-            <h1 className="text-2xl font-semibold text-gray-600">로그인 해주세요.</h1>
+        <div className="flex items-start justify-center min-h-screen bg-gray-900 text-white">
+          <div className="w-[400px] p-8">
+            {/* Header */}
+            <div className="mb-8 text-left">
+              <h1 className="text-4xl font-extrabold text-white leading-tight">
+                웰컴 백!
+              </h1>
+              <p className="text-4xl font-extrabold text-white leading-tight">
+                <span className="text-blue-500">로그인</span>을 해주세요.
+              </p>
+            </div>
+
+            <form className="space-y-6">
+              {/* Email Input */}
+              <div className="relative">
+                <label htmlFor="email" className="block text-sm text-gray-400 mb-1">
+                  이메일
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="example@domain.com"
+                    className="w-full border-b-2 border-gray-500 bg-transparent text-white focus:outline-none focus:border-blue-500 p-0 placeholder:text-gray-500"
+                />
+              </div>
+
+              {/* Password Input */}
+              <div className="relative">
+                <label htmlFor="password" className="block text-sm text-gray-400 mb-1">
+                  비밀번호
+                </label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="비밀번호를 입력하세요."
+                    className="w-full border-b-2 border-gray-500 bg-transparent text-white focus:outline-none focus:border-blue-500 p-0 placeholder:text-gray-500"
+                />
+                <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 flex items-center text-gray-400"
+                >
+                  <FaEye/>
+                </button>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                  type="submit"
+                  className="w-full bg-blue-500 text-white py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition-all"
+              >
+                로그인
+              </button>
+
+              {/* Signup Link */}
+              <div className="text-center mt-4">
+                <span className="text-gray-400">계정이 없으신가요? </span>
+                <a
+                    href="/signup"
+                    className="text-white font-semibold hover:text-blue-500 transition-all"
+                >
+                  회원가입
+                </a>
+              </div>
+            </form>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="example@domain.com"
-                error={errors.email}
-            />
-            <InputField
-                label="비밀번호"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="비밀번호를 입력하세요."
-                error={errors.password}
-            />
-            {errors.apiError && (
-                <p className="text-red-500 text-xs mt-1">{errors.apiError}</p>
-            )}
-            <SubmitButton
-                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-            >
-              로그인
-            </SubmitButton>
-          </form>
-        </FormContainer>
+        </div>
       </div>
-  );
+
+  )
+      ;
 };
 
 export default SignIn;
