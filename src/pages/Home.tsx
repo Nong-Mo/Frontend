@@ -12,8 +12,8 @@ const Home: React.FC = () => {
 
     const storageItems = [
         { id: 1, title: '책 보관함', count: 16, icon: icon1, path: '/library', countColor: '#A5F59C' },
-        { id: 2, title: '사진 보관함', count: 32, icon: icon1, path: '/home', countColor: '#A5F59C' },
-        { id: 3, title: '손편지 보관함', count: 8, icon: icon1, path: '/home', countColor: '#A5F59C' },
+        { id: 2, title: '사진 보관함', count: 32, icon: icon2, path: '/home', countColor: '#A06AF9' },
+        { id: 3, title: '손편지 보관함', count: 8, icon: icon2, path: '/home', countColor: '#A06AF9' },
         { id: 4, title: '티켓 보관함', count: 100, icon: icon2, path: '/home', countColor: '#A06AF9' },
         { id: 5, title: '그림 보관함', count: 40, icon: icon2, path: '/home', countColor: '#A06AF9' },
         { id: 6, title: '영수증 보관함', count: 4, icon: icon2, path: '/home', countColor: '#A06AF9' },
