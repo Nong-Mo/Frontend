@@ -10,6 +10,7 @@ import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
 import LibraryViewer from "./pages/LibraryViewer.tsx";
 import Player from "./pages/Player.tsx";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
