@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../components/features/SignUp/FormContainer';
-import InputField from '../components/features/SignUp/InputField';
-import SubmitButton from '../components/features/SignUp/SubmitButton';
+import FormContainer from '../components/features/Sign/FormContainer';
+import InputField from '../components/features/Sign/InputField';
+import SubmitButton from '../components/features/Sign/SubmitButton';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
