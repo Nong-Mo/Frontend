@@ -6,7 +6,7 @@ const LibraryViewer = () => {
   const [emptyTab, setEmptyTab] = useState(true);
 
   return (
-    <div className="page-container flex flex-col">
+    <div className="page-container flex flex-col z-10">
       {/*  상단 네비게이션 바 */}
       <NavBar title={"책 보관함"} />
 
