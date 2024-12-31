@@ -18,6 +18,7 @@ const App = () => {
         <main className="content-container flex justify-center w-440 h-[956px] relative">
           <Routes>
             <Route path="/" element={<Navigate to="/scan" replace />} />
+            <Route path="/home" element={<Home/>} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/scan" element={<Scan />} />
             <Route path="/signup" element={<SignUp />} />
