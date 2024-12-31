@@ -37,9 +37,9 @@ const BookViewerCard = ({
       </div>
 
       {/* 더보기 버튼 */}
-      <button className="absolute top-[20px] right-[18.5px] text-white">
-        ⋮
-      </button>
+      <div className="absolute w-[20px] h-[20px] top-[20px] right-[18.5px] text-center">
+        <button className="w-full h-full text-white">⋮</button>
+      </div>
 
       {/* 제목 및 시간 */}
       <div className="absolute top-[72px] left-[20px] text-white">
