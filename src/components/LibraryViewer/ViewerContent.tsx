@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import icon1 from "../../icons/bookViewerCard/1.svg";
 import icon2 from "../../icons/bookViewerCard/2.svg";
 import icon3 from "../../icons/bookViewerCard/3.svg";
@@ -15,6 +15,18 @@ interface ViewerContentProps {
 
 const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
   const [activeTab, setActiveTab] = useState("recent");
+
+  const [books, setBooks] = useState([]);
+
+  const addNewBook = () => {
+    const newBook = {
+      title: "새 책",
+      thumbnail: new URL("https://picsum.photos/156/196"),
+      createdAt: new Date(),
+      icon: icon4,
+    };
+    setBooks([...books, newBook]);
+  };
 
   return (
     <div
@@ -47,28 +59,19 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
       <div className="viewer-content-wrapper mt-[13px] w-full">
         {/*추가하기 버튼*/}
         <div className="plus-button mb-[16px]">
-          <button className="text-4xl bg-[#1F222A] rounded-[12px] h-[48px] w-full text-white flex justify-center items-center">
-            <img
-              src={plus}
-              alt="플러스"
-            />
+          <button
+            className="text-4xl bg-[#1F222A] rounded-[12px] h-[48px] w-full text-white flex justify-center items-center"
+            onClick={() => addNewBook()}
+          >
+            <img src={plus} alt="플러스" />
           </button>
         </div>
 
         {/* Grid Content 영역*/}
         <div className="grid grid-cols-2 gap-x-[10px] gap-y-[7px]">
-          <BookViewerCard
-            title="나는 고양이로소이다"
-            thumbnail={new URL("https://picsum.photos/156/196")}
-            createdAt={new Date("2024-12-30T22:30:00")}
-            icon={icon1}
-          />
-          <BookViewerCard
-            title="코스모스"
-            thumbnail={new URL("https://picsum.photos/156/196")}
-            createdAt={new Date("2024-12-30T22:30:00")}
-            icon={icon2}
-          />
+          {books.map((book, index) => (
+            <BookViewerCard key={index} {...book} />
+          ))}
         </div>
       </div>
     </div>
