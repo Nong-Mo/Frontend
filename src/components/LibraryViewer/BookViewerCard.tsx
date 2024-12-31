@@ -4,12 +4,14 @@ interface BookViewerCardProps {
   title: string;
   thumbnail: File | URL;
   createdAt: Date;
+  icon: File | URL;
 }
 
 const BookViewerCard = ({
   title,
   thumbnail,
   createdAt,
+  icon,
 }: BookViewerCardProps) => {
   return (
     <div className="relative w-[156px] h-[196px] rounded-[12px] overflow-hidden">
@@ -22,21 +24,34 @@ const BookViewerCard = ({
         className="w-full h-full object-cover"
         alt={title}
       />
-
+      <div className="absolute inset-0 bg-black/50" />
       {/* Book Icon */}
-      <div className="absolute top-4 left-4">
-        <div className="w-12 h-12 rounded-lg bg-purple-400" />
+      <div className="absolute top-[20px] left-[20px]">
+        <img
+          src={
+            icon instanceof File ? URL.createObjectURL(icon) : icon.toString()
+          }
+          className="w-[40px] h-[40px]"
+          alt="book icon"
+        />
       </div>
 
-      {/* Menu Button */}
-      <button className="absolute top-4 right-4 text-white">⋮</button>
+      {/* 더보기 버튼 */}
+      <button className="absolute top-[20px] right-[18.5px] text-white">
+        ⋮
+      </button>
 
-      {/* Title and Date */}
-      <div className="absolute bottom-4 left-4 text-white">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="text-sm mt-1">
+      {/* 제목 및 시간 */}
+      <div className="absolute top-[72px] left-[20px] text-white">
+        <h2 className="w-[116px] h-[48px] text-[18px] leading-[24px] font-semibold">
+          {title}
+        </h2>
+      </div>
+
+      <div className="absolute top-[150px] left-[20px] text-white">
+        <p className="text-[13px] w-[121px] h-[24px]">
           {createdAt.toLocaleDateString("ko-KR", {
-            year: "numeric",
+            year: "2-digit",
             month: "2-digit",
             day: "2-digit",
             hour: "2-digit",
