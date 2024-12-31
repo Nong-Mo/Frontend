@@ -1,20 +1,10 @@
-.main-wrapper {
-    min-height: 100vh;
+body {
+
 }
 
-.content-container {
-    display: flex;
-    width : 440px;
-    height: 100vh;
-    background-color: #181a1f;
-}
 
-.main-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.content-container::before {
+
+.page-container::before {
     content: '';
     position: absolute;
     top: -107px;
@@ -33,7 +23,7 @@
     opacity: 0.5;
 }
 
-.content-container::after {
+.page-container::after {
     content: '';
     position: absolute;
     bottom: 52px;

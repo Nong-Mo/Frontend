@@ -1,12 +1,11 @@
 import { FC } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/common.css";
 
 const SignIn: FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="page-container flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="page-container">
       <div className="p-8 bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-6">Sign In</h1>
         <form className="space-y-4">

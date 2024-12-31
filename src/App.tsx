@@ -5,31 +5,23 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Login from "./pages/Login";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Sidebar from "./components/common/Sidebar";
-
-// CSS
-import "./App.css";
+import Scan from "./pages/Scan";
 
 const App = () => {
   return (
-    <div className="wrapper">
+    <div className="main-wrapper flex justify-center min-h-screen bg-gray-100">
       <Router>
-        <div className="content-container">
-          <Sidebar leftSidebar="Left" />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="*" element={<Navigate to="/login" replace />} />
-            </Routes>
-          </main>
-          <Sidebar rightSidebar="Right" />
-        </div>
+        <main className="content-container flex justify-center bg-red-400">
+          <Routes>
+            <Route path="/" element={<Navigate to="/scan" replace />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/scan" element={<Scan />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="*" element={<Navigate to="/signin" replace />} />
+          </Routes>
+        </main>
       </Router>
     </div>
   );
