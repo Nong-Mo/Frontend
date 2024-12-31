@@ -51,7 +51,7 @@ const Player: React.FC = () => {
   if (!audioData) return <div>Loading...</div>;
 
   return (
-    <div className="page-container flex flex-col min-h-screen">
+    <div className="page-container flex flex-col min-h-screen pl-10 pr-10">
       <NavBar onMenuClick={() => navigate('/login')} />
 
       <div className="relative z-10 flex flex-col h-[956px] mt-10">
