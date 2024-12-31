@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 export const useAudioPlayer = (audioUrl: string) => {
     const [isPlaying, setIsPlaying] = useState(false);
@@ -36,32 +36,31 @@ export const useAudioPlayer = (audioUrl: string) => {
         };
     }, [audioUrl]);
 
-
     useEffect(() => {
         audioRef.current.volume = isMuted ? 0 : volume;
     }, [volume, isMuted]);
 
-    const togglePlay = () => {
+    const togglePlay = useCallback(() => {
         if (isPlaying) {
             audioRef.current.pause();
         } else {
             audioRef.current.play();
         }
         setIsPlaying(!isPlaying);
-    };
+    }, [isPlaying]); // isPlaying을 의존성 배열에 포함
 
-    const seek = (time: number) => {
+    const seek = useCallback((time: number) => {
       audioRef.current.currentTime = time;
       setCurrentTime(time);
-    };
-    
-    const setAudioVolume = (newVolume: number) => {
-        setVolume(newVolume);
-    };
+    }, []);
 
-    const toggleMute = () => {
-        setIsMuted(!isMuted);
-    };
+    const setAudioVolume = useCallback((newVolume: number) => {
+        setVolume(newVolume);
+    }, []);
+
+    const toggleMute = useCallback(() => {
+        setIsMuted(prevIsMuted => !prevIsMuted);
+    }, []);
   
 
     return {
