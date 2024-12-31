@@ -8,6 +8,7 @@ import {
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
+import LibraryViewer from "./pages/LibraryViewer.tsx";
 
 // CSS
 import "./App.css";
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/scan" element={<Scan />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/library" element={<LibraryViewer />} />
             <Route path="*" element={<Navigate to="/signin" replace />} />
           </Routes>
         </main>
