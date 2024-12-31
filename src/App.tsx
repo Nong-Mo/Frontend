@@ -10,9 +10,6 @@ import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
 import LibraryViewer from "./pages/LibraryViewer.tsx";
 
-// CSS
-import "./App.css";
-
 const App = () => {
   return (
     <div className="pt-14 main-wrapper flex justify-center item-center min-h-screen">
