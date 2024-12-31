@@ -1,111 +1,152 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../components/features/Sign/FormContainer';
-import InputField from '../components/features/Sign/InputField';
-import SubmitButton from '../components/features/Sign/SubmitButton';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    apiError: '',
-  });
-    
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-    let error = '';
-    if (name === 'email' && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)) {
-      error = '유효한 이메일 주소를 입력해주세요.';
-    }
-
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    setError(''); // Clear error on input change
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { email, password } = formData;
-    const newErrors: { [key: string]: string } = {};
+    setError('');
 
-    if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-      newErrors.email = '유효한 이메일 주소를 입력해주세요.';
+    // Validation
+    if (!formData.email || !formData.password) {
+      setError('이메일과 비밀번호를 입력해주세요.');
+      return;
     }
 
-    setErrors(newErrors);
+    try {
+      const response = await axios.post('/auth/signin', formData);
 
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await axios.post('https://e6be-118-34-210-78.ngrok-free.app/auth/signin', { email, password });
-        if (response.status === 200) {
-          const { access_token, token_type } = response.data;
-          alert('로그인에 성공했습니다!');
-          // Store the token if needed
-          // localStorage.setItem('token', `${token_type} ${access_token}`);
-          navigate('/dashboard');
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            apiError: '로그인에 실패했습니다.',
-          }));
-        } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            apiError: '서버 오류가 발생했습니다. 다시 시도해주세요.',
-          }));
-        }
+      if (response.status === 200) {
+        const { access_token, token_type } = response.data;
+        alert(`로그인 성공! Token: ${token_type} ${access_token}`);
+        navigate('/home'); // Redirect to home page on success
+      }
+    } catch (err: any) {
+      if (err.response && err.response.status === 401) {
+        setError('로그인에 실패했습니다.');
+      } else {
+        setError('서버와의 통신에 문제가 발생했습니다.');
       }
     }
   };
 
   return (
-      <div className="page-container">
-        <FormContainer>
-          <div className="mb-6 text-left">
-            <h1 className="text-3xl font-extrabold text-gray-800">
-              다시 만나 반가워요! 👋
+
+      <div className="z-10 w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
+        <div className="w-[400px] p-8 mt-[124px]">
+          {/* Header */}
+          <div className="mb-[53px] mb-8 text-left">
+            <h1 className="text-4xl font-extrabold text-white leading-tight">
+              웰컴 백!
             </h1>
-            <h1 className="text-2xl font-semibold text-gray-600">로그인 해주세요.</h1>
+            <p className="text-4xl font-extrabold text-white leading-tight">
+              <span className="text-[#246BFD]">로그인</span>을 해주세요.
+            </p>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="example@domain.com"
-                error={errors.email}
-            />
-            <InputField
-                label="비밀번호"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="비밀번호를 입력하세요."
-                error={errors.password}
-            />
-            {errors.apiError && (
-                <p className="text-red-500 text-xs mt-1">{errors.apiError}</p>
-            )}
-            <SubmitButton
-                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+
+          {/* Form */}
+          <form className="w-full w-[400px] h-[390px] flex justify-between flex-col" onSubmit={handleSubmit}>
+            {/* Email Input */}
+            <div className="relative">
+              <label
+                  htmlFor="email"
+                  className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]"
+              >
+                이메일
+              </label>
+              <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="이메일을 입력하세요."
+                  autoComplete="off" /* 자동완성 비활성화 */
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] mb-[8px] placeholder:text-[18px] placeholder:text-[#5E6272] appearance-none"
+              />
+            </div>
+
+            <div className="relative">
+              <label
+                  htmlFor="password"
+                  className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]"
+              >
+                비밀번호
+              </label>
+              <div className="relative">
+                <label
+                    htmlFor="password"
+                    className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]"
+                >
+                </label>
+                <div className="relative">
+                  <input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      placeholder="비밀번호를 입력하세요."
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] mb-4 placeholder:text-[18px] placeholder:text-[#5E6272] appearance-none"
+                  />
+                  <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute h-[25px] text-gray-400 right-[1px]"
+                  >
+                    {showPassword ? <FaEyeSlash/> : <FaEye/>}
+                  </button>
+                </div>
+              </div>
+
+
+            </div>
+
+
+            {/* Error Message */}
+            <p className="text-[#246BFD] text-sm mt-[-30px] h-[20px]">
+              {error || ""}
+            </p>
+
+            {/* Submit Button */}
+            <button
+                type="submit"
+                className="w-full bg-[#246BFD] text-white py-3 rounded-full text-[16px] font-semibold text-lg hover:bg-blue-600 transition-all"
             >
               로그인
-            </SubmitButton>
+            </button>
+
+            {/* Signup Link */}
+            <div className="flex justify-center items-center mt-4 space-x-[10px]">
+              <span className="text-[#FFFFFF] text-[12px] font-medium">계정이 없으신가요? </span>
+              <a
+                  href="/signup"
+                  className="text-[#FFFFFF] text-[12px] font-bold hover:text-blue-500 transition-all"
+              >
+                회원가입
+              </a>
+            </div>
           </form>
-        </FormContainer>
+        </div>
       </div>
   );
 };
