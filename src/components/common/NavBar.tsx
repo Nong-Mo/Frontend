@@ -12,7 +12,7 @@ export const NavBar: React.FC<NavigationProps> = ({ onMenuClick, title }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="pt-[48px]">
+    <div className="pt-[48px] flex justify-center">
       <div className="flex items-center w-362 h-[56px] justify-between">
         <img
           src={leftIcon}
