@@ -51,38 +51,38 @@ const SignIn: React.FC = () => {
 
   return (
       <div className="w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
-        <div className="w-[400px] p-8">
+        <div className="w-[400px] p-8 mt-[124px]">
           {/* Header */}
-          <div className="mb-8 text-left">
+          <div className="mb-[53px] mb-8 text-left">
             <h1 className="text-4xl font-extrabold text-white leading-tight">
               웰컴 백!
             </h1>
             <p className="text-4xl font-extrabold text-white leading-tight">
-              <span className="text-blue-500">로그인</span>을 해주세요.
+              <span className="text-[#246BFD]">로그인</span>을 해주세요.
             </p>
           </div>
 
           {/* Form */}
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-[50px]" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div className="relative">
-              <label htmlFor="email" className="block text-sm text-gray-400 mb-1">
+              <label htmlFor="email" className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]">
                 이메일
               </label>
               <input
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="example@domain.com"
+                  placeholder="이메일을 입력하세요."
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full border-b-2 border-gray-500 bg-transparent text-white focus:outline-none focus:border-blue-500 p-0 placeholder:text-gray-500"
+                  className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] p-0 placeholder:text-[18px] placeholder:text-[#5E6272]"
               />
             </div>
 
             {/* Password Input */}
             <div className="relative">
-              <label htmlFor="password" className="block text-sm text-gray-400 mb-1">
+              <label htmlFor="password" className="block text-[16px] font-semibold text-[#3A3D46] mb-[8px]">
                 비밀번호
               </label>
               <input
@@ -92,7 +92,7 @@ const SignIn: React.FC = () => {
                   placeholder="비밀번호를 입력하세요."
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full border-b-2 border-gray-500 bg-transparent text-white focus:outline-none focus:border-blue-500 p-0 placeholder:text-gray-500"
+                  className="w-full border-b border-[#262A34] bg-transparent text-[#FFFFFF] focus:outline-none focus:border-[#246BFD] p-0 placeholder:text-[18px] placeholder:text-[#5E6272]"
               />
               <button
                   type="button"
@@ -104,22 +104,22 @@ const SignIn: React.FC = () => {
             </div>
 
             {/* Error Message */}
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {error && <p className="text-[#246BFD] text-sm mt-0">{error}</p>}
 
             {/* Submit Button */}
             <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-3 rounded-full font-semibold text-lg hover:bg-blue-600 transition-all"
+                className="w-full bg-[#246BFD] text-white py-3 rounded-full text-[16px] font-semibold text-lg hover:bg-blue-600 transition-all"
             >
               로그인
             </button>
 
             {/* Signup Link */}
             <div className="text-center mt-4">
-              <span className="text-gray-400">계정이 없으신가요? </span>
+              <span className="text-[#FFFFFF] text-[12px] font-medium">계정이 없으신가요? </span>
               <a
                   href="/signup"
-                  className="text-white font-semibold hover:text-blue-500 transition-all"
+                  className="text-[#FFFFFF] text-[12px] font-bold hover:text-blue-500 transition-all"
               >
                 회원가입
               </a>
