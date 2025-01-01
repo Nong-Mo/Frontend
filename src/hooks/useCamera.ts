@@ -1,55 +1,46 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { Camera } from 'react-camera-pro';
 
 interface CapturedPhoto {
   id: string;
   data: string;
 }
 
-export const useCamera = () => {
-  const camera = useRef<any>(null);
+export const useCamera = (cameraRef: React.RefObject<Camera>) => {
   const [capturedPhotos, setCapturedPhotos] = useState<CapturedPhoto[]>([]);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
   const [showPermissionRequest, setShowPermissionRequest] = useState(false);
 
   useEffect(() => {
-    // 카메라 권한 확인
-    const checkCameraPermission = async () => {
+    const getCameraPermission = async () => {
       try {
-        const result = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         setHasCameraPermission(true);
-        localStorage.setItem("cameraPermission", "granted");
-        // 스트림 정리
-        result.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach(track => track.stop());
       } catch (error) {
         console.error("Camera permission error:", error);
         setHasCameraPermission(false);
-        localStorage.setItem("cameraPermission", "denied");
       }
     };
 
-    checkCameraPermission();
+    getCameraPermission();
   }, []);
 
-  const takePhoto = () => {
-    if (!camera.current || !hasCameraPermission) {
-      if (!hasCameraPermission) {
-        setShowPermissionRequest(true);
-      }
+  const takePhoto = async () => {
+    if (!cameraRef.current) {
+      console.error("Camera ref is not available");
       return null;
     }
 
     try {
-      const photoData = camera.current.takePhoto();
-      if (!photoData) {
-        console.error("No photo data received from camera");
-        throw new Error("사진 촬영 실패");
-      }
-      
+      const photoData = await cameraRef.current.takePhoto();
+      if (!photoData) throw new Error("사진 촬영 실패");
+
       const newPhoto = {
         id: `photo-${Date.now()}`,
         data: photoData
       };
-      
+
       setCapturedPhotos(prev => [...prev, newPhoto]);
       return newPhoto;
     } catch (error) {
@@ -67,7 +58,6 @@ export const useCamera = () => {
   };
 
   return {
-    camera,
     hasCameraPermission,
     showPermissionRequest,
     setShowPermissionRequest,
