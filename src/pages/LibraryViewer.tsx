@@ -5,6 +5,10 @@ import ViewerContent from "../components/LibraryViewer/ViewerContent.tsx";
 const LibraryViewer = () => {
   const [emptyTab, setEmptyTab] = useState(true);
 
+  // Logic
+  // 1. 접속 했을 경우, 유저의 보관함에 책이 있는지 확인한다.
+  // (있다) -> emptyTab = false
+  // (없다) -> emptyTab = true
   return (
     <div className="page-container flex flex-col z-10">
       {/*  상단 네비게이션 바 */}

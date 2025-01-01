@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import icon1 from "../../icons/bookViewerCard/1.svg";
-import icon2 from "../../icons/bookViewerCard/2.svg";
-import icon3 from "../../icons/bookViewerCard/3.svg";
 import icon4 from "../../icons/bookViewerCard/4.svg";
 import plus from "../../icons/home/plus.svg";
 
 import BookViewerCard from "./BookViewerCard.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface ViewerContentProps {
   width: number;
@@ -15,6 +13,7 @@ interface ViewerContentProps {
 
 const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
   const [activeTab, setActiveTab] = useState("recent");
+  const navigate = useNavigate();
 
   const [books, setBooks] = useState([]);
 
@@ -61,7 +60,7 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
         <div className="plus-button mb-[16px]">
           <button
             className="text-4xl bg-[#1F222A] rounded-[12px] h-[48px] w-full text-white flex justify-center items-center"
-            onClick={() => addNewBook()}
+            onClick={() => navigate("/scan")}
           >
             <img src={plus} alt="플러스" />
           </button>
