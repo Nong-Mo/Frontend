@@ -5,6 +5,7 @@ import InputField from '../components/features/Sign/InputField';
 import SubmitButton from '../components/features/Sign/SubmitButton';
 import PasswordToggleButton from '../components/features/Sign/PasswordToggleButton';
 import ErrorMessage from '../components/features/Sign/ErrorMessage';
+import { NavBar } from '../components/common/NavBar';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -105,6 +106,9 @@ const Signup = () => {
 
     return (
         <div className="z-10 w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
+            <div className="fixed top-0 left-0 right-0 z-50">
+                <NavBar title="회원가입" showMenu={false}/>
+            </div>
             <div className="w-[400px] p-8 mt-[124px]">
                 {/* Header */}
                 <div className="mb-[53px] mb-8 text-left">
