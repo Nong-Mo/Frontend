@@ -117,7 +117,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
       <p className="text-gray-300 mb-6">책이 만들어졌어요!</p>
       <div className="flex justify-center space-x-4">
         <button
-          onClick={() => window.open("/preview", "_blank")}
+          onClick={() => window.open("/library", "_blank")}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium"
         >
           보관함으로

@@ -5,6 +5,7 @@ interface BookViewerCardProps {
   thumbnail: File | URL;
   createdAt: Date;
   icon: File | URL;
+  onclick?: () => void;
 }
 
 const BookViewerCard = ({
@@ -12,9 +13,13 @@ const BookViewerCard = ({
   thumbnail,
   createdAt,
   icon,
+  onclick,
 }: BookViewerCardProps) => {
   return (
-    <div className="relative w-[156px] h-[196px] rounded-[12px] overflow-hidden">
+    <div 
+      className="relative w-[156px] h-[196px] rounded-[12px] overflow-hidden cursor-pointer"
+      onClick={onclick}
+      >
       <img
         src={
           thumbnail instanceof File

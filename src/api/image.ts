@@ -39,7 +39,7 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
 
     // 파일 이름 생성 (인덱스 포함)
     const timestamp = Date.now();
-    const newFileName = `photo_${timestamp}_${index}.${extension}`;
+    const newFileName = `photo_${timestamp}_${index}`;
     formData.append('files', file, newFileName);
   });
 

@@ -63,12 +63,14 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
         {/* Grid Content 영역*/}
         <div className="grid grid-cols-2 gap-x-[10px] gap-y-[7px]">
           <BookViewerCard
-            title="나는 고양이로소이다"
-            thumbnail={new URL("https://picsum.photos/156/196")}
+            onclick={() => navigate("/player")}
+            title="점심"
+            thumbnail={new URL("/covers/lunch.jpg", window.location.origin)}
             createdAt={new Date("2024-12-30T22:30:00")}
             icon={icon1}
           />
           <BookViewerCard
+            onclick={() => navigate("/player")}
             title="코스모스"
             thumbnail={new URL("https://picsum.photos/156/196")}
             createdAt={new Date("2024-12-30T22:30:00")}
