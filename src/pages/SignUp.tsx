@@ -1,85 +1,94 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../components/features/Sign/FormContainer';
 import InputField from '../components/features/Sign/InputField';
 import SubmitButton from '../components/features/Sign/SubmitButton';
+import PasswordToggleButton from '../components/features/Sign/PasswordToggleButton';
+import ErrorMessage from '../components/features/Sign/ErrorMessage';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
         nickname: '',
         email: '',
         password: '',
-        confirmPassword: '',
+        password_confirmation: '',
     });
 
     const [errors, setErrors] = useState({
         nickname: '',
         email: '',
         password: '',
-        confirmPassword: '',
+        password_confirmation: '',
+        apiError: '',
     });
 
-    const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+
     const navigate = useNavigate();
 
-    const isValidPassword = (password) => {
+    const isValidPassword = (password: string) => {
         const lengthCheck = password.length >= 8 && password.length <= 20;
         const spaceCheck = !/\s/.test(password);
         const types = [
-            /[A-Z]/.test(password),
-            /[a-z]/.test(password),
-            /[0-9]/.test(password),
-            /[!@#$%^&*(),.?":{}|<>]/.test(password),
+            /[A-Z]/.test(password), // 대문자 검사
+            /[a-z]/.test(password), // 소문자 검사
+            /[0-9]/.test(password), // 숫자 검사
+            /[!@#$%^&*(),.?":{}|<>]/.test(password), // 특수 문자 검사
         ];
         const typeCount = types.filter(Boolean).length;
 
-        return lengthCheck && spaceCheck && typeCount >= 2;
+        return lengthCheck && spaceCheck && typeCount >= 3;
     };
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
 
         let error = '';
-        if (name === 'password' && !isValidPassword(value)) {
-            error = '비밀번호는 8~20자 사이여야 하며, 공백 없이 두 종류 이상의 문자를 포함해야 합니다.';
-        }
-        if (name === 'confirmPassword' && value !== formData.password) {
-            error = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
+        if (value === '') {
+            error = '';
+        } else {
+            if (name === 'email' && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)) {
+                error = '유효한 이메일 주소를 입력해주세요.';
+            }
+            if (name === 'password' && !isValidPassword(value)) {
+                error = '비밀번호는 8~20자 사이여야 하며, 공백 없이 세 종류 이상의 문자를 포함해야 합니다.';
+            }
+            if (name === 'password_confirmation' && value !== formData.password) {
+                error = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
+            }
         }
 
         setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { nickname, email, password, confirmPassword } = formData;
-        const newErrors = {};
+        const { nickname, email, password, password_confirmation } = formData;
+        const newErrors = { ...errors };
 
         if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
             newErrors.email = '유효한 이메일 주소를 입력해주세요.';
         }
 
         if (!isValidPassword(password)) {
-            newErrors.password =
-                '비밀번호는 8~20자 사이여야 하며, 공백 없이 두 종류 이상의 문자를 포함해야 합니다.';
+            newErrors.password = '비밀번호는 8~20자 사이여야 하며, 공백 없이 세 종류 이상의 문자를 포함해야 합니다.';
         }
 
-        if (password !== confirmPassword) {
-            newErrors.confirmPassword = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
+        if (password !== password_confirmation) {
+            newErrors.password_confirmation = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
         }
 
         setErrors(newErrors);
 
-        if (Object.keys(newErrors).length === 0) {
-            setLoading(true);
+        if (Object.keys(newErrors).every((key) => newErrors[key] === '')) {
             try {
-                console.log(formData)
-                const response = await axios.post('/auth/signup', {
-                    username: nickname,
+                const response = await axios.post('https://e6be-118-34-210-78.ngrok-free.app/auth/signup', {
                     email,
+                    nickname,
                     password,
+                    password_confirmation,
                 });
                 if (response.status === 201) {
                     alert('회원가입에 성공했습니다.');
@@ -90,68 +99,84 @@ const Signup = () => {
                     ...prevErrors,
                     apiError: '회원가입에 실패했습니다.',
                 }));
-            } finally {
-                setLoading(false);
             }
         }
     };
 
     return (
-        <div className="page-container">
-            <FormContainer inputRoundClass="rounded-lg" buttonRoundClass="rounded-full">
-                <div className="mb-6 text-left">
-                    <h1 className="text-3xl font-extrabold text-gray-800">
-                        환영합니다! 🤗
+        <div className="z-10 w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
+            <div className="w-[400px] p-8 mt-[124px]">
+                {/* Header */}
+                <div className="mb-[53px] mb-8 text-left">
+                    <h1 className="text-4xl font-extrabold text-white leading-tight">
+                        환영합니다!
                     </h1>
-                    <h1 className="text-3xl font-extrabold text-gray-800">회원가입을 해볼까요?</h1>
+                    <p className="text-4xl font-extrabold text-white leading-tight">
+                        <span className="text-[#246BFD]">회원가입</span>을 해주세요.
+                    </p>
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <InputField
-                        label="닉네임"
-                        type="text"
-                        name="nickname"
-                        value={formData.nickname}
-                        onChange={handleChange}
-                        placeholder="닉네임을 입력하세요."
-                        error={errors.nickname}
-                        disabled={loading}
-                    />
-                    <InputField
-                        label="이메일"
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="example@domain.com"
-                        error={errors.email}
-                        disabled={loading}
-                    />
-                    <InputField
-                        label="비밀번호"
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder="8~20자 비밀번호를 입력하세요."
-                        error={errors.password}
-                        disabled={loading}
-                    />
-                    <InputField
-                        label="비밀번호 확인"
-                        type="password"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        placeholder="비밀번호를 한 번 더 입력하세요."
-                        error={errors.confirmPassword}
-                        disabled={loading}
-                    />
-                    {errors.apiError && <p className="text-red-500 text-xs mt-1">{errors.apiError}</p>}
-                    <SubmitButton className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600" disabled={loading}>
-                        {loading ? '회원가입 중...' : '회원가입'}
-                    </SubmitButton>
+
+                {/* Form */}
+                <form className="w-full w-[400px] h-[512px] flex justify-between flex-col space-y-3"
+                      onSubmit={handleSubmit}>
+                    <div className="relative">
+                        <InputField
+                            label="닉네임"
+                            type="text"
+                            name="nickname"
+                            autoComplete="off"
+                            value={formData.nickname}
+                            onChange={handleChange}
+                            placeholder="닉네임을 입력하세요."
+                            validationError={errors.nickname}
+                        />
+                    </div>
+                    <div className="relative">
+                        <InputField
+                            label="이메일"
+                            type="email"
+                            name="email"
+                            autoComplete="off"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="이메일을 입력하세요."
+                            validationError={errors.email}
+                        />
+                    </div>
+                    <div className="relative">
+                        <InputField
+                            label="비밀번호"
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="비밀번호를 입력하세요."
+                            validationError={errors.password}
+                        />
+                        <PasswordToggleButton
+                            showPassword={showPassword}
+                            onClick={() => setShowPassword(!showPassword)}
+                        />
+                    </div>
+                    <div className="relative">
+                        <InputField
+                            label="비밀번호 확인"
+                            type={showPasswordConfirmation ? "text" : "password"}
+                            name="password_confirmation"
+                            value={formData.password_confirmation}
+                            onChange={handleChange}
+                            placeholder="비밀번호를 한 번 더 입력하세요."
+                            validationError={errors.password_confirmation}
+                        />
+                        <PasswordToggleButton
+                            showPassword={showPasswordConfirmation}
+                            onClick={() => setShowPasswordConfirmation(!showPasswordConfirmation)}
+                        />
+                    </div>
+                    <ErrorMessage message={errors.apiError} isApiError={true}/> {/* API 오류 메시지 */}
+                    <SubmitButton>회원가입</SubmitButton>
                 </form>
-            </FormContainer>
+            </div>
         </div>
     );
 };
