@@ -13,7 +13,12 @@ const SignIn: React.FC = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    apiError: '',
+  });
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,16 +27,19 @@ const SignIn: React.FC = () => {
       ...prev,
       [name]: value,
     }));
-    setError(''); // Clear error on input change
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: '', apiError: '' })); // 입력 변경 시 오류 메시지 초기화
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setErrors({ email: '', password: '', apiError: '' });
 
-    // Validation
+    // 유효성 검사
     if (!formData.email || !formData.password) {
-      setError('이메일과 비밀번호를 입력해주세요.');
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        apiError: '이메일과 비밀번호를 입력해주세요.',
+      }));
       return;
     }
 
@@ -41,13 +49,19 @@ const SignIn: React.FC = () => {
       if (response.status === 200) {
         const { access_token, token_type } = response.data;
         alert(`로그인 성공! Token: ${token_type} ${access_token}`);
-        navigate('/home'); // Redirect to home page on success
+        navigate('/library'); // 로그인 성공 시 Library 페이지로 이동
       }
     } catch (err: any) {
       if (err.response && err.response.status === 401) {
-        setError('로그인에 실패했습니다.');
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          apiError: '로그인에 실패했습니다.',
+        }));
       } else {
-        setError('서버와의 통신에 문제가 발생했습니다.');
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          apiError: '서버와의 통신에 문제가 발생했습니다.',
+        }));
       }
     }
   };
@@ -66,18 +80,20 @@ const SignIn: React.FC = () => {
           </div>
 
           {/* Form */}
-          <form className="w-full w-[400px] h-[390px] flex justify-between flex-col" onSubmit={handleSubmit}>
-            {/* Email Input */}
-            <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="이메일을 입력하세요."
-            />
+          <form className="w-full w-[400px] h-[390px] flex flex-col space-y-3"
+                onSubmit={handleSubmit}>
+            <div className="relative">
+              <InputField
+                  label="이메일"
+                  type="email"
+                  name="email"
+                  autoComplete="off"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="이메일을 입력하세요."
+              />
+            </div>
 
-            {/* Password Input */}
             <div className="relative">
               <InputField
                   label="비밀번호"
@@ -93,20 +109,18 @@ const SignIn: React.FC = () => {
               />
             </div>
 
-            {/* Error Message */}
-            <ErrorMessage message={error} />
+            <ErrorMessage message={errors.apiError} isApiError={true} />  {/* API 오류 메시지 */}
 
-            {/* Submit Button */}
             <SubmitButton>
               로그인
             </SubmitButton>
 
-            {/* Signup Link */}
             <div className="flex justify-center items-center mt-4 space-x-[10px]">
-              <span className="text-[#FFFFFF] text-[12px] font-medium">계정이 없으신가요? </span>
+              <span className="text-[#FFFFFF] text-[14px] font-base">계정이 없으신가요? </span>
               <a
                   href="/signup"
-                  className="text-[#FFFFFF] text-[12px] font-bold hover:text-blue-500 transition-all"
+                  className="text-[#FFFFFF] text-[14px] font-extrabold hover:text-blue-500 transition-all"
+                  style={{fontWeight: '1500'}}
               >
                 회원가입
               </a>
