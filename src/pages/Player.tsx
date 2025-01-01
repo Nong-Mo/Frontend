@@ -51,10 +51,11 @@ const Player: React.FC = () => {
   if (!audioData) return <div>Loading...</div>;
 
   return (
-    <div className="page-container flex flex-col min-h-screen pl-10 pr-10">
-      <NavBar onMenuClick={() => navigate('/login')} />
-
-      <div className="relative z-10 flex flex-col h-[956px] mt-10">
+    <div className="page-container flex flex-col h-[956px] pl-10 pr-10 z-10">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <NavBar onMenuClick={() => navigate('/login')} />
+      </div>
+      <div className="relative z-10 flex flex-col h-[956px] mt-[140px]">
         {/* 이미지 섹션 */}
         <div className="h-[350px] flex items-center justify-center">
           <img
@@ -65,7 +66,7 @@ const Player: React.FC = () => {
         </div>
 
         {/* 컨트롤 섹션 */}
-        <div className="flex flex-col flex-1 mt-12">
+        <div className="mt-8 style={{width: '100%'}}"> {/* mt-8 또는 다른 마진 값으로 간격 조절 */}
           {/* 책 정보 */}
           <div className="flex flex-col items-center mb-8 mt-4">
             <BookInfo
@@ -79,7 +80,7 @@ const Player: React.FC = () => {
             />
           </div>
 
-          <div className="flex flex-col items-center gap-8">
+          <div className="flex justify-center items-center">
             <AudioControls
               isPlaying={isPlaying}
               onPlayPause={togglePlay}

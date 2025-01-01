@@ -1,113 +1,101 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import FormContainer from '../components/features/Sign/FormContainer';
-import InputField from '../components/features/Sign/InputField';
-import SubmitButton from '../components/features/Sign/SubmitButton';
+import React, { useState } from "react";
+import InputField from "../components/features/Sign/InputField";
+import ErrorMessage from "../components/features/Sign/ErrorMessage";
+import SubmitButton from "../components/features/Sign/SubmitButton";
+import PasswordToggleButton from "../components/features/Sign/PasswordToggleButton";
+import { NavBar } from "../components/common/NavBar";
+import useAuth from "../hooks/useAuth";
+import { SignIn } from "../types/auth";
 
-const SignIn = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+const Signin: React.FC = () => {
+  const [formData, setFormData] = useState<SignIn>({
+    email: "",
+    password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const { loading, errors, handleSignIn, clearErrors } = useAuth();
 
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    apiError: '',
-  });
-    
-  const navigate = useNavigate();
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-    let error = '';
-    if (name === 'email' && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)) {
-      error = '유효한 이메일 주소를 입력해주세요.';
-    }
-
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    clearErrors();
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { email, password } = formData;
-    const newErrors: { [key: string]: string } = {};
-
-    if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-      newErrors.email = '유효한 이메일 주소를 입력해주세요.';
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await axios.post('https://e6be-118-34-210-78.ngrok-free.app/auth/signin', { email, password });
-        if (response.status === 200) {
-          const { access_token, token_type } = response.data;
-          alert('로그인에 성공했습니다!');
-          // Store the token if needed
-          // localStorage.setItem('token', `${token_type} ${access_token}`);
-          navigate('/dashboard');
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            apiError: '로그인에 실패했습니다.',
-          }));
-        } else {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            apiError: '서버 오류가 발생했습니다. 다시 시도해주세요.',
-          }));
-        }
-      }
-    }
+    await handleSignIn(formData);
   };
 
   return (
-      <div className="page-container">
-        <FormContainer>
-          <div className="mb-6 text-left">
-            <h1 className="text-3xl font-extrabold text-gray-800">
-              다시 만나 반가워요! 👋
-            </h1>
-            <h1 className="text-2xl font-semibold text-gray-600">로그인 해주세요.</h1>
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="example@domain.com"
-                error={errors.email}
-            />
-            <InputField
-                label="비밀번호"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="비밀번호를 입력하세요."
-                error={errors.password}
-            />
-            {errors.apiError && (
-                <p className="text-red-500 text-xs mt-1">{errors.apiError}</p>
-            )}
-            <SubmitButton
-                className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-            >
-              로그인
-            </SubmitButton>
-          </form>
-        </FormContainer>
+    <div className="page-container flex flex-col items-center h-[956px] pl-10 pr-10 z-10">
+      <div className="w-full z-50">
+        <NavBar title="로그인" showMenu={false} />
       </div>
+      <div className="w-[400px] p-8">
+        {/* Header */}
+        <div className="mb-[53px] text-left">
+          <h1 className="text-4xl font-extrabold text-white leading-tight">
+            웰컴 백!
+          </h1>
+          <p className="text-4xl font-extrabold text-white leading-tight">
+            <span className="text-[#246BFD]">로그인</span>을 해주세요.
+          </p>
+        </div>
+
+        {/* Form */}
+        <form
+          className="w-full w-[400px] flex flex-col gap-2"
+          onSubmit={handleSubmit}
+        >
+          <div className="relative">
+            <InputField
+              label="이메일"
+              type="email"
+              name="email"
+              autoComplete="off"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="이메일을 입력하세요."
+            />
+          </div>
+
+          <div className="relative">
+            <InputField
+              label="비밀번호"
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="비밀번호를 입력하세요."
+            />
+            <PasswordToggleButton
+              showPassword={showPassword}
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          </div>
+
+          <ErrorMessage message={errors.apiError} isApiError={true} />
+
+          <SubmitButton>로그인</SubmitButton>
+
+          <div className="flex justify-center items-center space-x-[10px] mt-[40px]">
+            {" "}
+            {/* gap 대신 직접 마진 적용 */}
+            <span className="text-[#FFFFFF] text-[14px] font-base">
+              계정이 없으신가요?{" "}
+            </span>
+            <a
+              href="/signup"
+              className="text-[#FFFFFF] text-[14px] font-extrabold hover:text-blue-500 transition-all"
+              style={{ fontWeight: "1500" }}
+            >
+              회원가입
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
-export default SignIn;
+export default Signin;

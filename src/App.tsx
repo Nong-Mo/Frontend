@@ -1,4 +1,3 @@
-// src/App.tsx
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +10,8 @@ import Scan from "./pages/Scan";
 import LibraryViewer from "./pages/LibraryViewer.tsx";
 import Player from "./pages/Player.tsx";
 import Home from "./pages/Home";
+import Intro from "./pages/Intro.tsx";
+import PrivateRoute from "./components/common/PrivateRoute.tsx";
 
 const App = () => {
   return (
@@ -18,14 +19,21 @@ const App = () => {
       <Router>
         <main className="content-container flex justify-center w-440 h-[956px] relative">
           <Routes>
-            <Route path="/" element={<Navigate to="/scan" replace />} />
-            <Route path="/home" element={<Home/>} />
+            <Route path="/intro" element={<Intro/>} />
+            <Route 
+              path="/home" 
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              } 
+            />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/scan" element={<Scan />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/library" element={<LibraryViewer />} />
             <Route path="/player" element={<Player />} />
-            <Route path="*" element={<Navigate to="/signin" replace />} />
+            <Route path="/" element={<Navigate to="/intro" replace />} />
           </Routes>
         </main>
       </Router>

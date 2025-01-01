@@ -2,21 +2,13 @@ import React, { ReactNode } from 'react';
 
 interface FormContainerProps {
     children: ReactNode;
-    inputRoundClass?: string; // Input 필드 라운드 스타일
-    buttonRoundClass?: string; // 버튼 라운드 스타일
 }
 
-const FormContainer: React.FC<FormContainerProps> = ({
-                                                         children,
-                                                         inputRoundClass = 'rounded-xl', // 더 둥글게 변경
-                                                         buttonRoundClass = 'rounded-xl', // 더 둥글게 변경
-                                                     }) => {
+const FormContainer: React.FC<FormContainerProps> = ({ children }) => {
     return (
-        <div className="w-full  flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="bg-white p-6 shadow-md w-80">
-                <div className={`${inputRoundClass} ${buttonRoundClass}`}>
-                    {children}
-                </div>
+        <div className="w-full flex items-center justify-center min-h-screen bg-gray-900 text-white">
+            <div className="w-[400px] p-8 mt-[124px] bg-gray-800 rounded-lg shadow-lg">
+                {children}
             </div>
         </div>
     );
