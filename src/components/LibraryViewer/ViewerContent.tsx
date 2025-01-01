@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import icon1 from "../../icons/bookViewerCard/1.svg";
 import icon2 from "../../icons/bookViewerCard/2.svg";
 import icon3 from "../../icons/bookViewerCard/3.svg";
@@ -15,6 +16,7 @@ interface ViewerContentProps {
 
 const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
   const [activeTab, setActiveTab] = useState("recent");
+  const navigate = useNavigate();
 
   return (
     <div
@@ -47,7 +49,10 @@ const ViewerContent = ({ width, height, title }: ViewerContentProps) => {
       <div className="viewer-content-wrapper mt-[13px] w-full">
         {/*추가하기 버튼*/}
         <div className="plus-button mb-[16px]">
-          <button className="text-4xl bg-[#1F222A] rounded-[12px] h-[48px] w-full text-white flex justify-center items-center">
+          <button 
+            onClick={() => navigate("/scan")}
+            className="text-4xl bg-[#1F222A] rounded-[12px] h-[48px] w-full text-white flex justify-center items-center"
+            >
             <img
               src={plus}
               alt="플러스"

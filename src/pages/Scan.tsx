@@ -3,6 +3,8 @@ import { Camera } from "react-camera-pro";
 import { useNavigate } from "react-router-dom";
 import { NavBar } from "../components/common/NavBar.tsx";
 import BookConvertModal from "../components/scan/BookConvertModal.tsx";
+import shutter from "../icons/camera/camera_shutter.svg";
+import check from "../icons/camera/check.svg";
 
 interface GalleryItem {
   id: string;
@@ -90,7 +92,7 @@ const Scan = () => {
   };
 
   return (
-    <div className="w-full flex justify-between bg-[#181A20] flex-col">
+    <div className="w-full flex justify-between bg-[#181A20] flex-col z-10">
       <NavBar title="스캔하기" />
 
       {/* Camera View - 상단 네비게이션 바 높이만큼 여백 추가 */}
@@ -133,40 +135,36 @@ const Scan = () => {
         </div>
       </div>
 
-      {/* 하단 컨트롤 버튼들 */}
       <div className="relative w-full h-[199px] flex items-center justify-center">
         {/* 촬영 버튼 */}
         <div className="absolute take-button z-10">
           <button
             onClick={handleTakePhoto}
-            className={`w-20 h-20 rounded-full border-4 border-white transition-opacity ${
-              hasCameraPermission ? "bg-white/20" : "bg-white/5 opacity-50"
+            className={`flex items-center justify-center w-20 h-20 transition-opacity ${
+              hasCameraPermission ? "opacity-100" : "opacity-50"
             }`}
-          />
+          >
+            <img 
+              src={shutter} 
+              alt="촬영하기"
+              className="w-full h-full"
+            />
+          </button>
         </div>
 
         {/* 갤러리 버튼 */}
         <div className="absolute gallery-button right-[4.5rem] z-10">
           <button
             onClick={handleGalleryClick}
-            className="p-4 rounded-full bg-gray-800/50"
+            className="p-4 rounded-full"
           >
             <div className="relative">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full" />
+              <img
+                src={check}
+                alt="변환하기"
+                className="w-full h-full"
+              />
+              <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full" />
             </div>
           </button>
         </div>
