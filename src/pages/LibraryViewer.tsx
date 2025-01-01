@@ -8,7 +8,7 @@ const LibraryViewer = () => {
   return (
     <div className="page-container flex flex-col z-10">
       {/*  상단 네비게이션 바 */}
-      <NavBar title={"책 보관함"} />
+      <NavBar title={"책 보관함"} rightIcon="search"/>
 
       {/*  텍스트 영역 */}
       <div className="flex flex-col pl-[41px] pt-[4px]">
