@@ -5,6 +5,7 @@ import InputField from '../components/features/Sign/InputField';
 import ErrorMessage from '../components/features/Sign/ErrorMessage';
 import SubmitButton from '../components/features/Sign/SubmitButton';
 import PasswordToggleButton from '../components/features/Sign/PasswordToggleButton';
+import { NavBar } from '../components/common/NavBar';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -67,8 +68,11 @@ const SignIn: React.FC = () => {
   };
 
   return (
-      <div className="z-10 w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
-        <div className="w-[400px] p-8 mt-[124px]">
+      <div className="page-container flex flex-col items-center justify-center h-[956px] pl-10 pr-10 z-10">
+        <div className="fixed top-0 left-0 right-0 z-50">
+          <NavBar title="로그인" showMenu={false}/>
+        </div>
+        <div className="w-[400px] p-8">
           {/* Header */}
           <div className="mb-[53px] mb-8 text-left">
             <h1 className="text-4xl font-extrabold text-white leading-tight">
@@ -80,47 +84,47 @@ const SignIn: React.FC = () => {
           </div>
 
           {/* Form */}
-          <form className="w-full w-[400px] h-[390px] flex flex-col space-y-3"
-                onSubmit={handleSubmit}>
+          <form className="w-full w-[400px] flex flex-col gap-2"
+              onSubmit={handleSubmit}>
             <div className="relative">
               <InputField
-                  label="이메일"
-                  type="email"
-                  name="email"
-                  autoComplete="off"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="이메일을 입력하세요."
+                label="이메일"
+                type="email"
+                name="email"
+                autoComplete="off"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="이메일을 입력하세요."
               />
             </div>
 
             <div className="relative">
               <InputField
-                  label="비밀번호"
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="비밀번호를 입력하세요."
+                label="비밀번호"
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="비밀번호를 입력하세요."
               />
               <PasswordToggleButton
-                  showPassword={showPassword}
-                  onClick={() => setShowPassword(!showPassword)}
+                showPassword={showPassword}
+                onClick={() => setShowPassword(!showPassword)}
               />
             </div>
 
-            <ErrorMessage message={errors.apiError} isApiError={true} />  {/* API 오류 메시지 */}
+            <ErrorMessage message={errors.apiError} isApiError={true} />
 
             <SubmitButton>
               로그인
             </SubmitButton>
 
-            <div className="flex justify-center items-center mt-4 space-x-[10px]">
+            <div className="flex justify-center items-center space-x-[10px] mt-[40px]">  {/* gap 대신 직접 마진 적용 */}
               <span className="text-[#FFFFFF] text-[14px] font-base">계정이 없으신가요? </span>
               <a
-                  href="/signup"
-                  className="text-[#FFFFFF] text-[14px] font-extrabold hover:text-blue-500 transition-all"
-                  style={{fontWeight: '1500'}}
+                href="/signup"
+                className="text-[#FFFFFF] text-[14px] font-extrabold hover:text-blue-500 transition-all"
+                style={{fontWeight: '1500'}}
               >
                 회원가입
               </a>
