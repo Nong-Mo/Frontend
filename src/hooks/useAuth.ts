@@ -76,11 +76,13 @@ const useAuth = () => {
   
     try {
       setLoading(true);
-      const data = await signIn(loginData);
-      // 서버 응답 구조에 맞게 수정
-      localStorage.setItem('token', data.token); // 실제 토큰 필드명으로 수정
+      const response = await signIn(loginData);
+      
+      // response.token.access_token으로 수정
+      localStorage.setItem('token', response.token.access_token);
+      console.log('저장된 토큰:', response.token.access_token);
+      
       setIsAuthenticated(true);
-      alert('환영합니다!');
       navigate('/home');
     } catch (error: any) {
       if (error.response?.status === 401) {
