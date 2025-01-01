@@ -73,13 +73,15 @@ const useAuth = () => {
 
   const handleSignIn = async (loginData: SignIn) => {
     if (!validateForm(loginData)) return;
-
+  
     try {
       setLoading(true);
-      const { access_token, token_type } = await signIn(loginData);
-      localStorage.setItem('token', `${token_type} ${access_token}`);
+      const response = await signIn(loginData);
+      
+      localStorage.setItem('token', response.token.access_token);
+      console.log('저장된 토큰:', response.token.access_token);
+      
       setIsAuthenticated(true);
-      alert('환영합니다!');
       navigate('/home');
     } catch (error: any) {
       if (error.response?.status === 401) {

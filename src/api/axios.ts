@@ -1,38 +1,44 @@
 import axios from 'axios';
 
-export const axiosInstance = axios.create({
-    baseURL: 'https://cf2d-118-34-210-44.ngrok-free.app/',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+// axios 인스턴스 생성
+const axiosInstance = axios.create({
+  baseURL: 'https://6c68-118-34-210-44.ngrok-free.app/',
+  timeout: 30000,
 });
 
-// 요청 인터셉터에 로그 추가
+// Request 인터셉터
 axiosInstance.interceptors.request.use(
-    (config) => {
-      console.log('API 요청:', config);
-      const token = localStorage.getItem('token');
-      if (token && config.headers) {
-        config.headers.token = token;
-      }
-      return config;
-    },
-    (error) => {
-      console.error('API 요청 에러:', error);
-      return Promise.reject(error);
+  (config) => {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      // Authorization 헤더 설정
+      config.headers['Authorization'] = `Bearer ${token}`;
+      // token 헤더 설정 (서버 요구사항)
+      config.headers['token'] = token;
     }
-  );
-  
-  // 응답 인터셉터에 로그 추가
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      console.log('API 응답:', response);
-      return response;
-    },
-    (error) => {
-      console.error('API 응답 에러:', error);
-      return Promise.reject(error);
+    
+    return config;
+  },
+  (error) => {
+    console.error('Request interceptor error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Response 인터셉터
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    // 401 Unauthorized 에러 처리
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/signin';
     }
-  );
-  
-  export default axiosInstance;
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;
