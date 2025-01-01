@@ -52,9 +52,10 @@ const Player: React.FC = () => {
 
   return (
     <div className="page-container flex flex-col h-[956px] pl-10 pr-10 z-10">
-      <NavBar onMenuClick={() => navigate('/login')} />
-
-      <div className="relative z-10 flex flex-col h-[956px] mt-10">
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <NavBar onMenuClick={() => navigate('/login')} />
+      </div>
+      <div className="relative z-10 flex flex-col h-[956px] mt-[140px]">
         {/* 이미지 섹션 */}
         <div className="h-[350px] flex items-center justify-center">
           <img
