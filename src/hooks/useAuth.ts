@@ -73,11 +73,12 @@ const useAuth = () => {
 
   const handleSignIn = async (loginData: SignIn) => {
     if (!validateForm(loginData)) return;
-
+  
     try {
       setLoading(true);
-      const { access_token, token_type } = await signIn(loginData);
-      localStorage.setItem('token', `${token_type} ${access_token}`);
+      const data = await signIn(loginData);
+      // 서버 응답 구조에 맞게 수정
+      localStorage.setItem('token', data.token); // 실제 토큰 필드명으로 수정
       setIsAuthenticated(true);
       alert('환영합니다!');
       navigate('/home');

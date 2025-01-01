@@ -11,7 +11,7 @@ export interface SignUp {
   }
   
   export interface SignInResponse {
-    access_token: string;
+    token: string;
     token_type: string;
   }
   
