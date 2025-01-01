@@ -78,7 +78,6 @@ const useAuth = () => {
       setLoading(true);
       const response = await signIn(loginData);
       
-      // response.token.access_token으로 수정
       localStorage.setItem('token', response.token.access_token);
       console.log('저장된 토큰:', response.token.access_token);
       

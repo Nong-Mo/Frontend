@@ -17,8 +17,9 @@ const Scan = () => {
     message: string;
   } | null>(null);
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+  const [cameraError, setCameraError] = useState<string | null>(null);
 
-  const cameraRef = useRef<Camera>(null); // Camera 컴포넌트 ref 타입 지정
+  const cameraRef = useRef<Camera>(null);
 
   const {
     hasCameraPermission,
@@ -26,19 +27,54 @@ const Scan = () => {
     capturedPhotos,
     clearPhotos,
     removePhoto,
-  } = useCamera(cameraRef); // useCamera 훅에 cameraRef 전달
+  } = useCamera(cameraRef);
+
+  const resetCameraState = () => {
+    clearPhotos(); // 기존 촬영 데이터 초기화
+    setIsPreviewVisible(false); // 미리보기 완전히 숨기기
+    setIsLoading(false);
+    setCameraError(null);
+    
+    // 컴포넌트 리렌더링을 위한 state 재설정
+    setTimeout(() => {
+      setIsPreviewVisible(true);
+    }, 200);
+};
+
+const handleCameraError = (error: Error) => {
+    console.error("카메라 에러:", error);
+    setCameraError(error.message);
+    
+    // 심각한 카메라 에러인 경우 (권한 거부, 하드웨어 접근 불가 등)
+    if (error.message.includes("권한") || error.message.includes("접근")) {
+      alert("카메라 접근에 실패했습니다. 메인 페이지로 이동합니다.");
+      resetCameraState();
+      navigate("/");
+      return;
+    }
+    
+    // 일시적인 에러인 경우
+    alert("카메라 촬영에 실패했습니다. 다시 시도해주세요.");
+    resetCameraState();
+  };
 
   const handleTakePhoto = async () => {
     if (!hasCameraPermission || isLoading) return;
 
     try {
-      const photo = await takePhoto(); // takePhoto가 Promise를 반환하므로 await 사용
+      setIsLoading(true);
+      setCameraError(null);
+      
+      const photo = await takePhoto();
       if (photo && photo.data) {
         console.log("사진 촬영 성공:", photo.id);
+      } else {
+        throw new Error("사진 데이터를 가져올 수 없습니다.");
       }
     } catch (error) {
-      console.error("사진 촬영 실패:", error);
-      alert("사진 촬영에 실패했습니다. 다시 시도해주세요.");
+      handleCameraError(error as Error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,10 +93,26 @@ const Scan = () => {
 
       const files = await Promise.all(filePromises);
 
+      // 모든 파일이 유효한지 확인
+      const validFiles = files.filter(file => file.size >= 100);
+      if (validFiles.length === 0) {
+        throw new Error('유효한 이미지 파일이 없습니다.');
+      }
+
+      // 업로드 전에 파일 크기 합계 확인
+      const totalSize = validFiles.reduce((sum, file) => sum + file.size, 0);
+      if (totalSize > 10 * 1024 * 1024) { // 10MB 제한
+        throw new Error('전체 파일 크기가 너무 큽니다.');
+      }
+
       const response = await uploadImages({
         title: "촬영된 이미지들",
-        files,
+        files: validFiles,
       });
+
+      if (!response || !response.message) {
+        throw new Error('서버 응답이 올바르지 않습니다.');
+      }
 
       setUploadStatus({
         success: true,
@@ -75,6 +127,7 @@ const Scan = () => {
       let errorMessage;
       if (error.message.includes("토큰")) {
         errorMessage = error.message;
+        resetCameraState();
         navigate("/signin");
       } else {
         errorMessage =
@@ -89,10 +142,27 @@ const Scan = () => {
       });
 
       alert(errorMessage);
+      resetCameraState(); // 업로드 실패 시에도 상태 초기화
     } finally {
       setIsLoading(false);
     }
   };
+
+  // 카메라 에러 상태에 따른 UI 처리
+  if (cameraError) {
+    return (
+      <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+        <h2 className="text-xl mb-4">카메라 오류</h2>
+        <p className="text-center mb-6">{cameraError}</p>
+        <button 
+          onClick={() => navigate("/")}
+          className="px-6 py-2 bg-blue-500 rounded-lg hover:bg-blue-600"
+        >
+          메인으로 돌아가기
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full flex justify-between flex-col z-10">
@@ -116,9 +186,9 @@ const Scan = () => {
             }}
           >
             <Camera
-              ref={cameraRef} // 변경된 ref 사용
+              ref={cameraRef}
               aspectRatio="cover"
-              imageType="jpeg" // 이미지 형식 강제
+              imageType="jpeg"
               errorMessages={{
                 noCameraAccessible: "카메라에 접근할 수 없습니다.",
                 permissionDenied: "카메라 권한이 거부되었습니다.",
