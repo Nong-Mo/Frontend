@@ -1,72 +1,31 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import InputField from '../components/features/Sign/InputField';
 import ErrorMessage from '../components/features/Sign/ErrorMessage';
 import SubmitButton from '../components/features/Sign/SubmitButton';
 import PasswordToggleButton from '../components/features/Sign/PasswordToggleButton';
 import { NavBar } from '../components/common/NavBar';
+import useAuth from '../hooks/useAuth';
+import { SignIn } from '../types/auth';
 
-const SignIn: React.FC = () => {
-  const [formData, setFormData] = useState({
+const Signin: React.FC = () => {
+  const [formData, setFormData] = useState<SignIn>({
     email: '',
     password: '',
   });
-
   const [showPassword, setShowPassword] = useState(false);
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    apiError: '',
-  });
-
-  const navigate = useNavigate();
+  const { loading, errors, handleSignIn, clearErrors } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    setErrors((prevErrors) => ({ ...prevErrors, [name]: '', apiError: '' })); // 입력 변경 시 오류 메시지 초기화
+    setFormData(prev => ({ ...prev, [name]: value }));
+    clearErrors();
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({ email: '', password: '', apiError: '' });
-
-    // 유효성 검사
-    if (!formData.email || !formData.password) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        apiError: '이메일과 비밀번호를 입력해주세요.',
-      }));
-      return;
-    }
-
-    try {
-      const response = await axios.post('/auth/signin', formData);
-
-      if (response.status === 200) {
-        const { access_token, token_type } = response.data;
-        alert(`로그인 성공! Token: ${token_type} ${access_token}`);
-        navigate('/library'); // 로그인 성공 시 Library 페이지로 이동
-      }
-    } catch (err: any) {
-      if (err.response && err.response.status === 401) {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          apiError: '로그인에 실패했습니다.',
-        }));
-      } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
-          apiError: '서버와의 통신에 문제가 발생했습니다.',
-        }));
-      }
-    }
+    await handleSignIn(formData);
   };
-
+  
   return (
       <div className="page-container flex flex-col items-center justify-center h-[956px] pl-10 pr-10 z-10">
         <div className="fixed top-0 left-0 right-0 z-50">
@@ -135,4 +94,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default Signin;

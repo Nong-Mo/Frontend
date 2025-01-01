@@ -1,108 +1,33 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import InputField from '../components/features/Sign/InputField';
+import ErrorMessage from '../components/features/Sign/ErrorMessage';
 import SubmitButton from '../components/features/Sign/SubmitButton';
 import PasswordToggleButton from '../components/features/Sign/PasswordToggleButton';
-import ErrorMessage from '../components/features/Sign/ErrorMessage';
 import { NavBar } from '../components/common/NavBar';
+import useAuth from '../hooks/useAuth';
+import { SignUp } from '../types/auth';
 
-const Signup = () => {
-    const [formData, setFormData] = useState({
-        nickname: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-    });
+const Signup: React.FC = () => {
+  const [formData, setFormData] = useState<SignUp>({
+    email: '',
+    nickname: '',
+    password: '',
+    password_confirmation: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
+  const { loading, errors, handleSignUp, clearErrors } = useAuth();
 
-    const [errors, setErrors] = useState({
-        nickname: '',
-        email: '',
-        password: '',
-        password_confirmation: '',
-        apiError: '',
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    clearErrors();
+  };
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
-
-    const navigate = useNavigate();
-
-    const isValidPassword = (password: string) => {
-        const lengthCheck = password.length >= 8 && password.length <= 20;
-        const spaceCheck = !/\s/.test(password);
-        const types = [
-            /[A-Z]/.test(password), // 대문자 검사
-            /[a-z]/.test(password), // 소문자 검사
-            /[0-9]/.test(password), // 숫자 검사
-            /[!@#$%^&*(),.?":{}|<>]/.test(password), // 특수 문자 검사
-        ];
-        const typeCount = types.filter(Boolean).length;
-
-        return lengthCheck && spaceCheck && typeCount >= 3;
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-        let error = '';
-        if (value === '') {
-            error = '';
-        } else {
-            if (name === 'email' && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value)) {
-                error = '유효한 이메일 주소를 입력해주세요.';
-            }
-            if (name === 'password' && !isValidPassword(value)) {
-                error = '비밀번호는 8~20자 사이여야 하며, 공백 없이 세 종류 이상의 문자를 포함해야 합니다.';
-            }
-            if (name === 'password_confirmation' && value !== formData.password) {
-                error = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
-            }
-        }
-
-        setErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const { nickname, email, password, password_confirmation } = formData;
-        const newErrors = { ...errors };
-
-        if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
-            newErrors.email = '유효한 이메일 주소를 입력해주세요.';
-        }
-
-        if (!isValidPassword(password)) {
-            newErrors.password = '비밀번호는 8~20자 사이여야 하며, 공백 없이 세 종류 이상의 문자를 포함해야 합니다.';
-        }
-
-        if (password !== password_confirmation) {
-            newErrors.password_confirmation = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
-        }
-
-        setErrors(newErrors);
-
-        if (Object.keys(newErrors).every((key) => newErrors[key] === '')) {
-            try {
-                const response = await axios.post('https://e6be-118-34-210-78.ngrok-free.app/auth/signup', {
-                    email,
-                    nickname,
-                    password,
-                    password_confirmation,
-                });
-                if (response.status === 201) {
-                    alert('회원가입에 성공했습니다.');
-                    navigate('/login');
-                }
-            } catch (error) {
-                setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    apiError: '회원가입에 실패했습니다.',
-                }));
-            }
-        }
-    };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleSignUp(formData);
+  };
 
     return (
         <div className="z-10 w-full flex items-start justify-center min-h-screen bg-gray-900 text-white">
