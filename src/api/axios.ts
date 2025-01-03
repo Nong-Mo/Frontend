@@ -16,14 +16,10 @@ const axiosInstance = axios.create({
 // 인증이 필요한 API 호출에 자동으로 토큰을 포함함
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log('요청 인터셉터 실행됨'); // 추가
     const token = localStorage.getItem('token');
-    console.log('localStorage에서 가져온 토큰:', token); // 추가
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
-      console.log('token 헤더 추가됨:', config.headers['token']); // 추가
     }
-    console.log('최종 요청 헤더:', config.headers); // 추가: 전체 헤더 확인
     return config;
   },
   (error) => Promise.reject(error)
@@ -59,14 +55,10 @@ export const uploadInstance = axios.create({
 
 uploadInstance.interceptors.request.use(
   (config) => {
-    console.log('uploadInstance 요청 인터셉터 실행됨'); // 로그 추가
     const token = localStorage.getItem('token');
-    console.log('localStorage에서 가져온 토큰:', token); // 로그 추가
     if (token) {
       config.headers['token'] = `${token}`;
-      console.log('uploadInstance token 헤더 추가됨:', config.headers['token']); // 로그 추가
     }
-    console.log('uploadInstance 최종 요청 헤더:', config.headers); // 전체 헤더 확인
     return config;
   },
   (error) => Promise.reject(error)

@@ -48,7 +48,7 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
     
     return data;
   } catch (error: any) {
-    let errorMessage = '이미지 업로드에 실패했습니다.';
+    let errorMessage = '글자가 잘 나오도록 다시 찍어 주세요! 😊';
  
       if (error.response?.data?.detail && Array.isArray(error.response.data.detail) && error.response.data.detail.length > 0) {
           errorMessage = error.response.data.detail[0].msg;
