@@ -21,8 +21,8 @@ export const ROUTES = {
     },
     SCAN: {
         path: '/scan',
-        title: 'Scan Document',
-        ko: '문서 스캔'
+        title: 'Scan',
+        ko: '스캔'
     },
     LIBRARY: {
         path: '/library',
@@ -31,8 +31,8 @@ export const ROUTES = {
     },
     PLAYER: {
         path: '/player',
-        title: 'Document Player',
-        ko: '문서 플레이어'
+        title: 'Player',
+        ko: '플레이어'
     }
 } as const;
 

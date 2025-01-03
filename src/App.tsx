@@ -14,14 +14,13 @@ import Intro from "./pages/Intro";
 import PrivateRoute from "./components/common/PrivateRoute";
 import MainLayout from "./components/common/MainLayout";
 import { ROUTES } from "./routes/constants";
-import {useEffect} from "react";
 
 const App = () => {
   return (
       <Router>
         <Routes>
           <Route element={<MainLayout />}>
-            {/* Public Routes */}
+            {/* Public Routes  */}
             <Route path={ROUTES.INTRO.path} element={<Intro />} />
             <Route path={ROUTES.SIGN_IN.path} element={<SignIn />} />
             <Route path={ROUTES.SIGN_UP.path} element={<SignUp />} />
