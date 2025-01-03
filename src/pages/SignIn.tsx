@@ -13,7 +13,7 @@ const Signin: React.FC = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { loading, errors, handleSignIn, clearErrors } = useAuth();
+  const { errors, handleSignIn, clearErrors } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,11 +43,8 @@ const Signin: React.FC = () => {
         </div>
 
         {/* Form */}
-        <form
-          className="w-full w-[400px] flex flex-col gap-2"
-          onSubmit={handleSubmit}
-        >
-          <div className="relative">
+        <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
+          <div className="relative mb-4">
             <InputField
               label="이메일"
               type="email"
@@ -57,9 +54,10 @@ const Signin: React.FC = () => {
               onChange={handleChange}
               placeholder="이메일을 입력하세요."
             />
+            {errors.email && <ErrorMessage message={errors.email} />}
           </div>
 
-          <div className="relative">
+          <div className="relative mb-4">
             <InputField
               label="비밀번호"
               type={showPassword ? "text" : "password"}
@@ -72,15 +70,14 @@ const Signin: React.FC = () => {
               showPassword={showPassword}
               onClick={() => setShowPassword(!showPassword)}
             />
+            {errors.password && <ErrorMessage message={errors.password} />}
           </div>
 
-          <ErrorMessage message={errors.apiError} isApiError={true} />
+          {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true} />}
 
           <SubmitButton>로그인</SubmitButton>
 
           <div className="flex justify-center items-center space-x-[10px] mt-[40px]">
-            {" "}
-            {/* gap 대신 직접 마진 적용 */}
             <span className="text-[#FFFFFF] text-[14px] font-base">
               계정이 없으신가요?{" "}
             </span>

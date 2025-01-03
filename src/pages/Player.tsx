@@ -30,7 +30,7 @@ const Player: React.FC = () => {
         const data = await audioService.fetchAudioData('1');
         setAudioData(data);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
       }
     };
 

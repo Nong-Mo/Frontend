@@ -26,4 +26,5 @@ export interface AuthError {
   password?: string;
   password_confirmation?: string;
   apiError?: string;
+  nickname?: string;
 }

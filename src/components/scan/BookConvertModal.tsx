@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 interface BookConvertModalProps {
   isOpen: boolean;
   onClose: () => void;
+  uploadStatus: {
+    success: boolean;
+    message: string;
+  } | null;
 }
 
 const BookConvertModal: React.FC<BookConvertModalProps> = ({
@@ -67,7 +71,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
         type="text"
         value={bookTitle}
         onChange={handleInputChange}
-        placeholder="나는 고양이로소이다"
+        placeholder="책 제목"
         className="w-full bg-gray-700 text-white p-3 rounded-lg mb-4"
       />
       <button

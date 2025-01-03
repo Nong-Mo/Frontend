@@ -8,5 +8,5 @@ export const signUp = async (userData: SignUp): Promise<void> => {
 
 export const signIn = async (credentials: SignIn): Promise<SignInResponse> => {
   const { data } = await axiosInstance.post<SignInResponse>('/auth/signin', credentials);
-  return data as SignInResponse;  // 타입 단언을 추가
+  return data as SignInResponse;
 };

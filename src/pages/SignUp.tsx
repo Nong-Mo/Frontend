@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
 
           {/* Form */}
           <form
-            className="w-full w-[400px] h-[512px] flex justify-between flex-col space-y-3"
+            className="w-full h-[512px] flex justify-between flex-col space-y-3"
             onSubmit={handleSubmit}
           >
             <div className="relative">
@@ -108,7 +108,7 @@ const Signup: React.FC = () => {
                 }
               />
             </div>
-            <ErrorMessage message={errors.apiError} isApiError={true} />{" "}
+            <ErrorMessage message={errors.apiError as string || "" } isApiError={true} />{" "}
             {/* API 오류 메시지 */}
             <SubmitButton>회원가입</SubmitButton>
           </form>

@@ -79,7 +79,11 @@ const handleCameraError = (error: Error) => {
   };
 
   const handleUpload = async () => {
-    if (isLoading || capturedPhotos.length === 0) return;
+    console.log("handleUpload 함수 호출됨");
+    if (isLoading || capturedPhotos.length === 0) {
+      console.log("isLoading 상태이거나 캡처된 사진이 없어 업로드 중단"); 
+      return;
+    }
 
     setIsLoading(true);
     setUploadStatus(null);
@@ -93,13 +97,13 @@ const handleCameraError = (error: Error) => {
 
       const files = await Promise.all(filePromises);
 
-      // 모든 파일이 유효한지 확인
+      // 모든 파일이 유효한지 확인 (100bytes 이상)
       const validFiles = files.filter(file => file.size >= 100);
       if (validFiles.length === 0) {
         throw new Error('유효한 이미지 파일이 없습니다.');
       }
 
-      // 업로드 전에 파일 크기 합계 확인
+      // 업로드 전에 파일 크기 합계 확인 (API 명세의 제한사항)
       const totalSize = validFiles.reduce((sum, file) => sum + file.size, 0);
       if (totalSize > 10 * 1024 * 1024) { // 10MB 제한
         throw new Error('전체 파일 크기가 너무 큽니다.');
@@ -110,39 +114,36 @@ const handleCameraError = (error: Error) => {
         files: validFiles,
       });
 
-      if (!response || !response.message) {
-        throw new Error('서버 응답이 올바르지 않습니다.');
+      if (response) {
+        setUploadStatus({
+          success: true,
+          message: response.message,
+        });
+        setIsModalOpen(true);
+        clearPhotos();
       }
-
-      setUploadStatus({
-        success: true,
-        message: response.message,
-      });
-
-      setIsModalOpen(true);
-      clearPhotos();
     } catch (error: any) {
       console.error("업로드 에러:", error);
 
       let errorMessage;
-      if (error.message.includes("토큰")) {
-        errorMessage = error.message;
+      if (error?.response?.status === 401) {
+        // 401 에러는 이제 axios interceptor에서 처리되므로,
+        // auth:unauthorized 이벤트를 통해 처리됨
         resetCameraState();
-        navigate("/signin");
       } else {
-        errorMessage =
-          error.response?.data?.detail?.[0]?.msg ||
-          error.response?.data?.message ||
-          "이미지 업로드에 실패했습니다. 다시 시도해주세요.";
+        // API 명세에 맞는 에러 메시지 처리
+        errorMessage = error?.response?.data?.detail?.[0]?.msg 
+          ?? error.message 
+          ?? "이미지 업로드에 실패했습니다. 다시 시도해주세요.";
+
+        setUploadStatus({
+          success: false,
+          message: errorMessage,
+        });
+
+        alert(errorMessage);
+        resetCameraState();
       }
-
-      setUploadStatus({
-        success: false,
-        message: errorMessage,
-      });
-
-      alert(errorMessage);
-      resetCameraState(); // 업로드 실패 시에도 상태 초기화
     } finally {
       setIsLoading(false);
     }
