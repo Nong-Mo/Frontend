@@ -17,15 +17,6 @@ import { ROUTES } from "./routes/constants";
 import {useEffect} from "react";
 
 const App = () => {
-  useEffect(() => {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-
-    window.addEventListener('resize', () => {
-      const vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    });
-  }, []);
   return (
       <Router>
         <Routes>
