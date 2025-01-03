@@ -2,6 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-.page-container {
-    @apply flex bg-gray-400 w-full;
-}
