@@ -11,6 +11,7 @@ export function useCamera(cameraRef: React.RefObject<Camera | null>) {
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
   const [showPermissionRequest, setShowPermissionRequest] = useState(false);
 
+  // Page 진입 시, 1회에 걸쳐서 실행된다.
   useEffect(() => {
     const getCameraPermission = async () => {
       try {
