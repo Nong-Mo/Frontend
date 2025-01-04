@@ -16,10 +16,10 @@ const LibraryViewer = () => {
 
       {/*  텍스트 영역 */}
       <div className="flex flex-col pl-[41px] pt-[4px]">
-        <div className="h1-primary-text">
+        <div className="primary-info-text">
           {emptyTab ? "보관함이 비었어요" : "감상하고 싶은"}
         </div>
-        <div className="h1-primary-text mt-[-5px]">
+        <div className="primary-info-text mt-[-5px]">
           {emptyTab ? "책을 추가해 주세요" : "책을 선택해 주세요"}
         </div>
       </div>

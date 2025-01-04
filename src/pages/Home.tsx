@@ -24,7 +24,7 @@ const Home: React.FC = () => {
     };
 
     return (
-        <div className="page-container flex flex-col min-h-screen z-10">
+        <div className="w-full flex flex-col min-h-screen z-10">
             <div className="w-full min-h-screen text-white">
                 <HomeTitle userName={userName} />
                 <div className="pl-[39px] pr-[39px]">
