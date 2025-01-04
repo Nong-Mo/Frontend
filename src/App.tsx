@@ -29,7 +29,7 @@ const App = () => {
             <Route element={<PrivateRoute />}>
               <Route path={ROUTES.HOME.path} element={<Home />} />
               <Route path={ROUTES.SCAN.path} element={<Scan />} />
-              <Route path={ROUTES.LIBRARY.path} element={<LibraryViewer />} />
+              <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer />} />
               <Route path={ROUTES.PLAYER.path} element={<Player />} />
             </Route>
 
