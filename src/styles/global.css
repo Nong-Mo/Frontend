@@ -64,7 +64,32 @@ body {
 
 .primary-info-text {
     height : auto;
-    font-size : 32px;
+    font-size : 42.5px;
     font-weight : 600;
+    color : #fff;
+}
+
+.info-point-text {
+    height : auto;
+    font-size : 42.5px;
+    font-weight: 600;
+    color : var(--primary-color);
+}
+
+.big-button-text {
+    font-size : 20px;
+    font-weight: 600;
+    color :#fff;
+}
+
+.small-button-text {
+    font-size : 15px;
+    font-weight: 600;
+    color : #fff;
+}
+
+.medium-text {
+    font-size : 20px;
+    font-weight: 600;
     color : #fff;
 }
