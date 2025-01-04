@@ -62,7 +62,7 @@ body {
     z-index: 0;
 }
 
-h1-primary-text {
+.primary-info-text {
     height : auto;
     font-size : 32px;
     font-weight : 600;
