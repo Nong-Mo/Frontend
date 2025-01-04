@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface BookConvertModalProps {
   isOpen: boolean;
   onClose: () => void;
+  uploadStatus: {
+    success: boolean;
+    message: string;
+  } | null;
 }
 
 const BookConvertModal: React.FC<BookConvertModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const navigate = useNavigate;
   const [step, setStep] = useState<number>(1);
   const [bookTitle, setBookTitle] = useState<string>("");
   const [progress, setProgress] = useState<number>(0);
@@ -67,7 +73,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
         type="text"
         value={bookTitle}
         onChange={handleInputChange}
-        placeholder="나는 고양이로소이다"
+        placeholder="책 제목"
         className="w-full bg-gray-700 text-white p-3 rounded-lg mb-4"
       />
       <button
@@ -80,32 +86,14 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
   );
 
   const renderStep2 = () => (
-    <div className="w-full text-center">
+    <div className="w-full text-center relative">
       <h2 className="text-white text-xl font-bold mb-4">파일 변환 중...</h2>
       <p className="text-gray-300 mb-6">책이 만들어지고 있어요!</p>
-      <div className="w-full flex justify-center">
-        <div className="relative w-32 h-32">
-          <svg className="w-full h-full" viewBox="0 0 100 100">
-            {/* 파란색 원호 */}
-            <path
-              d={`M50,50 m0,-45 a45,45 0 1,1 0,90 a45,45 0 1,1 0,-90`}
-              fill="none"
-              stroke="#3B82F6"
-              strokeWidth="2"
-              strokeDasharray="282.7433388230814"
-              strokeDashoffset={282.7433388230814 * (1 - progress / 360)}
-              transform="rotate(-90 50 50)"
-              style={{
-                transition: "stroke-dashoffset 0.1s ease",
-              }}
-            />
-
-            {/* 노란색 동그라미 */}
-            <g transform={`rotate(${progress} 50 50)`}>
-              <circle cx="95" cy="50" r="6" className="fill-white p-1" />
-              <circle cx="95" cy="50" r="4" className="fill-yellow-400" />
-            </g>
-          </svg>
+      <div className="w-full flex justify-center h-28">
+        <div className="inline-block h-16 w-16 animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] self-center">
+          <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            Loading...
+          </span>
         </div>
       </div>
     </div>
@@ -114,10 +102,10 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
   const renderStep3 = () => (
     <div className="w-full text-center">
       <h2 className="text-white text-xl font-bold mb-2">변환 완료 🎉</h2>
-      <p className="text-gray-300 mb-6">책이 만들어졌어요!</p>
+      <p className="text-gray-300 mb-6">책이 만들어졌어요! 확인하러 갈까요?</p>
       <div className="flex justify-center space-x-4">
         <button
-          onClick={() => window.open("/preview", "_blank")}
+          onClick={() => window.location.href = "/library"}
           className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium"
         >
           보관함으로
@@ -126,7 +114,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
           onClick={handleClose}
           className="px-6 py-3 bg-gray-700 text-white rounded-lg font-medium"
         >
-          닫기
+          더 스캔하기
         </button>
       </div>
     </div>
