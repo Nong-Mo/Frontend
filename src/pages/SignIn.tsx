@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import InputField from "../components/features/Sign/InputField";
 import ErrorMessage from "../components/features/Sign/ErrorMessage";
 import SubmitButton from "../components/features/Sign/SubmitButton";
-import InfoText from "../components/features/Sign/InfoText";
+import InfoText from "../components/common/InfoText.tsx";
 import useAuth from "../hooks/useAuth";
 import { SignIn } from "../types/auth";
 import { NavBar } from "../components/common/NavBar.tsx";
