@@ -34,7 +34,7 @@ const PlayerPdfViewer: React.FC = () => {
         URL.revokeObjectURL(pdfUrl);
       }
     };
-  }, [pdfUrl]);
+  }, []);
 
   return (
     <div className="w-full h-[896px] flex flex-col pl-10 pr-10 z-10">
