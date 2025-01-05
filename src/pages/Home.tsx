@@ -1,22 +1,22 @@
-import React from 'react';
-import BoxList from '../components/features/Home/BoxList';
+import { FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { HomeTitle } from '../components/Home/HomeTitle';
-import icon1 from '../icons/home/icon1.svg';
-import icon2 from '../icons/home/icon2.svg';
-import plus from '../icons/home/plus.svg';
+import { NavBar } from '../components/common/NavBar';
+import InfoText from '../components/common/InfoText';
+import BoxList from '../components/features/Home/BoxList';
+import { FaBook, FaReceipt, FaGift, FaCameraRetro, FaFileAlt, FaTicketAlt } from 'react-icons/fa';
+
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
     const userName = '커여운한비쿤'; // 유저 닉네임
 
     const storageItems = [
-        { id: 1, title: '책 보관함', count: 16, icon: icon1, path: '/library', countColor: '#A5F59C' },
-        { id: 2, title: '사진 보관함', count: 32, icon: icon2, path: '/home', countColor: '#A06AF9' },
-        { id: 3, title: '손편지 보관함', count: 8, icon: icon2, path: '/home', countColor: '#A06AF9' },
-        { id: 4, title: '티켓 보관함', count: 100, icon: icon2, path: '/home', countColor: '#A06AF9' },
-        { id: 5, title: '그림 보관함', count: 40, icon: icon2, path: '/home', countColor: '#A06AF9' },
-        { id: 6, title: '영수증 보관함', count: 4, icon: icon2, path: '/home', countColor: '#A06AF9' },
+        { id: 1, title: '책', count: 30, icon: <FaBook />, path: '/library', countColor: '#FFDD72' },
+        { id: 2, title: '영수증', count: 30, icon: <FaReceipt />, path: '/home', countColor: '#94F0F0' },
+        { id: 3, title: '굿즈', count: 30, icon: <FaGift />, path: '/home', countColor: '#FBA3FF' },
+        { id: 4, title: '필름 사진', count: 30, icon: <FaCameraRetro />, path: '/home', countColor: '#A5F59C' },
+        { id: 5, title: '서류', count: 30, icon: <FaFileAlt />, path: '/home', countColor: '#FF968E' },
+        { id: 6, title: '티켓', count: 30, icon: <FaTicketAlt />, path: '/home', countColor: '#FFDD72' },
     ];
 
     const handleBoxClick = (path: string) => {
@@ -25,44 +25,37 @@ const Home: React.FC = () => {
 
     return (
         <div className="w-full flex flex-col min-h-screen z-10">
-            <div className="w-full min-h-screen text-white">
-                <HomeTitle userName={userName} />
-                <div className="pl-[39px] pr-[39px]">
-                    <h1 className="text-[40px] font-bold">
-                        <div>안녕하세요,</div>
-                        <p className="text-blue-500" style={{ marginTop: '-10px', display: 'block' }}>커여운한비쿤 <span className="text-white">님!</span></p>
-                    </h1>
-                </div>
+            <NavBar title="커여운한비쿤 님의 보관함" showMenu={true}/>
 
-                {/* <div className="px-6 flex justify-between items-center">
-                    <div
-                        className="bg-blue-500 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
-                        onClick={() => navigate('/profile')}
-                    >
-                        <span className="text-white font-bold">{firstLetter}</span>
+            <div className="w-full flex justify-center">
+
+                <div className="w-[350px] min-h-screen text-white">
+                    <div className="w-full primary-info-text">
+                        <InfoText title="안녕하세요," subtitle={<><span className="info-point-text">{userName}</span> <span
+                            className="primary-info-text">님!</span></>}/>
                     </div>
-                </div> */}
 
-                {/* "+" 버튼 */}
-                <div className="mx-[39px] mt-[41px] mb-[16px] bg-[#262A34] h-[64px] rounded-lg flex justify-center items-center cursor-pointer">
-                    <img
-                        src={plus}
-                        alt="플러스"
-                    />
-                </div>
+                    <div
+                        className="w-full flex justify-center mb-[15px] mt-[30px] h-[67.2px] bg-[#262A34] rounded-[16.5px] items-center">
+                        <FaPlus className="w-4 h-4 text-white"/>
+                    </div>
 
-                {/* 보관함 리스트 */}
-                <div className="mx-[39px] space-y-4">
-                    {storageItems.map((item) => (
-                        <div key={item.id} onClick={() => handleBoxClick(item.path)} style={{ cursor: 'pointer' }}>
-                            <BoxList
-                                title={item.title}
-                                count={item.count}
-                                icon={item.icon}
-                                countColor={item.countColor}
-                            />
-                        </div>
-                    ))}
+                    <div className="space-y-[15px] w-full flex flex-col items-center">
+                        {storageItems.map((item) => (
+                            <div
+                                key={item.id}
+                                onClick={() => handleBoxClick(item.path)}
+                                style={{cursor: 'pointer'}}
+                            >
+                                <BoxList
+                                    title={item.title}
+                                    count={item.count}
+                                    icon={item.icon}
+                                    countColor={item.countColor}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

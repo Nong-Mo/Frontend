@@ -2,12 +2,12 @@ import React from 'react';
 
 interface InfoTextProps {
     title: string;
-    subtitle: string;
+    subtitle: React.ReactNode; // subtitle 타입을 React.ReactNode로 변경
 }
 
 const InfoText: React.FC<InfoTextProps> = ({ title, subtitle }) => {
     return (
-        <div className="mb-[65px] pt-[15px]">
+        <div className="pt-[15px]">
             <h1 className="primary-info-text">{title}</h1>
             <span>{subtitle}</span>
         </div>
