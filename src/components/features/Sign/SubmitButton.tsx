@@ -1,16 +1,19 @@
 import React from 'react';
 
 interface SubmitButtonProps {
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     children: React.ReactNode;
 }
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ children }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({ onClick, children }) => {
     return (
         <button
-            type="submit"
-            className="w-full bg-[#246BFD] text-white py-3 rounded-full text-[16px] font-semibold text-lg hover:bg-blue-600 transition-all mt-0"
+            className="w-[350px] h-[55px] bg-[#246bfd] rounded-[25px] justify-center items-center gap-0.5 inline-flex"
+            onClick={onClick}
         >
-            {children}
+            <div className="big-button-text">
+                {children}
+            </div>
         </button>
     );
 };
