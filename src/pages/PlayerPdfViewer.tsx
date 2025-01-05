@@ -4,7 +4,7 @@ import { NavBar } from '../components/common/NavBar';
 const PlayerPdfViewer: React.FC = () => {
   const [pdfUrl, setPdfUrl] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const createPdfUrl = async () => {
@@ -34,7 +34,7 @@ const PlayerPdfViewer: React.FC = () => {
         URL.revokeObjectURL(pdfUrl);
       }
     };
-  }, []);
+  }, [pdfUrl]);
 
   return (
     <div className="w-full h-[896px] flex flex-col pl-10 pr-10 z-10">
