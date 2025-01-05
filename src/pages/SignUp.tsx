@@ -2,120 +2,146 @@ import React, { useState } from "react";
 import InputField from "../components/features/Sign/InputField";
 import ErrorMessage from "../components/features/Sign/ErrorMessage";
 import SubmitButton from "../components/features/Sign/SubmitButton";
-import PasswordToggleButton from "../components/features/Sign/PasswordToggleButton";
-import { NavBar } from "../components/common/NavBar";
+import InfoText from "../components/features/Sign/InfoText";
 import useAuth from "../hooks/useAuth";
-import { SignUp } from "../types/auth";
+import { NavBar } from "../components/common/NavBar.tsx";
+import type { SignUp } from "../types/auth";
 
-const Signup: React.FC = () => {
+const isValidEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const isValidPassword = (password: string): boolean => {
+  const lengthCheck = password.length >= 8 && password.length <= 20;
+  const spaceCheck = !/\s/.test(password);
+  const types = [
+    /[A-Z]/.test(password),
+    /[a-z]/.test(password),
+    /[0-9]/.test(password),
+    /[!@#$%^&*(),.?":{}|<>]/.test(password),
+  ];
+  const typeCount = types.filter(Boolean).length;
+  return lengthCheck && spaceCheck && typeCount >= 2;
+};
+
+const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState<SignUp>({
     email: "",
-    nickname: "",
     password: "",
-    password_confirmation: "",
+    confirmPassword: "",
+    nickname: ""
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirmation, setShowPasswordConfirmation] =
-    useState(false);
-  const { loading, errors, handleSignUp, clearErrors } = useAuth();
+  const { errors, handleSignUp, setErrors } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    clearErrors();
+
+    // 특정 필드의 에러 초기화
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+
+    // 실시간 유효성 검사
+    if (name === "email" && !isValidEmail(value)) {
+      setErrors((prev) => ({ ...prev, email: "유효한 이메일 형식이 아닙니다." }));
+    } else if (name === "password" && !isValidPassword(value)) {
+      setErrors((prev) => ({ ...prev, password: "비밀번호는 8~20자 사이여야 하며, 공백 없이 두 종류 이상의 문자를 포함해 주세요." }));
+    } else if (name === "confirmPassword" && value !== formData.password) {
+      setErrors((prev) => ({ ...prev, confirmPassword: "비밀번호와 비밀번호 확인이 일치하지 않습니다." }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 폼 유효성 검사
+    if (!formData.email || !isValidEmail(formData.email)) {
+      setErrors((prev) => ({ ...prev, email: "유효한 이메일 형식이 아닙니다." }));
+      return;
+    }
+
+    if (!formData.password || formData.password !== formData.confirmPassword) {
+      setErrors((prev) => ({
+        ...prev,
+        confirmPassword: "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+      }));
+      return;
+    }
+
+    if (!isValidPassword(formData.password)) {
+      setErrors((prev) => ({
+        ...prev,
+        password: "비밀번호는 8~20자 사이여야 하며, 공백 없이 두 종류 이상의 문자를 포함해 주세요."
+      }));
+      return;
+    }
+
     await handleSignUp(formData);
   };
 
   return (
-    <div className="z-10 w-full flex items-start min-h-screen bg-gray-900 text-white flex-col">
-      <div className="w-full z-50">
-        <NavBar title="회원가입" showMenu={false} />
-      </div>
-      <div className="w-full flex justify-center">
-        <div className="w-[400px] p-8 mt-[34px]">
-          {/* Header */}
-          <div className="mb-[20px] text-left">
-            <h1 className="text-4xl font-extrabold text-white leading-tight">
-              환영합니다!
-            </h1>
-            <p className="text-4xl font-extrabold text-white leading-tight">
-              <span className="text-[#246BFD]">회원가입</span>을 해주세요.
-            </p>
+      <div className="flex flex-col items-center px-[32px] z-10">
+
+        {/* NavBar 영역 */}
+        <NavBar title="회원가입" />
+
+        {/* Contents 영역 */}
+        <div className="w-[350px] h-[729px] flex flex-col items-center">
+          {/* InfoText 영역 */}
+          <div className="w-full primary-info-text">
+            <InfoText title="환영합니다!" subtitle={<><span className="info-point-text">회원가입</span> 해주세요.</>}/>
           </div>
 
-          {/* Form */}
-          <form
-            className="w-full h-[512px] flex justify-between flex-col space-y-3"
-            onSubmit={handleSubmit}
-          >
-            <div className="relative">
+          {/* Form 영역 */}
+          <div className="w-full flex flex-col gap-2 ">
+            <form className="w-full flex flex-col gap-2 mb-[65px]" onSubmit={handleSubmit}>
               <InputField
-                label="닉네임"
-                type="text"
-                name="nickname"
-                autoComplete="off"
-                value={formData.nickname}
-                onChange={handleChange}
-                placeholder="닉네임을 입력하세요."
-                validationError={errors.nickname}
+                  label="닉네임"
+                  type="text"
+                  name="nickname"
+                  value={formData.nickname}
+                  onChange={handleChange}
+                  placeholder="닉네임을 입력해 주세요."
               />
-            </div>
-            <div className="relative">
               <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                autoComplete="off"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="이메일을 입력하세요."
-                validationError={errors.email}
+                  label="이메일"
+                  type="email"
+                  name="email"
+                  autoComplete="off"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="이메일을 입력해 주세요."
+                  validationError={errors.email}
               />
-            </div>
-            <div className="relative">
               <InputField
-                label="비밀번호"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="비밀번호를 입력하세요."
-                validationError={errors.password}
+                  label="비밀번호"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="비밀번호를 입력해 주세요."
+                  validationError={errors.password}
+                  showPasswordToggle={true}
               />
-              <PasswordToggleButton
-                showPassword={showPassword}
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            </div>
-            <div className="relative">
               <InputField
-                label="비밀번호 확인"
-                type={showPasswordConfirmation ? "text" : "password"}
-                name="password_confirmation"
-                value={formData.password_confirmation}
-                onChange={handleChange}
-                placeholder="비밀번호를 한 번 더 입력하세요."
-                validationError={errors.password_confirmation}
+                  label="비밀번호 확인"
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="비밀번호를 한 번 더 입력해 주세요."
+                  validationError={errors.confirmPassword}
+                  showPasswordToggle={true}
               />
-              <PasswordToggleButton
-                showPassword={showPasswordConfirmation}
-                onClick={() =>
-                  setShowPasswordConfirmation(!showPasswordConfirmation)
-                }
-              />
+            </form>
+            {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+            <div>
+              <SubmitButton onClick={handleSubmit}>회원가입</SubmitButton>
             </div>
-            <ErrorMessage message={errors.apiError as string || "" } isApiError={true} />{" "}
-            {/* API 오류 메시지 */}
-            <SubmitButton>회원가입</SubmitButton>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
-export default Signup;
+export default SignUpPage;
