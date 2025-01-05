@@ -32,7 +32,7 @@ const App = () => {
               <Route path={ROUTES.SCAN.path} element={<Scan />} />
               <Route path={ROUTES.PLAYER.path} element={<Player />} />
               <Route path={ROUTES.PLAYERPDF.path} element={<PlayerPdfViewer />} />
-              <Route path={ROUTES.LIBRARY.path} element={<LibraryViewer />} />
+              <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer />} />
             </Route>
 
             {/* Redirect */}
