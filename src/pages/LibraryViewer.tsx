@@ -4,6 +4,7 @@ import CollectionGrid from "../components/viewer/CollectionGrid";
 import { FaPlus } from "react-icons/fa";
 
 const LibraryViewer = () => {
+    const [viewerTitle, setViewerTitle] = useState('책 보관함');
     const [collectionItems, setCollectionItems] = useState([]);
     const [collectionItemType, setCollectionItemType] = useState('BOOK');
 
@@ -26,11 +27,13 @@ const LibraryViewer = () => {
         setCollectionItems(prevItems => [...prevItems, newItem]);
     }
 
+    // 추후 UseEffect를 통해서 호출받은 API에 따라서 값을 변경해주어야 한다.
+    
     return (
         <div className="w-full z-10">
             <div className="content-wrapper ml-[32px] mr-[32px] mt-[15px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
                 <div className="w-full">
-                    <NavBar title="책 보관함"
+                    <NavBar title={viewerTitle}
                             rightIcon="search"/>
                 </div>
                 <h1 className="mt-[15px] primary-info-text leading-50">
