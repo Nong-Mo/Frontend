@@ -80,10 +80,10 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-      <div className="flex flex-col items-center px-[32px] z-10">
+      <div className="w-full h-[896px] flex flex-col px-[32px] z-10">
 
         {/* NavBar 영역 */}
-        <NavBar title="회원가입" />
+        <NavBar title="회원가입" showMenu={false} />
 
         {/* Contents 영역 */}
         <div className="w-[350px] h-[729px] flex flex-col items-center">
