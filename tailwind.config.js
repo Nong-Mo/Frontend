@@ -10,8 +10,12 @@ module.exports = {
       },
       height: {
         956: "956px",
+      },
+      lineHeight: {
+        '50': '50px',
       }
     },
   },
-  plugins: [],
+  plugins: [
+  ],
 };

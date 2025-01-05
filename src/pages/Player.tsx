@@ -7,7 +7,6 @@ import { AudioControls } from '../components/player/AudioControls';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { audioService } from '../services/audioService';
 import { AudioData } from '../types/audio';
-import imageCover from '../icons/player/ImageCover.png';
 
 const Player: React.FC = () => {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ const Player: React.FC = () => {
         const data = await audioService.fetchAudioData('1');
         setAudioData(data);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
       }
     };
 
