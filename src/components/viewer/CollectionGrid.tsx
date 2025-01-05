@@ -46,7 +46,7 @@ const CollectionGrid = () => {
     ];
 
     return (
-        <div className="w-full mt-[30px]"> {/* flex-1 추가 */}
+        <div className="w-full"> {/* flex-1 추가 */}
             <div className="h-full">
                 <div className="grid grid-cols-2 gap-[15px] pb-[30px]">
                     {items.map(item => (
