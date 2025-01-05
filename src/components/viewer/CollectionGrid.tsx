@@ -54,6 +54,7 @@ const CollectionGrid = () => {
                             key={item.id}
                             title={item.title}
                             date={item.date}
+                            itemType="BOOK"
                         />
                     ))}
                 </div>
