@@ -166,11 +166,11 @@ const handleCameraError = (error: Error) => {
   }
 
   return (
-    <div className="w-full flex justify-between flex-col z-10">
+    <div className="w-full h-[896px] flex justify-between flex-col z-10">
       <NavBar title="스캔하기" />
 
       {/* Camera View */}
-      <div className="w-full flex-1 flex items-center justify-center relative">
+      <div className="w-full h-[615px] flex-1 flex items-center justify-center relative">
         <div
           className="bg-black"
           style={{
@@ -236,7 +236,7 @@ const handleCameraError = (error: Error) => {
       </div>
 
       {/* Controls */}
-      <div className="relative w-full h-[199px] flex items-center justify-center bg-[#181A20]">
+      <div className="relative w-full h-[187.5px] flex items-center justify-center bg-[#181A20]">
         {/* 촬영 버튼 */}
         <div className="absolute take-button z-10">
           <button
