@@ -27,11 +27,11 @@ export const NavBar: React.FC<NavigationProps> = ({
   };
 
   return (
-    <div className="pt-[44px] flex justify-center">
-      <div className="flex items-center w-full max-w-[350px] h-[50px] relative px-[32px]">
+    <div className="flex justify-center">
+      <div className="flex items-center justify-between w-full max-w-[350px] h-[50px] relative">
         <img
           src={leftIcon}
-          className="w-7 h-7 cursor-pointer absolute left-4"
+          className="w-7 h-7 cursor-pointer absolute"
           alt="back"
           onClick={() => navigate(-1)}
         />
