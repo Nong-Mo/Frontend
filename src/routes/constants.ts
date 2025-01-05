@@ -25,9 +25,16 @@ export const ROUTES = {
         ko: '스캔'
     },
     LIBRARY: {
-        path: '/library',
-        title: 'My Library',
-        ko: '내 서재'
+        BOOK: {
+            path: '/library/book',
+            title: 'Book Library',
+            ko: '내 서재'
+        },
+        RECEIPT: {
+            path: '/library/receipt',
+            title: 'Receipt Archive',
+            ko: '영수증 보관함'
+        }
     },
     PLAYER: {
         path: '/player',
@@ -40,4 +47,3 @@ export const ROUTES = {
         ko: 'PDF 뷰'
     }
 } as const;
-
