@@ -33,6 +33,11 @@ export const ROUTES = {
         path: '/player',
         title: 'Player',
         ko: '플레이어'
+    },
+    PLAYERPDF: {
+        path: '/playerpdf',
+        title: 'Pdf',
+        ko: 'PDF 뷰'
     }
 } as const;
 
