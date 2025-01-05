@@ -4,14 +4,26 @@ import CollectionGrid from "../components/viewer/CollectionGrid";
 import { FaPlus } from "react-icons/fa";
 
 const LibraryViewer = () => {
+    const [collectionItems, setCollectionItems] = useState([]);
+    const [collectionItemType, setCollectionItemType] = useState('BOOK');
+
     const [filterButton, setFilterButton] = useState(0);
 
     const onClickAllButton = () => {
         setFilterButton(0);
     }
-
     const onClickRecentButton = () => {
         setFilterButton(1);
+    }
+    const onClickAddButton = () => {
+        const newItem = {
+            id: collectionItems.length + 1,
+            title: `제목 ${collectionItems.length + 1}`,
+            date: new Date().toLocaleString(),
+            itemType: collectionItemType
+        };
+
+        setCollectionItems(prevItems => [...prevItems, newItem]);
     }
 
     return (
@@ -21,11 +33,15 @@ const LibraryViewer = () => {
                     <NavBar title="책 보관함"
                             rightIcon="search"/>
                 </div>
-                <h1 className="primary-info-text leading-50">
-                    감상하고 싶은<br/>책을 선택해 주세요.
+                <h1 className="mt-[15px] primary-info-text leading-50">
+                    {collectionItems.length === 0
+                        ? <>보관함이 비었어요!<br />책을 추가해 주세요.</>
+                        : <>감상하고 싶은<br/>책을 선택해 주세요.</>
+                    }
                 </h1>
                 <div className="w-full h-[67.2px] mt-[30px]">
-                    <button className="w-full h-full flex items-center justify-center rounded-[16.5px] bg-[#262A34]">
+                    <button className="w-full h-full flex items-center justify-center rounded-[16.5px] bg-[#262A34]"
+                            onClick={onClickAddButton}>
                         <FaPlus className="w-[15.14px] h-[16.8px] text-white"/>
                     </button>
                 </div>
@@ -48,7 +64,7 @@ const LibraryViewer = () => {
                     </button>
                 </div>
                 <div className="h-[550px] overflow-y-auto w-full mt-[30px] [&::-webkit-scrollbar]:hidden">
-                    <CollectionGrid/>
+                    <CollectionGrid items={collectionItems}/>
                 </div>
             </div>
         </div>
