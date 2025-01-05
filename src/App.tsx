@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp";
 import Scan from "./pages/Scan";
 import LibraryViewer from "./pages/LibraryViewer";
 import Player from "./pages/Player";
+import PlayerPdfViewer from "./pages/PlayerPdfViewer";
 import Home from "./pages/Home";
 import Intro from "./pages/Intro";
 import PrivateRoute from "./components/common/PrivateRoute";
@@ -29,8 +30,9 @@ const App = () => {
             <Route element={<PrivateRoute />}>
               <Route path={ROUTES.HOME.path} element={<Home />} />
               <Route path={ROUTES.SCAN.path} element={<Scan />} />
-              <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer />} />
               <Route path={ROUTES.PLAYER.path} element={<Player />} />
+              <Route path={ROUTES.PLAYERPDF.path} element={<PlayerPdfViewer />} />
+              <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer />} />
             </Route>
 
             {/* Redirect */}
