@@ -1,19 +1,20 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import InputField from "../components/features/Sign/InputField";
 import ErrorMessage from "../components/features/Sign/ErrorMessage";
 import SubmitButton from "../components/features/Sign/SubmitButton";
 import InfoText from "../components/features/Sign/InfoText";
 import useAuth from "../hooks/useAuth";
-import { SignUp } from "../types/auth";
+import { SignIn } from "../types/auth";
+import { NavBar } from "../components/common/NavBar.tsx";
 
-const SignUpPage: React.FC = () => {
-  const [formData, setFormData] = useState<SignUp>({
+const SignInPage: React.FC = () => {
+  const [formData, setFormData] = useState<SignIn>({
     email: "",
-    password: "",
-    confirmPassword: ""
+    password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { errors, handleSignUp, clearErrors } = useAuth();
+  const { errors, handleSignIn, clearErrors } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,53 +24,59 @@ const SignUpPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handleSignUp(formData);
+    await handleSignIn(formData);
   };
 
   return (
-      <div className="page-container flex flex-col items-center h-[956px] pl-10 pr-10 z-10">
-        <div className="w-full z-50">
-          <InfoText title="환영합니다!" subtitle="회원가입을 해주세요." />
-        </div>
-        <div className="w-[400px] p-8">
-          <form className="w-full flex flex-col gap-2" onSubmit={handleSubmit}>
-            <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                autoComplete="off"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="이메일을 입력하세요."
-                validationError={errors.email}
-            />
-            <InputField
-                label="비밀번호"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="비밀번호를 입력하세요."
-                validationError={errors.password}
-                showPasswordToggle={true}
-                showPassword={showPassword}
-                onTogglePassword={() => setShowPassword(!showPassword)}
-            />
-            <InputField
-                label="비밀번호 확인"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="비밀번호를 다시 입력하세요."
-                validationError={errors.confirmPassword}
-            />
-            {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true} />}
-            <SubmitButton onClick={handleSubmit}>회원가입</SubmitButton>
-          </form>
+      <div className="flex flex-col items-center px-[32px] z-10">
+
+        {/* NavBar 영역 */}
+        <NavBar title="로그인" />
+
+        {/* Contents 영역 */}
+        <div className="w-[350px] h-[545px] flex flex-col items-center">
+          {/* InfoText 영역 */}
+          <div className="w-full primary-info-text">
+            <InfoText title="환영합니다!" subtitle={<><span className="info-point-text">로그인</span> 해주세요.</>}/>
+          </div>
+
+          {/* Form 영역 */}
+          <div className="w-full flex flex-col gap-2 ">
+            <form className="w-full flex flex-col gap-2 mb-[65px]" onSubmit={handleSubmit}>
+              <InputField
+                  label="이메일"
+                  type="email"
+                  name="email"
+                  autoComplete="off"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="이메일을 입력해 주세요."
+                  validationError={errors.email}
+              />
+              <InputField
+                  label="비밀번호"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="비밀번호를 입력해 주세요."
+                  validationError={errors.password}
+                  showPasswordToggle={true}
+                  showPassword={showPassword}
+                  onTogglePassword={() => setShowPassword(!showPassword)}
+              />
+            </form>
+            {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+            <div>
+              <SubmitButton onClick={handleSubmit}>로그인</SubmitButton>
+            </div>
+            <div className="w-[350px] text-[12px] text-center font-regular text-[#ffffff] font-['Pretendard']">
+              계정이 없으신가요? <Link to="/signup" className="font-semibold">회원가입</Link>
+            </div>
+          </div>
         </div>
       </div>
   );
 };
 
-export default SignUpPage;
+export default SignInPage;
