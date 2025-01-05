@@ -24,7 +24,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   };
 
   return (
-    <div className="w-full"> {/* mb-4 제거 */}
+    <div className="w-full">
       <div
         className="relative w-full h-2 bg-white rounded-full cursor-pointer"
         onClick={handleClick}
