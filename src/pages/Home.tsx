@@ -1,9 +1,10 @@
 import { FaPlus } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { NavBar } from '../components/common/NavBar';
 import InfoText from '../components/common/InfoText';
 import BoxList from '../components/features/Home/BoxList';
 import { FaBook, FaReceipt, FaGift, FaCameraRetro, FaFileAlt, FaTicketAlt } from 'react-icons/fa';
+import React from "react";
 
 
 const Home: React.FC = () => {
@@ -56,6 +57,11 @@ const Home: React.FC = () => {
                             </div>
                         ))}
                     </div>
+
+                    <div className="w-[350px] text-[12px] mt-[30px] mb-[15px] text-center font-semibold text-[#ffffff]">
+                        로그아웃
+                    </div>
+
                 </div>
             </div>
         </div>
