@@ -96,31 +96,31 @@ const useAuth = () => {
     if (!validateForm(loginData)) return;
 
     try {
-      setLoading(true);
-      const response = await signIn(loginData);
+        setLoading(true);
+        const response = await signIn(loginData);
+        
+        localStorage.setItem('token', response.data.access_token);
+        setIsAuthenticated(true);
 
-      localStorage.setItem('token', response.token.access_token);
-      setIsAuthenticated(true);
-
-      const returnPath = (location.state as any)?.from || '/home';
-      navigate(returnPath);
+        const returnPath = (location.state as any)?.from || '/home';
+        navigate(returnPath);
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        setErrors({
-          apiError: '이메일 또는 비밀번호가 일치하지 않습니다.'
-        });
-      } else if (error.response?.data?.detail) {
-        const errorDetail = error.response.data.detail[0];
-        setErrors({
-          apiError: errorDetail.msg || '로그인에 실패했습니다.'
-        });
-      } else {
-        setErrors({ apiError: '로그인에 실패했습니다.' });
-      }
+        if (error.response?.status === 401) {
+            setErrors({
+                apiError: '이메일 또는 비밀번호가 일치하지 않습니다.'
+            });
+        } else if (error.response?.data?.detail) {
+            const errorDetail = error.response.data.detail[0];
+            setErrors({
+                apiError: errorDetail.msg || '로그인에 실패했습니다.'
+            });
+        } else {
+            setErrors({ apiError: '로그인에 실패했습니다.' });
+        }
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   const logout = () => {
     localStorage.removeItem('token');
