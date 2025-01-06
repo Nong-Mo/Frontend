@@ -33,6 +33,7 @@ const App = () => {
               <Route path={ROUTES.PLAYER.path} element={<Player />} />
               <Route path={ROUTES.PLAYERPDF.path} element={<PlayerPdfViewer />} />
               <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer collectionType={API_TYPE.BOOK} />} />
+              <Route path={ROUTES.LIBRARY.RECEIPT.path} element={<LibraryViewer collectionType={API_TYPE.RECEIPT} />} />
             </Route>
 
             {/* Redirect */}
