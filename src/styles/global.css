@@ -67,6 +67,8 @@ body {
     font-size : 42.5px;
     font-weight : bold;
     color : #fff;
+    line-height: 50px; /* 줄 간격 설정 */
+
 }
 
 .info-point-text {
@@ -74,6 +76,8 @@ body {
     font-size : 42.5px;
     font-weight: bold;
     color : var(--primary-color);
+    line-height: 50px; /* 줄 간격 설정 */
+
 }
 
 .big-button-text {
