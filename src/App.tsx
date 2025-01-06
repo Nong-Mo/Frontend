@@ -14,7 +14,7 @@ import Home from "./pages/Home";
 import Intro from "./pages/Intro";
 import PrivateRoute from "./components/common/PrivateRoute";
 import MainLayout from "./components/common/MainLayout";
-import { ROUTES } from "./routes/constants";
+import {API_TYPE, ROUTES} from "./routes/constants";
 
 const App = () => {
   return (

@@ -55,5 +55,9 @@ export const ROUTES = {
             ko: '굿즈 보관함'
         },
     }
-    
+} as const;
+
+export const API_TYPE = {
+    BOOK: 'book',
+    RECEIPT: 'receipt'
 } as const;
