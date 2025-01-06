@@ -47,3 +47,8 @@ export const ROUTES = {
         ko: 'PDF 뷰'
     }
 } as const;
+
+export const API_TYPE = {
+    BOOK: 'book',
+    RECEIPT: 'receipt'
+} as const;
