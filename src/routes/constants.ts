@@ -37,13 +37,27 @@ export const ROUTES = {
         }
     },
     PLAYER: {
-        path: '/player',
-        title: 'Player',
-        ko: '플레이어'
+        AUDIO: {
+            path: '/player/audio',
+            title: 'Audio Player',
+            ko: '플레이어'
+        },
+        PDF: {
+            path: '/player/pdf',
+            title: 'PDF Player',
+            ko: 'PDF 뷰'
+        }
     },
-    PLAYERPDF: {
-        path: '/playerpdf',
-        title: 'Pdf',
-        ko: 'PDF 뷰'
+    GOODS: {
+        STORAGE: {
+            path: '/goods/storage',
+            title: 'Goods Storage',
+            ko: '굿즈 보관함'
+        },
     }
+} as const;
+
+export const API_TYPE = {
+    BOOK: 'book',
+    RECEIPT: 'receipt'
 } as const;
