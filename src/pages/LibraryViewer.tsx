@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import {NavBar} from "../components/common/NavBar.tsx";
 import CollectionGrid from "../components/viewer/CollectionGrid";
 import {FaPlus} from "react-icons/fa";
@@ -13,10 +13,10 @@ interface LibraryViewerProps {
 }
 
 const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
+    collectionType = API_TYPE.BOOK;
 
-    useEffect(() => {
-        collectionType = API_TYPE.RECEIPT;
-        
+    // 초기 화면이 렌더링 되기 전에 API를 호출 후 처리.
+    useLayoutEffect(() => {
         if (collectionType === API_TYPE.BOOK) {
             setViewerTitle('책 보관함');
             setViewerEmptyText('보관함이 비었어요!\n책을 추가해 주세요.');
@@ -24,17 +24,20 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
         } else if (collectionType === API_TYPE.RECEIPT) {
             setViewerTitle('영수증 보관함');
             setViewerEmptyText('영수증이 비었어요!\n추가해 주세요.');
-            setViewerText('감상하고 싶은\n수증을 선택해 주세요.');
+            setViewerText('감상하고 싶은\n영수증을 선택해 주세요.');
         }
         else {
             setViewerTitle('테스트');
-            setViewerEmptyText('빈 테스트\n테스트');
+            setViewerEmptyText('Empty 테스트\n테스트');
             setViewerText('테스트\n테스트');
         }
     }, []);
 
+    useEffect(() => {
+    }, []);
+
     // 라이브러리 타이틀
-    const [viewerTitle, setViewerTitle] = useState('책 보관함');
+    const [viewerTitle, setViewerTitle] = useState('');
     // 라이브러리 설명 텍스트 - Empty and Non-Empty
     const [viewerEmptyText, setViewerEmptyText] = useState('');
     const [viewerText, setViewerText] = useState('');
