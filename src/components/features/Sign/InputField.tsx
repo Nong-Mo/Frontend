@@ -47,12 +47,12 @@ const InputField: React.FC<InputFieldProps> = ({
                 />
                 {showPasswordToggle && (
                     <button type="button" onClick={() => setShowPassword(!showPassword)} className="w-6 h-6 relative text-[#252934]">
-                        {showPassword ? <FaEyeSlash className="text-[#252934]" /> : <FaEye className="text-[#252934]" />}
+                        {showPassword ? <FaEyeSlash className="text-[#5E6272]" /> : <FaEye className="text-[#5E6272]" />}
                     </button>
                 )}
             </div>
             <div className="w-[350px] h-px left-0 top-[69px] absolute bg-[#5e6272]"></div>
-            {validationError && (
+            {validationError && value && (
                 <div className="w-[350px] left-0 top-[74.50px] absolute text-[#246bfd] text-[10px] font-normal font-['Pretendard']">
                     {validationError}
                 </div>

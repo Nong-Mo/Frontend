@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import InputField from "../components/features/Sign/InputField";
 import ErrorMessage from "../components/features/Sign/ErrorMessage";
 import SubmitButton from "../components/features/Sign/SubmitButton";
-import InfoText from "../components/features/Sign/InfoText";
+import InfoText from "../components/common/InfoText.tsx";
 import useAuth from "../hooks/useAuth";
 import { NavBar } from "../components/common/NavBar.tsx";
 import type { SignUp } from "../types/auth";
