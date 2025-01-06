@@ -13,16 +13,18 @@ const Home: React.FC = () => {
     const userName = '커여운한비쿤'; // 유저 닉네임
 
     const storageItems = [
-        { id: 1, title: '책', count: 30, icon: <FaBook />, path: '/library', countColor: '#FFDD72' },
-        { id: 2, title: '영수증', count: 30, icon: <FaReceipt />, path: '/home', countColor: '#94F0F0' },
-        { id: 3, title: '굿즈', count: 30, icon: <FaGift />, path: '/home', countColor: '#FBA3FF' },
-        { id: 4, title: '필름 사진', count: 30, icon: <FaCameraRetro />, path: '/home', countColor: '#A5F59C' },
-        { id: 5, title: '서류', count: 30, icon: <FaFileAlt />, path: '/home', countColor: '#FF968E' },
-        { id: 6, title: '티켓', count: 30, icon: <FaTicketAlt />, path: '/home', countColor: '#FFDD72' },
+        { id: 1, title: '책', count: 30, icon: <FaBook />, path: '/library/book', countColor: '#FFDD72' },
+        { id: 2, title: '영수증', count: 30, icon: <FaReceipt />, path: '', countColor: '#94F0F0' },
+        { id: 3, title: '굿즈', count: 30, icon: <FaGift />, path: '', countColor: '#FBA3FF' },
+        { id: 4, title: '필름 사진', count: 30, icon: <FaCameraRetro />, path: '', countColor: '#A5F59C' },
+        { id: 5, title: '서류', count: 30, icon: <FaFileAlt />, path: '', countColor: '#FF968E' },
+        { id: 6, title: '티켓', count: 30, icon: <FaTicketAlt />, path: '', countColor: '#FFDD72' },
     ];
 
     const handleBoxClick = (path: string) => {
-        navigate(path);
+        if (path) {
+            navigate(path);
+        }
     };
 
     const handleLogout = () => {
@@ -48,7 +50,7 @@ const Home: React.FC = () => {
                             <div
                                 key={item.id}
                                 onClick={() => handleBoxClick(item.path)}
-                                style={{ cursor: 'pointer' }}
+                                style={{ cursor: item.path ? 'pointer' : 'default' }}
                             >
                                 <BoxList
                                     title={item.title}
