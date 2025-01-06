@@ -29,7 +29,7 @@ const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState<SignUp>({
     email: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",
     nickname: ""
   });
   const { errors, handleSignUp, setErrors } = useAuth();
@@ -46,8 +46,8 @@ const SignUpPage: React.FC = () => {
       setErrors((prev) => ({ ...prev, email: "유효한 이메일 형식이 아닙니다." }));
     } else if (name === "password" && !isValidPassword(value)) {
       setErrors((prev) => ({ ...prev, password: "비밀번호는 8~20자 사이여야 하며, 공백 없이 두 종류 이상의 문자를 포함해 주세요." }));
-    } else if (name === "confirmPassword" && value !== formData.password) {
-      setErrors((prev) => ({ ...prev, confirmPassword: "비밀번호와 비밀번호 확인이 일치하지 않습니다." }));
+    } else if (name === "password_confirmation" && value !== formData.password) {
+      setErrors((prev) => ({ ...prev, password_confirmation: "비밀번호와 비밀번호 확인이 일치하지 않습니다." }));
     }
   };
 
@@ -60,10 +60,10 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
-    if (!formData.password || formData.password !== formData.confirmPassword) {
+    if (!formData.password || formData.password !== formData.password_confirmation) {
       setErrors((prev) => ({
         ...prev,
-        confirmPassword: "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+        password_confirmation: "비밀번호와 비밀번호 확인이 일치하지 않습니다."
       }));
       return;
     }
@@ -93,8 +93,8 @@ const SignUpPage: React.FC = () => {
           </div>
 
           {/* Form 영역 */}
-          <div className="w-full flex flex-col gap-2 ">
-            <form className="w-full flex flex-col gap-2 mb-[65px]" onSubmit={handleSubmit}>
+          <div className=" w-full flex flex-col">
+            <form className="mt-[65px] w-full h-[405px] justify-between flex flex-col mb-[65px]" onSubmit={handleSubmit}>
               <InputField
                   label="닉네임"
                   type="text"
@@ -126,15 +126,19 @@ const SignUpPage: React.FC = () => {
               <InputField
                   label="비밀번호 확인"
                   type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
+                  name="password_confirmation"
+                  value={formData.password_confirmation}
                   onChange={handleChange}
                   placeholder="비밀번호를 한 번 더 입력해 주세요."
-                  validationError={errors.confirmPassword}
+                  validationError={errors.password_confirmation}
                   showPasswordToggle={true}
               />
             </form>
-            {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+
+            <div className="h-[14px] mb-[10px]">
+              {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+            </div>
+
             <div>
               <SubmitButton onClick={handleSubmit}>회원가입</SubmitButton>
             </div>

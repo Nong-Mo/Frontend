@@ -8,7 +8,7 @@ interface SubmitButtonProps {
 const SubmitButton: React.FC<SubmitButtonProps> = ({ onClick, children }) => {
     return (
         <button
-            className="w-[350px] h-[55px] bg-[#246bfd] rounded-[25px] justify-center items-center gap-0.5 inline-flex my-[10px]"
+            className="w-[350px] h-[55px] bg-[#246bfd] rounded-[25px] justify-center items-center gap-0.5 inline-flex"
             onClick={onClick}
         >
             <div className="big-button-text">
