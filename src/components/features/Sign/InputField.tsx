@@ -24,7 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({
                                                    placeholder,
                                                    validationError,
                                                    apiError,
-                                                   autoComplete = 'on',
+                                                   autoComplete = 'off',
                                                    showPasswordToggle = false
                                                }) => {
     const [showPassword, setShowPassword] = useState(false);
