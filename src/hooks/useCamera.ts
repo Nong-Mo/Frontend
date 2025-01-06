@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Camera } from 'react-camera-pro';
 
 interface CapturedPhoto {
@@ -6,7 +6,7 @@ interface CapturedPhoto {
   data: string;
 }
 
-export const useCamera = (cameraRef: React.RefObject<Camera>) => {
+export function useCamera(cameraRef: React.RefObject<Camera | null>) { 
   const [capturedPhotos, setCapturedPhotos] = useState<CapturedPhoto[]>([]);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean>(false);
   const [showPermissionRequest, setShowPermissionRequest] = useState(false);
@@ -66,4 +66,4 @@ export const useCamera = (cameraRef: React.RefObject<Camera>) => {
     clearPhotos,
     removePhoto
   };
-};
+}

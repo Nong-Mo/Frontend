@@ -2,35 +2,36 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import leftIcon from "../../icons/common/leftIcon.svg";
 import menu from "../../icons/common/menu.svg";
-import search from "../../icons/common/search.svg";  // search 아이콘 import
+import search from "../../icons/common/search.svg";
+import convert from "../../icons/common/convert.svg";
 
 interface NavigationProps {
   onMenuClick?: () => void;
   title?: string;
   showMenu?: boolean;
-  rightIcon?: 'menu' | 'search';  // 오른쪽 아이콘 타입 지정
+  rightIcon?: 'convert' | 'search';  // 오른쪽 아이콘 타입 지정
 }
 
 export const NavBar: React.FC<NavigationProps> = ({ 
   onMenuClick, 
   title, 
   showMenu = true,
-  rightIcon = 'menu'  // 기본값은 menu
+  rightIcon = 'convert'  // 기본값은 menu
 }) => {
   const navigate = useNavigate();
 
   // 아이콘 매핑
   const icons = {
-    menu: menu,
+    convert: convert,
     search: search
   };
 
   return (
-    <div className="pt-[48px] flex justify-center">
-      <div className="flex items-center w-full max-w-[400px] h-[56px] relative px-4">
+    <div className="flex justify-center">
+      <div className="flex items-center justify-between w-full max-w-[350px] h-[50px] relative">
         <img
           src={leftIcon}
-          className="w-7 h-7 cursor-pointer absolute left-4"
+          className="w-7 h-7 cursor-pointer absolute"
           alt="back"
           onClick={() => navigate(-1)}
         />

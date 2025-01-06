@@ -4,15 +4,16 @@ import { NavBar } from '../components/common/NavBar';
 import { BookInfo } from '../components/player/BookInfo';
 import { ProgressBar } from '../components/player/ProgressBar';
 import { AudioControls } from '../components/player/AudioControls';
+import ConvertModal from '../components/player/ConvertModal';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { audioService } from '../services/audioService';
 import { AudioData } from '../types/audio';
-import imageCover from '../icons/player/ImageCover.png';
 
 const Player: React.FC = () => {
   const navigate = useNavigate();
   const [audioData, setAudioData] = useState<AudioData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     isPlaying,
@@ -31,12 +32,20 @@ const Player: React.FC = () => {
         const data = await audioService.fetchAudioData('1');
         setAudioData(data);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
       }
     };
 
     fetchData();
   }, []);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
 
   /* Player 페이지를 벗어나면 노래를 중지 */
   useEffect(() => {
@@ -51,48 +60,54 @@ const Player: React.FC = () => {
   if (!audioData) return <div>Loading...</div>;
 
   return (
-    <div className="page-container flex flex-col h-[956px] pl-10 pr-10 z-10">
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <NavBar onMenuClick={() => navigate('/login')} />
-      </div>
-      <div className="relative z-10 flex flex-col h-[956px] mt-[140px]">
-        {/* 이미지 섹션 */}
-        <div className="h-[350px] flex items-center justify-center">
-          <img
-            src={audioData.bookCover}
-            alt="book cover"
-            className="w-[300px] h-[300px] object-cover rounded-lg"
-          />
-        </div>
-
-        {/* 컨트롤 섹션 */}
-        <div className="mt-8 style={{width: '100%'}}"> {/* mt-8 또는 다른 마진 값으로 간격 조절 */}
-          {/* 책 정보 */}
-          <div className="flex flex-col items-center mb-8 mt-4">
-            <BookInfo
-              bookName={audioData.bookName}
-              createdAt={audioData.createdAt}
-            />
-            <ProgressBar
-              currentTime={currentTime}
-              duration={duration}
-              onSeek={seek}
+    <div className="w-full flex flex-col pl-10 pr-10 z-10">
+      <NavBar 
+        onMenuClick={handleModalOpen} 
+        title='플레이어'
+        rightIcon="convert"
+      />
+      { /* 콘텐츠 area 설정 */ }
+      <div className="w-full pt-[50px] flex flex-col pr-5 pl-5">
+        <div className="flex flex-col">
+          {/* 이미지 섹션 */}
+          <div className="flex items-center justify-center">
+            <img
+              src={audioData.bookCover}
+              alt="book cover"
+              className="w-[319px] h-[319px] object-cover rounded-lg"
             />
           </div>
 
-          <div className="flex justify-center items-center">
-            <AudioControls
-              isPlaying={isPlaying}
-              onPlayPause={togglePlay}
-              onForward={() => seek(currentTime + 10)}
-              onRewind={() => seek(currentTime - 10)}
-              onVolumeChange={setAudioVolume}
-              isMuted={isMuted}
-              toggleMute={toggleMute}
-            />
+          <div className="mt-[50px]">
+            {/* 책 정보 */}
+            <div className="flex flex-col items-center">
+              <BookInfo
+                bookName={audioData.bookName}
+              />
+              <ProgressBar
+                currentTime={currentTime}
+                duration={duration}
+                onSeek={seek}
+              />
+            </div>
+
+            <div className="flex flex-col items-center mt-14">
+              <AudioControls
+                isPlaying={isPlaying}
+                onPlayPause={togglePlay}
+                onForward={() => seek(currentTime + 10)}
+                onRewind={() => seek(currentTime - 10)}
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Convert Modal */}
+      <ConvertModal 
+        isOpen={isModalOpen}
+        onClose={handleModalClose}
+      />
     </div>
   );
 };

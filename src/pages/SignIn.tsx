@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import InputField from '../components/features/Sign/InputField';
-import ErrorMessage from '../components/features/Sign/ErrorMessage';
-import SubmitButton from '../components/features/Sign/SubmitButton';
-import PasswordToggleButton from '../components/features/Sign/PasswordToggleButton';
-import { NavBar } from '../components/common/NavBar';
-import useAuth from '../hooks/useAuth';
-import { SignIn } from '../types/auth';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import InputField from "../components/features/Sign/InputField";
+import ErrorMessage from "../components/features/Sign/ErrorMessage";
+import SubmitButton from "../components/features/Sign/SubmitButton";
+import InfoText from "../components/common/InfoText.tsx";
+import useAuth from "../hooks/useAuth";
+import { SignIn } from "../types/auth";
+import { NavBar } from "../components/common/NavBar.tsx";
 
-const Signin: React.FC = () => {
+const SignInPage: React.FC = () => {
   const [formData, setFormData] = useState<SignIn>({
-    email: '',
-    password: '',
+    email: "",
+    password: ""
   });
   const [showPassword, setShowPassword] = useState(false);
-  const { loading, errors, handleSignIn, clearErrors } = useAuth();
+  const { errors, handleSignIn, clearErrors } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     clearErrors();
   };
 
@@ -25,73 +26,59 @@ const Signin: React.FC = () => {
     e.preventDefault();
     await handleSignIn(formData);
   };
-  
+
   return (
-      <div className="page-container flex flex-col items-center justify-center h-[956px] pl-10 pr-10 z-10">
-        <div className="fixed top-0 left-0 right-0 z-50">
-          <NavBar title="로그인" showMenu={false}/>
-        </div>
-        <div className="w-[400px] p-8">
-          {/* Header */}
-          <div className="mb-[53px] mb-8 text-left">
-            <h1 className="text-4xl font-extrabold text-white leading-tight">
-              웰컴 백!
-            </h1>
-            <p className="text-4xl font-extrabold text-white leading-tight">
-              <span className="text-[#246BFD]">로그인</span>을 해주세요.
-            </p>
+      <div className="w-full h-[896px] flex flex-col px-[32px] z-10">
+
+        {/* NavBar 영역 */}
+        <NavBar title="로그인" showMenu={false}/>
+
+        {/* Contents 영역 */}
+        <div className="w-[350px] h-[545px] flex flex-col items-center">
+          {/* InfoText 영역 */}
+          <div className="w-full primary-info-text">
+            <InfoText title="환영합니다!" subtitle={<><span className="info-point-text">로그인</span> 해주세요.</>}/>
           </div>
 
-          {/* Form */}
-          <form className="w-full w-[400px] flex flex-col gap-2"
-              onSubmit={handleSubmit}>
-            <div className="relative">
+          {/* Form 영역 */}
+          <div className="w-full flex flex-col">
+            <form className="mt-[65px] w-full h-[195px] justify-between flex flex-col mb-[65px]" onSubmit={handleSubmit}>
               <InputField
-                label="이메일"
-                type="email"
-                name="email"
-                autoComplete="off"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="이메일을 입력하세요."
+                  label="이메일"
+                  type="email"
+                  name="email"
+                  autoComplete="off"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="이메일을 입력해 주세요."
+                  validationError={errors.email}
               />
-            </div>
-
-            <div className="relative">
               <InputField
-                label="비밀번호"
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="비밀번호를 입력하세요."
+                  label="비밀번호"
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="비밀번호를 입력해 주세요."
+                  validationError={errors.password}
+                  showPasswordToggle={true}
+                  showPassword={showPassword}
+                  onTogglePassword={() => setShowPassword(!showPassword)}
               />
-              <PasswordToggleButton
-                showPassword={showPassword}
-                onClick={() => setShowPassword(!showPassword)}
-              />
+            </form>
+            <div className="h-[14px] mb-[10px]">
+              {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
             </div>
-
-            <ErrorMessage message={errors.apiError} isApiError={true} />
-
-            <SubmitButton>
-              로그인
-            </SubmitButton>
-
-            <div className="flex justify-center items-center space-x-[10px] mt-[40px]">  {/* gap 대신 직접 마진 적용 */}
-              <span className="text-[#FFFFFF] text-[14px] font-base">계정이 없으신가요? </span>
-              <a
-                href="/signup"
-                className="text-[#FFFFFF] text-[14px] font-extrabold hover:text-blue-500 transition-all"
-                style={{fontWeight: '1500'}}
-              >
-                회원가입
-              </a>
+            <div>
+              <SubmitButton onClick={handleSubmit}>로그인</SubmitButton>
             </div>
-          </form>
+            <div className="w-[350px] text-[12px] mt-[10px] text-center font-regular text-[#ffffff] font-['Pretendard']">
+              계정이 없으신가요? <Link to="/signup" className="font-semibold">회원가입</Link>
+            </div>
+          </div>
         </div>
       </div>
   );
 };
 
-export default Signin;
+export default SignInPage;

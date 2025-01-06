@@ -1,35 +1,34 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import arrow from "../../../icons/home/arrow.svg";
+import { FaGreaterThan } from 'react-icons/fa';
 
 interface BoxListProps {
     title: string;
     count: number;
-    icon: string; // Image URL as string
+    icon: React.ReactNode; // ReactNode 타입으로 변경
     countColor?: string; // Optional color for the count
 }
 
 const BoxList: React.FC<BoxListProps> = ({ title, count, icon, countColor }) => {
+    const iconWithColor = React.cloneElement(icon as React.ReactElement, { style: { color: '#200745', fontSize: '20px' } });
+
     return (
-        <div className="flex items-center bg-[#262A34] my-2 p-4 rounded-lg">
+        <div className="relative w-[350px] h-[67.2px] bg-[#252934] rounded-2xl border border-[#ffb8df] flex items-center">
+
             {/* 아이콘 */}
-            <div className="w-[48px] h-[48px] mr-4 flex-shrink-0 overflow-hidden">
-                <img src={icon} alt={title} className="w-full h-full object-cover" />
+            <div className="absolute left-3 w-[50.4px] h-[50.4px] flex-shrink-0 overflow-hidden flex items-center justify-center rounded-[12.6px]" style={{ backgroundColor: countColor }}>
+                {iconWithColor}
             </div>
+
             {/* 제목과 숫자 */}
-            <div className="flex-1">
-                <p className="text-lg">{title}</p>
+            <div className="absolute left-[80px] flex-1">
+                <p className="text-[17.5px] font-bold">{title}</p>
             </div>
-            <span
-                className="text-lg font-bold mr-4"
-                style={{ color: countColor }}
-            >
+            <span className="absolute right-[40px] text-[17.5px] font-bold" style={{ color: countColor }}>
                 {count}
             </span>
-            <img
-                src={arrow}
-                alt="화살표"
-            />
+
+            {/* 화살표 아이콘 */}
+            <FaGreaterThan className="absolute right-4 w-3 h-3 text-white"/>
         </div>
     );
 };
