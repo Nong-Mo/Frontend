@@ -29,7 +29,7 @@ const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState<SignUp>({
     email: "",
     password: "",
-    confirmPassword: "",
+    password_confirmation: "",
     nickname: ""
   });
   const { errors, handleSignUp, setErrors } = useAuth();
@@ -46,8 +46,8 @@ const SignUpPage: React.FC = () => {
       setErrors((prev) => ({ ...prev, email: "유효한 이메일 형식이 아닙니다." }));
     } else if (name === "password" && !isValidPassword(value)) {
       setErrors((prev) => ({ ...prev, password: "비밀번호는 8~20자 사이여야 하며, 공백 없이 두 종류 이상의 문자를 포함해 주세요." }));
-    } else if (name === "confirmPassword" && value !== formData.password) {
-      setErrors((prev) => ({ ...prev, confirmPassword: "비밀번호와 비밀번호 확인이 일치하지 않습니다." }));
+    } else if (name === "password_confirmation" && value !== formData.password) {
+      setErrors((prev) => ({ ...prev, password_confirmation: "비밀번호와 비밀번호 확인이 일치하지 않습니다." }));
     }
   };
 
@@ -60,10 +60,10 @@ const SignUpPage: React.FC = () => {
       return;
     }
 
-    if (!formData.password || formData.password !== formData.confirmPassword) {
+    if (!formData.password || formData.password !== formData.password_confirmation) {
       setErrors((prev) => ({
         ...prev,
-        confirmPassword: "비밀번호와 비밀번호 확인이 일치하지 않습니다."
+        password_confirmation: "비밀번호와 비밀번호 확인이 일치하지 않습니다."
       }));
       return;
     }
@@ -126,11 +126,11 @@ const SignUpPage: React.FC = () => {
               <InputField
                   label="비밀번호 확인"
                   type="password"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
+                  name="password_confirmation"
+                  value={formData.password_confirmation}
                   onChange={handleChange}
                   placeholder="비밀번호를 한 번 더 입력해 주세요."
-                  validationError={errors.confirmPassword}
+                  validationError={errors.password_confirmation}
                   showPasswordToggle={true}
               />
             </form>
