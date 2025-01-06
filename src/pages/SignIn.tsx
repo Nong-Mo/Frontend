@@ -41,8 +41,8 @@ const SignInPage: React.FC = () => {
           </div>
 
           {/* Form 영역 */}
-          <div className="w-full flex flex-col gap-2 ">
-            <form className="w-full flex flex-col gap-2 mb-[65px]" onSubmit={handleSubmit}>
+          <div className="w-full flex flex-col">
+            <form className="mt-[65px] w-full h-[195px] justify-between flex flex-col mb-[65px]" onSubmit={handleSubmit}>
               <InputField
                   label="이메일"
                   type="email"
@@ -66,11 +66,13 @@ const SignInPage: React.FC = () => {
                   onTogglePassword={() => setShowPassword(!showPassword)}
               />
             </form>
-            {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+            <div className="h-[14px] mb-[10px]">
+              {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+            </div>
             <div>
               <SubmitButton onClick={handleSubmit}>로그인</SubmitButton>
             </div>
-            <div className="w-[350px] text-[12px] text-center font-regular text-[#ffffff] font-['Pretendard']">
+            <div className="w-[350px] text-[12px] mt-[10px] text-center font-regular text-[#ffffff] font-['Pretendard']">
               계정이 없으신가요? <Link to="/signup" className="font-semibold">회원가입</Link>
             </div>
           </div>
