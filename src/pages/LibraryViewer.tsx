@@ -13,8 +13,6 @@ interface LibraryViewerProps {
 }
 
 const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
-    collectionType = API_TYPE.BOOK;
-
     // 초기 화면이 렌더링 되기 전에 API를 호출 후 처리.
     useLayoutEffect(() => {
         if (collectionType === API_TYPE.BOOK) {
@@ -62,6 +60,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
 
     const onClickAddButton = () => {
         navigate('/scan');
+
         // For Debug
         // const newItem = {
         //     id: collectionItems.length + 1,

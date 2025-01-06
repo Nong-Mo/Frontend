@@ -14,7 +14,7 @@ import Home from "./pages/Home";
 import Intro from "./pages/Intro";
 import PrivateRoute from "./components/common/PrivateRoute";
 import MainLayout from "./components/common/MainLayout";
-import { ROUTES } from "./routes/constants";
+import {API_TYPE, ROUTES} from "./routes/constants";
 
 const App = () => {
   return (
@@ -32,7 +32,7 @@ const App = () => {
               <Route path={ROUTES.SCAN.path} element={<Scan />} />
               <Route path={ROUTES.PLAYER.path} element={<Player />} />
               <Route path={ROUTES.PLAYERPDF.path} element={<PlayerPdfViewer />} />
-              <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer />} />
+              <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer collectionType={API_TYPE.BOOK} />} />
             </Route>
 
             {/* Redirect */}
