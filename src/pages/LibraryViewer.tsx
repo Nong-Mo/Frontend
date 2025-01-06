@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { NavBar } from "../components/common/NavBar.tsx";
+import React, {useEffect, useState} from "react";
+import {NavBar} from "../components/common/NavBar.tsx";
 import CollectionGrid from "../components/viewer/CollectionGrid";
-import { FaPlus } from "react-icons/fa";
+import {FaPlus} from "react-icons/fa";
 
 const LibraryViewer = () => {
     const [viewerTitle, setViewerTitle] = useState('책 보관함');
@@ -28,7 +28,7 @@ const LibraryViewer = () => {
     }
 
     // 추후 UseEffect를 통해서 호출받은 API에 따라서 값을 변경해주어야 한다.
-    
+
     return (
         <div className="w-full z-10">
             <div className="content-wrapper ml-[32px] mr-[32px] mt-[15px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
@@ -36,12 +36,14 @@ const LibraryViewer = () => {
                     <NavBar title={viewerTitle}
                             rightIcon="search"/>
                 </div>
-                <h1 className="mt-[15px] primary-info-text leading-50">
-                    {collectionItems.length === 0
-                        ? <>보관함이 비었어요!<br />책을 추가해 주세요.</>
-                        : <>감상하고 싶은<br/>책을 선택해 주세요.</>
-                    }
-                </h1>
+                <div className="w-full">
+                    <h1 className="mt-[15px] primary-info-text leading-50">
+                        {collectionItems.length === 0
+                            ? <>보관함이 비었어요!<br/>책을 추가해 주세요.</>
+                            : <>감상하고 싶은<br/>책을 선택해 주세요.</>
+                        }
+                    </h1>
+                </div>
                 <div className="w-full h-[67.2px] mt-[30px]">
                     <button className="w-full h-full flex items-center justify-center rounded-[16.5px] bg-[#262A34]"
                             onClick={onClickAddButton}>
