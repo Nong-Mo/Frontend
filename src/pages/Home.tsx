@@ -1,16 +1,17 @@
 import { FaPlus } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { NavBar } from '../components/common/NavBar';
 import InfoText from '../components/common/InfoText';
 import BoxList from '../components/features/Home/BoxList';
 import { FaBook, FaReceipt, FaGift, FaCameraRetro, FaFileAlt, FaTicketAlt } from 'react-icons/fa';
-import React from "react";
-import useAuth from '../hooks/useAuth'; // useAuth 훅을 가져옵니다.
+import React, { useState } from "react";
+import useAuth from '../hooks/useAuth';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
-    const { logout } = useAuth(); // useAuth 훅에서 logout 함수를 가져옵니다.
-    const userName = '커여운한비쿤'; // 유저 닉네임
+    const { logout } = useAuth();
+    const userName = '커여운한비쿤';
+    const [selectedBox, setSelectedBox] = useState<number | null>(null);
 
     const storageItems = [
         { id: 1, title: '책', count: 30, icon: <FaBook />, path: '/library/book', countColor: '#FFDD72' },
@@ -21,15 +22,16 @@ const Home: React.FC = () => {
         { id: 6, title: '티켓', count: 30, icon: <FaTicketAlt />, path: '', countColor: '#FFDD72' },
     ];
 
-    const handleBoxClick = (path: string) => {
+    const handleBoxClick = (id: number, path: string) => {
+        setSelectedBox(id);
         if (path) {
             navigate(path);
         }
     };
 
     const handleLogout = () => {
-        logout(); // 로그아웃 로직을 실행합니다.
-        navigate('/intro'); // intro 페이지로 리디렉션합니다.
+        logout();
+        navigate('/intro');
     };
 
     return (
@@ -49,8 +51,8 @@ const Home: React.FC = () => {
                         {storageItems.map((item) => (
                             <div
                                 key={item.id}
-                                onClick={() => handleBoxClick(item.path)}
-                                style={{ cursor: item.path ? 'pointer' : 'default' }}
+                                onClick={() => handleBoxClick(item.id, item.path)}
+                                className={`${item.path ? 'cursor-pointer' : 'cursor-default'}`}
                             >
                                 <BoxList
                                     title={item.title}
