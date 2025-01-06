@@ -264,11 +264,11 @@ const Scan = () => {
                 </div>
 
                 {/* 업로드 버튼 */}
-                <div className="absolute gallery-button right-[4.5rem] z-10">
+                <div className="absolute gallery-button right-[62.5px] z-10">
                     <button
                         onClick={handleUpload}
                         disabled={isLoading || capturedPhotos.length === 0}
-                        className={`p-4 rounded-full ${
+                        className={`rounded-full ${
                             capturedPhotos.length === 0 ? "opacity-50" : ""
                         }`}
                     >
@@ -276,7 +276,6 @@ const Scan = () => {
                             <img src={check}
                                  alt="변환하기"
                                  className="w-full h-full"/>
-                            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full"/>
                         </div>
                     </button>
                 </div>
