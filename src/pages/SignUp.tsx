@@ -93,8 +93,8 @@ const SignUpPage: React.FC = () => {
           </div>
 
           {/* Form 영역 */}
-          <div className="w-full flex flex-col gap-2 ">
-            <form className="w-full flex flex-col gap-2 mb-[65px]" onSubmit={handleSubmit}>
+          <div className=" w-full flex flex-col">
+            <form className="mt-[65px] w-full h-[405px] justify-between flex flex-col mb-[65px]" onSubmit={handleSubmit}>
               <InputField
                   label="닉네임"
                   type="text"
@@ -134,7 +134,11 @@ const SignUpPage: React.FC = () => {
                   showPasswordToggle={true}
               />
             </form>
-            {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+
+            <div className="h-[14px] mb-[10px]">
+              {errors.apiError && <ErrorMessage message={errors.apiError} isApiError={true}/>}
+            </div>
+
             <div>
               <SubmitButton onClick={handleSubmit}>회원가입</SubmitButton>
             </div>
