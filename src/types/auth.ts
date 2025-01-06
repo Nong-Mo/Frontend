@@ -4,8 +4,10 @@ interface Token {
 }
 
 export interface SignInResponse {
+  access_token: string;
+  token_type: string;
   message: string;
-  token: Token;
+  status: string;
 }
 
 // 나머지 타입들은 그대로 유지
