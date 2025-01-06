@@ -26,22 +26,21 @@ const Home: React.FC = () => {
 
     return (
         <div className="w-full flex flex-col min-h-screen z-10">
-            <NavBar title="커여운한비쿤 님의 보관함" showMenu={true}/>
-
+            <NavBar title="커여운한비쿤 님의 보관함" showMenu={true} rightIcon="search" hideLeftIcon={true} alignTitle="left" />
             <div className="w-full flex justify-center">
 
-                <div className="w-[350px] min-h-screen text-white">
+                <div className="w-[350px] h-[768px] text-white">
                     <div className="w-full primary-info-text">
                         <InfoText title="안녕하세요," subtitle={<><span className="info-point-text">{userName}</span> <span
                             className="primary-info-text">님!</span></>}/>
                     </div>
 
                     <div
-                        className="w-full flex justify-center mb-[15px] mt-[30px] h-[67.2px] bg-[#262A34] rounded-[16.5px] items-center">
+                        className="w-full flex justify-center mt-[30px] h-[67.2px] bg-[#262A34] rounded-[16.5px] items-center">
                         <FaPlus className="w-4 h-4 text-white"/>
                     </div>
 
-                    <div className="space-y-[15px] w-full flex flex-col items-center">
+                    <div className="w-full h-[493.2px] flex flex-col items-center">
                         {storageItems.map((item) => (
                             <div
                                 key={item.id}
@@ -58,7 +57,7 @@ const Home: React.FC = () => {
                         ))}
                     </div>
 
-                    <div className="w-[350px] text-[12px] mt-[30px] mb-[15px] text-center font-semibold text-[#ffffff]">
+                    <div className="w-[350px] h-[16px] text-[12px] mt-[30px] mb-[15px] text-center font-semibold text-[#ffffff]">
                         로그아웃
                     </div>
 

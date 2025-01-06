@@ -12,7 +12,7 @@ const BoxList: React.FC<BoxListProps> = ({ title, count, icon, countColor }) => 
     const iconWithColor = React.cloneElement(icon as React.ReactElement, { style: { color: '#200745', fontSize: '20px' } });
 
     return (
-        <div className="relative w-[350px] h-[67.2px] bg-[#252934] rounded-2xl border border-[#ffb8df] flex items-center">
+        <div className="relative w-[350px] h-[67.2px] mt-[15px] bg-[#252934] rounded-2xl border border-[#ffb8df] flex items-center">
 
             {/* 아이콘 */}
             <div className="absolute left-3 w-[50.4px] h-[50.4px] flex-shrink-0 overflow-hidden flex items-center justify-center rounded-[12.6px]" style={{ backgroundColor: countColor }}>
