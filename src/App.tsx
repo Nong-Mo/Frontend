@@ -14,6 +14,7 @@ import Home from "./pages/Home";
 import Intro from "./pages/Intro";
 import PrivateRoute from "./components/common/PrivateRoute";
 import MainLayout from "./components/common/MainLayout";
+import GoodsStorage from "./pages/GoodsStorage";
 import {API_TYPE, ROUTES} from "./routes/constants";
 import AiAssistant from "./pages/AiAssistant.tsx";
 
