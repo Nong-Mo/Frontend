@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { uploadImages } from '../api/image';
+import {useState} from 'react';
+import {uploadImages} from '../api/image';
 
 interface PhotoFile {
     id: string;
@@ -11,9 +11,9 @@ interface UploadStatus {
     message: string;
 }
 
-interface UploadResult {
-    message: string;
-    // 기타 API 응답 필드들
+interface UploadOptions {
+    title: string;
+    files: File[];
 }
 
 export const UPLOAD_CONSTANTS = {
@@ -28,18 +28,15 @@ export const usePhotoUpload = () => {
 
     // 파일 유효성 검사
     const validateFiles = (files: File[]): string | null => {
-        // 파일 존재 여부 확인
         if (files.length === 0) {
             return '업로드할 파일이 없습니다.';
         }
 
-        // 각 파일 크기 확인
         const validFiles = files.filter(file => file.size >= UPLOAD_CONSTANTS.MIN_FILE_SIZE);
         if (validFiles.length === 0) {
             return '유효한 이미지 파일이 없습니다.';
         }
 
-        // 전체 크기 확인
         const totalSize = files.reduce((sum, file) => sum + file.size, 0);
         if (totalSize > UPLOAD_CONSTANTS.MAX_TOTAL_SIZE) {
             return '전체 파일 크기가 제한을 초과했습니다.';
@@ -62,7 +59,7 @@ export const usePhotoUpload = () => {
     };
 
     // 이미지 업로드 처리
-    const handleUpload = async (photos: PhotoFile[]): Promise<boolean> => {
+    const handleUpload = async (photos: PhotoFile[], title: string): Promise<boolean> => {
         if (isLoading || photos.length === 0) return false;
 
         setIsLoading(true);
@@ -80,7 +77,7 @@ export const usePhotoUpload = () => {
 
             // 이미지 업로드 API 호출
             const response = await uploadImages({
-                title: "촬영된 이미지들",
+                title,
                 files,
             });
 
@@ -92,15 +89,11 @@ export const usePhotoUpload = () => {
             return true;
 
         } catch (error: any) {
-            let errorMessage: string;
-
             if (error?.response?.status === 401) {
-                // 401 에러는 axios interceptor에서 처리
                 return false;
             }
 
-            // API 에러 메시지 처리
-            errorMessage = error?.response?.data?.detail?.[0]?.msg
+            const errorMessage = error?.response?.data?.detail?.[0]?.msg
                 ?? error.message
                 ?? "이미지 업로드에 실패했습니다. 다시 시도해주세요.";
 
@@ -116,7 +109,6 @@ export const usePhotoUpload = () => {
         }
     };
 
-    // 상태 초기화
     const resetUploadState = () => {
         setIsLoading(false);
         setUploadStatus(null);

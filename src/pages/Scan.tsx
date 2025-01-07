@@ -2,24 +2,27 @@ import React, {useRef, useState} from "react";
 import {Camera} from "react-camera-pro";
 import {useNavigate} from "react-router-dom";
 import {NavBar} from "../components/common/NavBar.tsx";
-import {PhotoPreview} from "../components/scan/PhotoPreview.tsx";
 import {CameraControls} from "../components/scan/CameraControls.tsx";
 import {useCamera} from "../hooks/useCamera";
 import {useCameraState} from "../hooks/useCameraState";
 import {usePhotoUpload} from "../hooks/usePhotoUpload";
 import {ScanViewer} from "../components/scan/ScanViewer.tsx";
+import BookConvertModal from "../components/scan/BookConvertModal";
+import ReceiptConvertModal from "../components/scan/ReceiptConvertModal";
+import GoodsConvertModal from "../components/scan/GoodsConvertModal";
 
-function CameraView(props: {
-    cameraRef: React.RefObject<Camera>,
-    errorMessages: { switchCamera: string; canvas: string; noCameraAccessible: string; permissionDenied: string }
-}) {
-    return null;
+export type ScanType = 'BOOK' | 'RECEIPT' | 'GOODS';
+
+interface PhotoFile {
+    id: string;
+    data: string;
 }
 
 const Scan = () => {
     const navigate = useNavigate();
     const cameraRef = useRef<Camera>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [scanType, setScanType] = useState<ScanType>('BOOK');
 
     // Custom Hooks
     const {
@@ -60,12 +63,42 @@ const Scan = () => {
         }
     };
 
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        resetUploadState();
+    };
+
     const handlePhotoUpload = async () => {
-        if (await handleUpload(capturedPhotos)) {
-            setIsModalOpen(true);
-            clearPhotos();
-        } else {
-            resetCamera();
+        setIsModalOpen(true);
+    };
+
+    const handleUploadComplete = () => {
+        setIsModalOpen(false);
+        clearPhotos();
+        // 업로드 완료 후 필요한 처리 (예: 성공 메시지 표시, 페이지 이동 등)
+    };
+
+    // 모달 렌더링 로직
+    const renderModal = () => {
+        if (!isModalOpen) return null;
+
+        const modalProps = {
+            photos: capturedPhotos,
+            onClose: handleCloseModal,
+            onUpload: handleUpload,
+            onComplete: handleUploadComplete,
+            isLoading: isLoading,
+        };
+
+        switch (scanType) {
+            case 'BOOK':
+                return <BookConvertModal {...modalProps} />;
+            // case 'RECEIPT':
+            //     return <ReceiptConvertModal {...modalProps} />;
+            // case 'GOODS':
+            //     return <GoodsConvertModal {...modalProps} />;
+            default:
+                return null;
         }
     };
 
@@ -99,6 +132,7 @@ const Scan = () => {
                 />
             </div>
 
+            {/* 카메라 뷰어 */}
             <ScanViewer
                 cameraRef={cameraRef}
                 errorMessages={{
@@ -112,14 +146,18 @@ const Scan = () => {
                 isPreviewVisible={isPreviewVisible}
             />
 
+            {/* 카메라 컨트롤 */}
             <CameraControls
                 onTakePhoto={handleTakePhoto}
                 onUpload={handlePhotoUpload}
                 isLoading={isLoading}
                 hasCameraPermission={hasCameraPermission}
                 hasPhotos={capturedPhotos.length > 0}
+                scanType={scanType}
             />
 
+            {/* 변환 모달 */}
+            {renderModal()}
         </div>
     );
 };
