@@ -60,6 +60,12 @@ export const ROUTES = {
         title: 'PDF Player',
         ko: 'PDF 뷰'
     },
+
+    AI_ASSISTANT: {
+        path : '/ai-assistant',
+        title: 'AI 어시스턴트',
+        ko: 'AI 어시스턴트'
+    }
 } as const;
 
 export const API_TYPE = {
