@@ -6,7 +6,7 @@ const mockAudioData: AudioData = {
   title: '해리포터와 아즈카반의 죄수',
   bookName: '해리포터와 아즈카반의 죄수',
   createdAt: '2024-12-31',
-  audioUrl: '/music/시연용(다들_점심_맛있게_드세요).mp3',
+  audioUrl: '/music/운수좋은날.mp3',
   bookCover: '/covers/audio_cover.png',
 };
 
