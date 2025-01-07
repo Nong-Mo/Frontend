@@ -16,6 +16,7 @@ import PrivateRoute from "./components/common/PrivateRoute";
 import MainLayout from "./components/common/MainLayout";
 import {API_TYPE, ROUTES} from "./routes/constants";
 import AiAssistant from "./pages/AiAssistant.tsx";
+import GoodsStorage from "./pages/GoodsStorage.tsx";
 
 const App = () => {
     // 서버 경로 체크 함수
@@ -38,19 +39,21 @@ const App = () => {
                     {/* Protected Routes */}
                     <Route element={<PrivateRoute/>}>
                         <Route path={ROUTES.HOME.path}
-                               element={<Home/>}/>
+                                element={<Home/>}/>
                         <Route path={ROUTES.SCAN.path}
-                               element={<Scan/>}/>
+                                element={<Scan/>}/>
                         <Route path={ROUTES.PLAYER.AUDIO.path}
-                               element={<Player/>}/>
-                        <Route path={ROUTES.PLAYERPDF.path}
-                               element={<PlayerPdfViewer/>}/>
+                                element={<Player/>}/>
+                        <Route path={ROUTES.PLAYER.PDF.path}
+                                element={<PlayerPdfViewer/>}/>
                         <Route path={ROUTES.LIBRARY.BOOK.path}
-                               element={<LibraryViewer collectionType={API_TYPE.BOOK}/>}/>
+                                element={<LibraryViewer collectionType={API_TYPE.BOOK}/>}/>
                         <Route path={ROUTES.LIBRARY.RECEIPT.path}
-                               element={<LibraryViewer collectionType={API_TYPE.RECEIPT}/>}/>
-                         <Route path={ROUTES.AI_ASSISTANT.path}
-                             element={<AiAssistant/>}/>
+                                element={<LibraryViewer collectionType={API_TYPE.RECEIPT}/>}/>
+                        <Route path={ROUTES.AI_ASSISTANT.path}
+                                element={<AiAssistant/>}/>
+                        <Route path={ROUTES.GOODS.STORAGE.path}
+                                element={<GoodsStorage />}/>
                       
                     </Route>
                     {/* Redirect */}
