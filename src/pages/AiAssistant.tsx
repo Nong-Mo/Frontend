@@ -15,7 +15,7 @@ const AIAssistantPage: React.FC = () => {
         <div className="w-full h-[817px] flex flex-col px-[32px] z-10">
 
             {/* NavBar Div */}
-            <NavBar title="AI 어시스턴트" />
+            <NavBar title="AI 어시스턴트" showMenu={false} />
 
             {/* Title Div */}
             <div className="w-full primary-info-text">
