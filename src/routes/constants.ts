@@ -54,7 +54,12 @@ export const ROUTES = {
             title: 'Goods Storage',
             ko: '굿즈 보관함'
         },
-    }
+    },
+    PLAYERPDF: {
+        path : '/player/pdf',
+        title: 'PDF Player',
+        ko: 'PDF 뷰'
+    },
 } as const;
 
 export const API_TYPE = {
