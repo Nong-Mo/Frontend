@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavBar } from '../components/common/NavBar';
+import Model3DViewer from '../components/goods/Model3DViewer';
 
 const GoodsStorage: React.FC = () => {
  const [originalContent, setOriginalContent] = useState('');
@@ -85,11 +86,7 @@ const GoodsStorage: React.FC = () => {
          </div>
          {/* 이미지 */}
          <div className="w-[334px] h-[334px]">
-           <img 
-             src="" 
-             alt="굿즈 이미지" 
-             className="w-full h-full object-cover rounded-xl"
-           />
+           <Model3DViewer />
          </div>
          {/* 텍스트 필드 */}
          <div className="w-[334px] h-[369px] bg-[#262A34] rounded-xl flex flex-col">
