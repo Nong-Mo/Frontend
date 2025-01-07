@@ -34,7 +34,7 @@ const Scan = () => {
         cameraError,
         resetCamera,
         handleCameraError,
-        setCameraError  // 이 부분이 필요합니다
+        setCameraError,
     } = useCameraState(cameraRef);
 
     const {
