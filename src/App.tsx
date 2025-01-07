@@ -15,6 +15,7 @@ import Intro from "./pages/Intro";
 import PrivateRoute from "./components/common/PrivateRoute";
 import MainLayout from "./components/common/MainLayout";
 import {API_TYPE, ROUTES} from "./routes/constants";
+import AiAssistant from "./pages/AiAssistant.tsx";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
               <Route path={ROUTES.PLAYERPDF.path} element={<PlayerPdfViewer />} />
               <Route path={ROUTES.LIBRARY.BOOK.path} element={<LibraryViewer collectionType={API_TYPE.BOOK} />} />
               <Route path={ROUTES.LIBRARY.RECEIPT.path} element={<LibraryViewer collectionType={API_TYPE.RECEIPT} />} />
+              <Route path={ROUTES.AI_ASSISTANT.path} element={<AiAssistant/>} />
             </Route>
 
             {/* Redirect */}
