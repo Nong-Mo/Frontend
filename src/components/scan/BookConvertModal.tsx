@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface PhotoFile {
     id: string;
@@ -24,23 +24,16 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(1);
     const [bookTitle, setBookTitle] = useState<string>("");
-    const [author, setAuthor] = useState<string>("");
-    const [publisher, setPublisher] = useState<string>("");
     const [progress, setProgress] = useState<number>(0);
 
-    // 모달 초기화 함수
     const resetModal = () => {
         setStep(1);
         setBookTitle("");
-        setAuthor("");
-        setPublisher("");
         setProgress(0);
     };
 
-    // 모달이 닫힐 때 초기화
     const handleClose = () => {
         onClose();
-        // 애니메이션이 끝난 후 초기화
         setTimeout(resetModal, 300);
     };
 
@@ -61,18 +54,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
     }, [step]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        switch (name) {
-            case 'title':
-                setBookTitle(value);
-                break;
-            case 'author':
-                setAuthor(value);
-                break;
-            case 'publisher':
-                setPublisher(value);
-                break;
-        }
+        setBookTitle(e.target.value);
     };
 
     const handleConvert = async () => {
@@ -80,57 +62,55 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
         setStep(2);
 
         try {
-            // 업로드 처리
+            // bookTitle을 onUpload 함수에 전달
             const uploadResult = await onUpload(photos, bookTitle);
 
             if (uploadResult) {
                 setStep(3);
-                onComplete();
             } else {
-                // 업로드 실패 시 처리
                 setStep(1);
-                // 에러 메시지 표시 로직 추가
             }
         } catch (error) {
             setStep(1);
-            // 에러 처리 로직 추가
         }
     };
 
     const renderStep1 = () => (
         <div className="w-full">
-            <h2 className="text-white text-xl font-bold mb-4 text-center">
-                파일명 입력
-            </h2>
-            <input
-                type="text"
-                name="title"
-                value={bookTitle}
-                onChange={handleInputChange}
-                placeholder="책 제목"
-                className="w-full bg-gray-700 text-white p-3 rounded-lg mb-4"
-            />
-            <div className="flex py-3 w-full justify-around items-center">
-                <button
-                    onClick={handleConvert}
-                    disabled={!bookTitle || isLoading}
-                    className={`w-[100px] h-[35px] rounded-3xl font-medium
+            <div className="mx-[14px] my-[42px] flex items-center flex-col">
+                <h2 className="text-white text-[25px] font-bold text-center">
+                    파일명 입력
+                </h2>
+                <input
+                    type="text"
+                    name="title"
+                    value={bookTitle}
+                    onChange={handleInputChange}
+                    placeholder="책 제목을 입력하세요"
+                    className="w-[225px] h-[30px] -translate-y-[5px] bg-transparent text-white my-[45px] text-center placeholder:text-white border-b border-white focus:outline-none"
+                />
+                <div className="flex w-[215px] justify-around items-center">
+                    <button
+                        onClick={handleConvert}
+                        disabled={!bookTitle || isLoading}
+                        className={`w-[100px] h-[35px] rounded-3xl font-medium
                     ${!bookTitle || isLoading
-                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-                >
-                    변환하기
-                </button>
-                <button
-                    onClick={handleClose}
-                    disabled={!bookTitle || isLoading}
-                    className={`w-[100px] h-[35px] rounded-3xl font-medium
+                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    >
+                        변환하기
+                    </button>
+                    <button
+                        onClick={handleClose}
+                        disabled={isLoading}
+                        className={`w-[100px] h-[35px] rounded-3xl font-medium
                     ${isLoading
-                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-                >
-                    닫기
-                </button>
+                            ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    >
+                        닫기
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -160,7 +140,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                     보관함으로
                 </button>
                 <button
-                    onClick={handleClose}
+                    onClick={() => onComplete()}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
                 >
                     닫기
@@ -171,7 +151,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-            <div className="bg-[#1F222A] w-[312px] h-[266px] rounded-2xl relative">
+            <div className="bg-[#1F222A] w-[312px] h-[266px] rounded-3xl relative">
                 {step === 1 && renderStep1()}
                 {step === 2 && renderStep2()}
                 {step === 3 && renderStep3()}
