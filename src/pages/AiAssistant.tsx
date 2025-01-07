@@ -28,11 +28,14 @@ const AIAssistantPage: React.FC = () => {
                 <div className="mt-auto overflow-x-auto whitespace-nowrap">
                     {buttons.map((text, index) => (
                         <div key={index} className="inline-block mr-[20px]">
-                            <button className="w-[108px] h-[67px] bg-[#262A34] rounded-[16.5px] flex justify-center items-center">
-                                <div className="w-[72px] h-[34px] font-bold text-white text-[10px] text-left whitespace-normal">
-                                    {text}
+                            <div className="hover:border-gradient">
+                                <div className="content">
+                                    <button className="w-[108px] h-[67px] bg-[#262A34] rounded-[16.5px] flex justify-center items-center">
+                                        <div className="w-[72px] h-[34px] font-bold text-white text-[10px] text-left whitespace-normal">
+                                    {text} </div>
+                                    </button>
                                 </div>
-                            </button>
+                            </div>
                         </div>
                     ))}
                 </div>
