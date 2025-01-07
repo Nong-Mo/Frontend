@@ -19,8 +19,9 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
   }
 
   const formData = new FormData();
+  formData.append('storage_name', '책');
   formData.append('title', title);
-  
+
   for (const file of files) {
     if (file.size > 5 * 1024 * 1024) {
       throw new Error('파일 크기가 너무 큽니다. 5MB 이하의 파일만 업로드 가능합니다.');
