@@ -54,6 +54,17 @@ export const ROUTES = {
             title: 'Goods Storage',
             ko: '굿즈 보관함'
         },
+    },
+    PLAYERPDF: {
+        path : '/player/pdf',
+        title: 'PDF Player',
+        ko: 'PDF 뷰'
+    },
+
+    AI_ASSISTANT: {
+        path : '/ai-assistant',
+        title: 'AI 어시스턴트',
+        ko: 'AI 어시스턴트'
     }
 } as const;
 

@@ -3,11 +3,11 @@ import { AudioData } from '../types/audio';
 // 임시 테스트 데이터
 const mockAudioData: AudioData = {
   id: '1',
-  title: '점심',
-  bookName: '점심',
+  title: '해리포터와 아즈카반의 죄수',
+  bookName: '해리포터와 아즈카반의 죄수',
   createdAt: '2024-12-31',
-  audioUrl: '/music/시연용(다들_점심_맛있게_드세요).mp3',
-  bookCover: '/covers/lunch.jpg',
+  audioUrl: '/music/운수좋은날.mp3',
+  bookCover: '/covers/audio_cover.png',
 };
 
 export const audioService = {
