@@ -60,14 +60,14 @@ const Player: React.FC = () => {
   if (!audioData) return <div>Loading...</div>;
 
   return (
-    <div className="w-full flex flex-col pl-10 pr-10 z-10">
+    <div className="w-full flex flex-col min-h-screen z-10">
       <NavBar 
         onMenuClick={handleModalOpen} 
         title='플레이어'
         rightIcon="convert"
       />
       { /* 콘텐츠 area 설정 */ }
-      <div className="w-full pt-[50px] flex flex-col pr-5 pl-5">
+      <div className="w-[350px] pt-[50px] flex flex-col mx-auto">
         <div className="flex flex-col">
           {/* 이미지 섹션 */}
           <div className="flex items-center justify-center">
@@ -91,7 +91,7 @@ const Player: React.FC = () => {
               />
             </div>
 
-            <div className="flex flex-col items-center mt-14">
+            <div className="flex flex-col items-center mt-[50px] mb-[50px]">
               <AudioControls
                 isPlaying={isPlaying}
                 onPlayPause={togglePlay}
