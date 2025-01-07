@@ -1,9 +1,10 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import {NavBar} from "../components/common/NavBar.tsx";
-import CollectionGrid from "../components/viewer/CollectionGrid";
+import CollectionGrid, { CollectionItemProps } from "../components/viewer/CollectionGrid";
 import {FaPlus} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import { API_TYPE } from "../routes/constants";
+import { getItems } from "../api/item.ts";
 
 
 export type APITypeKeys = typeof API_TYPE[keyof typeof API_TYPE];
@@ -13,12 +14,26 @@ interface LibraryViewerProps {
 }
 
 const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
+    // 라이브러리 타이틀
+    const [viewerTitle, setViewerTitle] = useState('');
+    // 라이브러리 설명 텍스트 - Empty and Non-Empty
+    const [viewerEmptyText, setViewerEmptyText] = useState('');
+    const [viewerText, setViewerText] = useState('');
+    // 라이브러리 컬렉션 아이템 CollectionItemProps
+    const [collectionItems, setCollectionItems] = useState<CollectionItemProps[]>([]);
+    // 이동을 위한 Navigate
+    const navigate = useNavigate();
+
+    // 필터 버튼 상태 변화를 위한 State
+    const [filterButton, setFilterButton] = useState(0);
+
     // 초기 화면이 렌더링 되기 전에 API를 호출 후 처리.
     useLayoutEffect(() => {
         if (collectionType === API_TYPE.BOOK) {
             setViewerTitle('책 보관함');
             setViewerEmptyText('보관함이 비었어요!\n책을 추가해 주세요.');
             setViewerText('감상하고 싶은\n책을 선택해 주세요.');
+
         } else if (collectionType === API_TYPE.RECEIPT) {
             setViewerTitle('영수증 보관함');
             setViewerEmptyText('영수증이 비었어요!\n추가해 주세요.');
@@ -32,20 +47,18 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     }, []);
 
     useEffect(() => {
-    }, []);
 
-    // 라이브러리 타이틀
-    const [viewerTitle, setViewerTitle] = useState('');
-    // 라이브러리 설명 텍스트 - Empty and Non-Empty
-    const [viewerEmptyText, setViewerEmptyText] = useState('');
-    const [viewerText, setViewerText] = useState('');
-    // 라이브러리 컬렉션 아이템 배열
-    const [collectionItems, setCollectionItems] = useState([]);
-    // 이동을 위한 Navigate
-    const navigate = useNavigate();
+        const fetchCollectionItems = async () => {
+            try {
+                const data = await getItems(collectionType);
+                setCollectionItems(data.fileList);
+            } catch (error) {
+                console.error('데이터 로딩 실패:', error);
+            }
+        };
 
-    // 필터 버튼 상태 변화를 위한 State
-    const [filterButton, setFilterButton] = useState(0);
+        fetchCollectionItems();
+    }, [collectionType]);
 
     const onClickAllButton = () => {
         setFilterButton(0);
@@ -60,16 +73,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
 
     const onClickAddButton = () => {
         navigate('/scan');
-
-        // For Debug
-        // const newItem = {
-        //     id: collectionItems.length + 1,
-        //     title: `제목 ${collectionItems.length + 1}`,
-        //     date: new Date().toLocaleString(),
-        //     itemType: collectionItemType
-        // };
-        //
-        // setCollectionItems(prevItems => [...prevItems, newItem]);
     }
     return (
         <div className="w-full z-10">
@@ -87,7 +90,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                     />
                 </div>
                 <div className="w-full">
-                    <h1 className="mt-[15px] primary-info-text leading-50">
+                    <h1 className="mt-[15px] primary-info-text leading-50 whitespace-pre-line">
                         {collectionItems.length === 0
                             ? <>{viewerEmptyText}</>
                             : <>{viewerText}</>
