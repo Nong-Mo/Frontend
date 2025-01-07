@@ -61,6 +61,8 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     }, [collectionType]);
 
     useEffect(() => {
+        if(collectionItems.length == 0) return;
+
         console.log('컬렉션 아이템이 변경되었습니다:', collectionItems);
     }, [collectionItems]);
 
