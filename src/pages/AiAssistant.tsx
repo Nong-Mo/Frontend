@@ -28,13 +28,18 @@ const AIAssistantPage: React.FC = () => {
                 <div className="mt-auto overflow-x-auto whitespace-nowrap">
                     {buttons.map((text, index) => (
                         <div key={index} className="inline-block mr-[20px]">
-                            <div className="hover:border-gradient">
-                                <div className="content">
-                                    <button className="w-[108px] h-[67px] bg-[#262A34] rounded-[16.5px] flex justify-center items-center">
-                                        <div className="w-[72px] h-[34px] font-bold text-white text-[10px] text-left whitespace-normal">
-                                    {text} </div>
-                                    </button>
-                                </div>
+                            <div
+                                className="hover:border-gradient w-[108px] h-[67px] rounded-[16.5px] flex items-center justify-center relative group">
+                                <button
+                                    className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden">
+                                    {/* 오버레이 */}
+                                    <div
+                                        className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                                    <div
+                                        className="w-[72px] h-[34px] font-bold text-white text-[10px] text-left whitespace-normal z-10">
+                                        {text}
+                                    </div>
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -50,7 +55,7 @@ const AIAssistantPage: React.FC = () => {
                         className="placeholder-[#5E6272] font-bold text-[14px] text-white bg-transparent outline-none flex-grow"
                     />
                     <button className="text-white text-[15px]">
-                        <FaMicrophone />
+                        <FaMicrophone/>
                     </button>
                     <button
                         className="bg-[#246BFD] text-white text-[10px] w-[20px] h-[20px] rounded-full flex items-center justify-center ml-2">
