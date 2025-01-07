@@ -1,52 +1,88 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FiEdit } from "react-icons/fi"; // React Icons에서 Edit 아이콘 가져오기
-import leftIcon from "../../icons/common/leftIcon.svg";
-import menu from "../../icons/common/menu.svg";
-import search from "../../icons/common/search.svg";
-import convert from "../../icons/common/convert.svg";
+import { LiaExchangeAltSolid } from "react-icons/lia";
+import { IoChevronBackOutline } from "react-icons/io5";
+import { RiRobot2Fill } from "react-icons/ri";
+import { BiEdit } from "react-icons/bi";
 
 interface NavigationProps {
     onMenuClick?: () => void;
     title?: string;
     showMenu?: boolean;
-    rightIcon?: 'convert' | 'search' | 'newChat';  // 'newChat' 추가
     hideLeftIcon?: boolean;
     alignTitle?: 'left' | 'center';
-    onNewChatClick?: () => void; // 새 채팅 버튼 클릭 이벤트 핸들러
+    onNewChatClick?: () => void;
+    iconNames?: {
+        backIcon?: string;
+        convertIcon?: string;
+        aiIcon?: string;
+        editIcon?: string;
+    };
+    rightIcons?: Array<'convert' | 'ai' | 'edit'>;
 }
 
 export const NavBar: React.FC<NavigationProps> = ({
                                                       onMenuClick,
                                                       title,
                                                       showMenu = true,
-                                                      rightIcon = 'convert',
                                                       hideLeftIcon = false,
                                                       alignTitle = 'center',
-                                                      onNewChatClick
+                                                      onNewChatClick,
+                                                      iconNames = {},
+                                                      rightIcons = []
                                                   }) => {
     const navigate = useNavigate();
 
-    // 아이콘 매핑
-    const icons = {
-        convert: convert,
-        search: search
+    const renderIcon = (icon: 'convert' | 'ai' | 'edit') => {
+        switch (icon) {
+            case 'convert':
+                return (
+                    <button
+                        className="text-white flex items-center justify-center w-7 h-7 p-0"
+                        onClick={onMenuClick}
+                        aria-label={iconNames.convertIcon || "변환하기"}
+                    >
+                        <LiaExchangeAltSolid size={24} />
+                    </button>
+                );
+            case 'ai':
+                return (
+                    <button
+                        className="text-white flex items-center justify-center w-7 h-7 p-0"
+                        onClick={() => navigate('/ai-assistant')}
+                        aria-label={iconNames.aiIcon || "AI 로봇"}
+                    >
+                        <RiRobot2Fill size={24} />
+                    </button>
+                );
+            case 'edit':
+                return (
+                    <button
+                        className="text-white flex items-center justify-center w-7 h-7 p-0"
+                        onClick={onNewChatClick}
+                        aria-label={iconNames.editIcon || "편집"}
+                    >
+                        <BiEdit size={24} />
+                    </button>
+                );
+            default:
+                return null;
+        }
     };
 
     return (
         <div className="flex justify-center">
             <div className="flex items-center justify-between w-full max-w-[350px] h-[50px] relative">
-                {/* 왼쪽 아이콘 */}
                 {!hideLeftIcon && (
-                    <img
-                        src={leftIcon}
-                        className="w-7 h-7 cursor-pointer absolute"
-                        alt="back"
+                    <button
+                        className="absolute left-0 text-white flex items-center justify-center w-7 h-7 p-0"
                         onClick={() => navigate(-1)}
-                    />
+                        aria-label={iconNames.backIcon || "뒤로가기"}
+                    >
+                        <IoChevronBackOutline size={24} />
+                    </button>
                 )}
 
-                {/* 제목 */}
                 <span
                     className={`font-bold text-[20px] text-white flex-1 ${alignTitle === 'left' ? 'text-left' : 'text-center'}`}
                     style={{ lineHeight: '25.2px' }}
@@ -54,26 +90,9 @@ export const NavBar: React.FC<NavigationProps> = ({
                     {title}
                 </span>
 
-                {/* 오른쪽 아이콘 */}
-                {showMenu && rightIcon !== 'newChat' && (
-                    <img
-                        src={icons[rightIcon]} // rightIcon prop에 따라 아이콘 변경
-                        className="w-4 h-4 cursor-pointer flex items-center absolute right-1"
-                        alt={rightIcon}
-                        onClick={onMenuClick}
-                    />
-                )}
-
-                {/* 새 채팅 아이콘 */}
-                {rightIcon === 'newChat' && (
-                    <button
-                        className="w-4 h-4 text-white flex items-center absolute right-1"
-                        onClick={onNewChatClick}
-                        aria-label="새 채팅"
-                    >
-                        <FiEdit size={20} /> {/* Edit 아이콘 */}
-                    </button>
-                )}
+                <div className="absolute right-0 flex">
+                    {rightIcons.map(icon => renderIcon(icon))}
+                </div>
             </div>
         </div>
     );

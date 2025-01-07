@@ -59,9 +59,14 @@ const AIAssistantPage: React.FC = () => {
             {/* NavBar */}
             <NavBar
                 title="AI 어시스턴트"
-                rightIcon="newChat" // 새 채팅 아이콘 설정
-                onNewChatClick={handleNewChat} // 새 채팅 클릭 핸들러
+                hideLeftIcon={false}
                 showMenu={false}
+                iconNames={{
+                    backIcon: "뒤로가기",
+                    editIcon: "편집"
+                }}
+                rightIcons={['edit']}
+                onNewChatClick={handleNewChat}
             />
 
             {/* Title */}
@@ -87,7 +92,8 @@ const AIAssistantPage: React.FC = () => {
                                         className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
                                         onClick={() => handleButtonClick(text)}
                                     >
-                                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                                        <div
+                                            className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
                                         <div
                                             className="w-[95px] h-[34px] font-bold text-white text-[12px] text-left whitespace-normal z-10">
                                             {text}

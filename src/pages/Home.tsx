@@ -36,7 +36,17 @@ const Home: React.FC = () => {
 
     return (
         <div className="w-full flex flex-col min-h-screen z-10">
-            <NavBar title="커여운한비쿤 님의 보관함" showMenu={true} rightIcon="search" hideLeftIcon={true} alignTitle="left" />
+            <NavBar
+                title="커여운한비쿤 님의 보관함"
+                hideLeftIcon={true}
+                showMenu={false}
+                alignTitle="left"
+                iconNames={{
+                    aiIcon: "AI 로봇"
+                }}
+                rightIcons={['ai']}
+            />
+
             <div className="w-full flex justify-center">
                 <div className="w-[350px] h-[768px] text-white">
                     <div className="w-full primary-info-text">

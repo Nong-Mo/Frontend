@@ -333,9 +333,16 @@ const PlayerPdfViewer: React.FC = () => {
   return (
     <div className="w-full h-[896px] flex flex-col pl-10 pr-10 z-10">
       <NavBar
-        onMenuClick={handleModalOpen}
-        title='PDF 뷰어'
-        rightIcon="convert"
+          onMenuClick={handleModalOpen}
+          title='PDF 뷰어'
+          hideLeftIcon={false}
+          showMenu={false}
+          iconNames={{
+            backIcon: "뒤로가기",
+            convertIcon: "변환하기",
+            aiIcon: "AI 로봇"
+          }}
+          rightIcons={['convert', 'ai']}
       />
       
       <div className="flex justify-center">

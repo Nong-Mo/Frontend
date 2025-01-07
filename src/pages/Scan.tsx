@@ -121,7 +121,15 @@ const Scan = () => {
     return (
         <div className="content-wrapper ml-[32px] mr-[32px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
             <div className="w-full">
-                <NavBar title="스캔" />
+                <NavBar
+                    title="스캔하기"
+                    hideLeftIcon={false}
+                    showMenu={false}
+                    iconNames={{
+                        backIcon: "뒤로가기"
+                    }}
+                    rightIcons={[]}
+                />
             </div>
 
             {/* 카메라 뷰어 */}

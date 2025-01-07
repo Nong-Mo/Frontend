@@ -31,7 +31,16 @@ const SignInPage: React.FC = () => {
       <div className="w-full h-[896px] flex flex-col px-[32px] z-10">
 
         {/* NavBar 영역 */}
-        <NavBar title="로그인" showMenu={false}/>
+        <NavBar
+            title="로그인"
+            hideLeftIcon={false}
+            showMenu={false}
+            iconNames={{
+              backIcon: "뒤로가기"
+            }}
+            rightIcons={[]}
+        />
+
 
         {/* Contents 영역 */}
         <div className="w-[350px] h-[545px] flex flex-col items-center">

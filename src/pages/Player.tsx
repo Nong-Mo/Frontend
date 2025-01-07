@@ -61,11 +61,20 @@ const Player: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col min-h-screen z-10">
-      <NavBar 
-        onMenuClick={handleModalOpen} 
-        title='플레이어'
-        rightIcon="convert"
+      <NavBar
+          onMenuClick={handleModalOpen}
+          title='플레이어'
+          hideLeftIcon={false}
+          showMenu={false}
+          iconNames={{
+            backIcon: "뒤로가기",
+            convertIcon: "변환하기",
+            aiIcon: "AI 로봇"
+          }}
+          rightIcons={['convert', 'ai']}
       />
+
+
       { /* 콘텐츠 area 설정 */ }
       <div className="w-[350px] pt-[50px] flex flex-col mx-auto">
         <div className="flex flex-col">
