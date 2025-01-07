@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { NavBar } from "../components/common/NavBar.tsx";
 import InfoText from "../components/common/InfoText.tsx";
 import ChatMessage from "../components/ai_assistants/ChatMessage.tsx";
@@ -6,12 +6,12 @@ import ChatInput from "../components/ai_assistants/ChatInput.tsx";
 import useVoiceRecognition from "../hooks/useVoiceRecognition";
 import useSpeechSynthesis from "../hooks/useSpeechSynthesis";
 import VoiceRecognitionBar from "../components/ai_assistants/VoiceRecognitionBar.tsx";
+import { aiAssistantReducer, initialState } from '../reducers/aiAssistantReducer';
+import { fetchAIResponse } from '../api/ai';
 
 const AIAssistantPage: React.FC = () => {
-    const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
-    const [inputText, setInputText] = useState("");
-
-    const { startRecognition, isListening, stopRecognition } = useVoiceRecognition((text) => setInputText(text));
+    const [state, dispatch] = useReducer(aiAssistantReducer, initialState);
+    const { startRecognition, isListening, stopRecognition } = useVoiceRecognition((text) => dispatch({ type: 'SET_INPUT_TEXT', payload: text }));
     const { speakText } = useSpeechSynthesis();
 
     const buttons = [
@@ -20,43 +20,45 @@ const AIAssistantPage: React.FC = () => {
         "내 보관함 통계를 보여줘"
     ];
 
-    const handleSend = () => {
-        if (!inputText.trim()) return;
+    const handleSend = async () => {
+        if (!state.inputText.trim()) return;
 
-        const newMessages = [...messages, { sender: "user", text: inputText }];
-        setMessages(newMessages);
-        setInputText("");
+        dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text: state.inputText } });
+        dispatch({ type: 'SET_INPUT_TEXT', payload: '' });
+        dispatch({ type: 'SET_LOADING', payload: true });
 
-        const aiResponse = generateAIResponse(inputText);
-        setTimeout(() => {
-            setMessages((prev) => [...prev, { sender: "ai", text: aiResponse }]);
+        try {
+            const aiResponse = await fetchAIResponse(state.inputText);
+            dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'ai', text: aiResponse } });
             speakText(aiResponse);
-        }, 500);
+        } catch (error) {
+            console.error('Error fetching AI response:', error);
+        } finally {
+            dispatch({ type: 'SET_LOADING', payload: false });
+        }
     };
 
     const handleNewChat = () => {
-        setMessages([]);
-        setInputText("");
+        dispatch({ type: 'RESET' });
     };
 
-    const handleButtonClick = (text: string) => {
-        const newMessages = [...messages, { sender: "user", text }];
-        setMessages(newMessages);
+    const handleButtonClick = async (text: string) => {
+        dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text } });
+        dispatch({ type: 'SET_LOADING', payload: true });
 
-        const aiResponse = generateAIResponse(text);
-        setTimeout(() => {
-            setMessages((prev) => [...prev, { sender: "ai", text: aiResponse }]);
+        try {
+            const aiResponse = await fetchAIResponse(text);
+            dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'ai', text: aiResponse } });
             speakText(aiResponse);
-        }, 500);
-    };
-
-    const generateAIResponse = (userText: string): string => {
-        return `AI의 응답: "${userText}"에 대한 정보를 찾았습니다.`;
+        } catch (error) {
+            console.error('Error fetching AI response:', error);
+        } finally {
+            dispatch({ type: 'SET_LOADING', payload: false });
+        }
     };
 
     return (
         <div className="w-full h-[817px] flex flex-col px-[32px] z-10 relative">
-            {/* NavBar */}
             <NavBar
                 title="AI 어시스턴트"
                 hideLeftIcon={false}
@@ -69,20 +71,16 @@ const AIAssistantPage: React.FC = () => {
                 onNewChatClick={handleNewChat}
             />
 
-            {/* Title */}
             <div className="w-full primary-info-text mb-4">
                 <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
             </div>
 
-            {/* Chat Messages */}
             <div className="w-[350px] h-[554px] mt-[30px] mb-[20px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
-                {/* 채팅 메시지 */}
-                {messages.map((msg, index) => (
+                {state.messages.map((msg, index) => (
                     <ChatMessage key={index} sender={msg.sender} text={msg.text} />
                 ))}
 
-                {/* 버튼 영역 */}
-                {!isListening && messages.length === 0 && (
+                {!isListening && state.messages.length === 0 && (
                     <div className="flex mt-auto overflow-x-auto whitespace-nowrap">
                         {buttons.map((text, index) => (
                             <div key={index} className="inline-block mr-[20px]">
@@ -105,37 +103,29 @@ const AIAssistantPage: React.FC = () => {
                     </div>
                 )}
 
-                {/* 음성 인식 프로그레스 바 */}
                 {isListening && (
                     <VoiceRecognitionBar
                         isListening={isListening}
                         duration={60}
                         onCancel={() => {
                             stopRecognition();
-                            setInputText("");
+                            dispatch({ type: 'SET_INPUT_TEXT', payload: '' });
                         }}
                         onComplete={() => {
                             stopRecognition();
-                            if (inputText.trim()) {
-                                const newMessages = [...messages, { sender: "user", text: inputText }];
-                                setMessages(newMessages);
-
-                                const aiResponse = generateAIResponse(inputText);
-                                setTimeout(() => {
-                                    setMessages((prev) => [...prev, { sender: "ai", text: aiResponse }]);
-                                    speakText(aiResponse);
-                                }, 500);
+                            if (state.inputText.trim()) {
+                                dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text: state.inputText } });
+                                handleSend();
                             }
-                            setInputText("");
+                            dispatch({ type: 'SET_INPUT_TEXT', payload: '' });
                         }}
                     />
                 )}
             </div>
 
-            {/* Chat Input */}
             <ChatInput
-                inputText={inputText}
-                setInputText={setInputText}
+                inputText={state.inputText}
+                setInputText={(text) => dispatch({ type: 'SET_INPUT_TEXT', payload: text })}
                 onSend={handleSend}
                 onStartVoiceRecognition={startRecognition}
                 isListening={isListening}
