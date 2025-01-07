@@ -40,9 +40,9 @@ const VoiceRecognitionBar: React.FC<{
                                 onComplete(transcript); // 바로 채팅창에 추가
                             }
                         }}
-                        className="text-white w-6 h-6 rounded-full flex items-center justify-center bg-[#5E6272]"
+                        className="text-white w-8 h-8 rounded-full flex items-center justify-center bg-[#5E6272]"
                     >
-                        <FaCheck size={13}/>
+                        <FaTimes size={16}/>
                     </button>
 
                     {/* 진행 바 */}
@@ -70,9 +70,9 @@ const VoiceRecognitionBar: React.FC<{
                                 console.log("Transcript is empty."); // 디버깅용 로그
                             }
                         }}
-                        className="text-white w-6 h-6 rounded-full flex items-center justify-center bg-[#5E6272]"
+                        className="text-white w-8 h-8 rounded-full flex items-center justify-center bg-[#5E6272]"
                     >
-                        <FaCheck size={13}/>
+                        <FaCheck size={16}/>
                     </button>
                 </div>
             </div>

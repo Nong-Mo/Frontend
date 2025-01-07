@@ -91,7 +91,7 @@ const AIAssistantPage: React.FC = () => {
                                         <div
                                             className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
                                         <div
-                                            className="w-[95px] h-[34px] font-bold text-white text-[12px] text-left whitespace-normal z-10">
+                                            className="w-[95px] h-auto font-bold text-white text-[14px] text-left whitespace-normal z-10">
                                             {text}
                                         </div>
                                     </button>
