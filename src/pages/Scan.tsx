@@ -119,7 +119,7 @@ const Scan = () => {
     }
 
     return (
-        <div className="content-wrapper ml-[32px] mr-[32px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
+        <div className="z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
             <div className="w-full">
                 <NavBar
                     title="스캔하기"
