@@ -47,19 +47,13 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     }, []);
 
     useEffect(() => {
+
         const fetchCollectionItems = async () => {
             try {
                 const data = await getItems(collectionType);
                 setCollectionItems(data.fileList);
             } catch (error) {
                 console.error('데이터 로딩 실패:', error);
-                setCollectionItems([]);
-
-                // 에러 메시지가 있다면 사용자에게 표시할 수 있습니다
-                if (error instanceof Error) {
-                    // 여기서 에러 메시지를 표시하는 로직을 추가할 수 있습니다
-                    console.error(error.message);
-                }
             }
         };
 
@@ -68,7 +62,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
 
     useEffect(() => {
         console.log('컬렉션 아이템이 변경되었습니다:', collectionItems);
-
     }, [collectionItems]);
 
     const onClickAllButton = () => {
