@@ -1,24 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect } from 'react';
 
 const useVoiceRecognition = (onResult: (text: string) => void) => {
     const [isListening, setIsListening] = useState(false);
-    const recognitionRef = useRef<any>(null);
+    const recognitionRef = useRef<SpeechRecognition | null>(null);
 
     useEffect(() => {
-        const SpeechRecognition =
-            (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-        if (SpeechRecognition) {
-            const recognition = new SpeechRecognition();
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new (window as any).webkitSpeechRecognition();
             recognitionRef.current = recognition;
-            recognition.lang = "ko-KR";
-            recognition.continuous = false;
-            recognition.interimResults = false;
+            recognition.continuous = true;
+            recognition.interimResults = true;
 
             recognition.onresult = (event: any) => {
-                const result = event.results[0][0].transcript;
-                console.log("Transcript:", result);
-                onResult(result);
+                let interimTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        onResult(event.results[i][0].transcript);
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                console.log("Interim Transcript:", interimTranscript);
             };
 
             recognition.onend = () => {
@@ -44,7 +46,6 @@ const useVoiceRecognition = (onResult: (text: string) => void) => {
 
     const startRecognition = async () => {
         try {
-            // 마이크 권한 요청
             await navigator.mediaDevices.getUserMedia({ audio: true });
             const recognition = recognitionRef.current;
             if (recognition && !isListening) {
