@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 interface PhotoFile {
     id: string;
@@ -117,12 +117,14 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
 
     const renderStep2 = () => (
         <div className="w-full text-center relative">
-            <h2 className="text-white text-xl font-bold text-[25px] mb-[30px]">파일 변환 중...</h2>
-            <div className="w-full flex justify-center h-28">
-                <div className="inline-block h-[100px] w-[100px] animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] self-center">
+            <div className="mx-[14px] my-[42px] flex items-center flex-col">
+                <h2 className="text-white font-bold text-[25px] mb-[30px]">파일 변환 중...</h2>
+                <div className="w-full flex justify-center h-28">
+                    <div className="inline-block h-[100px] w-[100px] animate-spin rounded-full border-4 border-solid border-blue-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] self-center">
                     <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
                         Loading...
                     </span>
+                    </div>
                 </div>
             </div>
         </div>
