@@ -1,6 +1,6 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import {NavBar} from "../components/common/NavBar.tsx";
-import CollectionGrid from "../components/viewer/CollectionGrid";
+import CollectionGrid, { CollectionItemProps } from "../components/viewer/CollectionGrid";
 import {FaPlus} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 import { API_TYPE } from "../routes/constants";
@@ -19,8 +19,8 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     // 라이브러리 설명 텍스트 - Empty and Non-Empty
     const [viewerEmptyText, setViewerEmptyText] = useState('');
     const [viewerText, setViewerText] = useState('');
-    // 라이브러리 컬렉션 아이템 배열
-    const [collectionItems, setCollectionItems] = useState<string[]>([]);
+    // 라이브러리 컬렉션 아이템 CollectionItemProps
+    const [collectionItems, setCollectionItems] = useState<CollectionItemProps[]>([]);
     // 이동을 위한 Navigate
     const navigate = useNavigate();
 
@@ -60,12 +60,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
         fetchCollectionItems();
     }, [collectionType]);
 
-    useEffect(() => {
-        if(collectionItems.length == 0) return;
-
-        console.log('컬렉션 아이템이 변경되었습니다:', collectionItems);
-    }, [collectionItems]);
-
     const onClickAllButton = () => {
         setFilterButton(0);
     }
@@ -79,16 +73,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
 
     const onClickAddButton = () => {
         navigate('/scan');
-
-        // For Debug
-        // const newItem = {
-        //     id: collectionItems.length + 1,
-        //     title: `제목 ${collectionItems.length + 1}`,
-        //     date: new Date().toLocaleString(),
-        //     itemType: collectionItemType
-        // };
-        //
-        // setCollectionItems(prevItems => [...prevItems, newItem]);
     }
     return (
         <div className="w-full z-10">
@@ -106,7 +90,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                     />
                 </div>
                 <div className="w-full">
-                    <h1 className="mt-[15px] primary-info-text leading-50">
+                    <h1 className="mt-[15px] primary-info-text leading-50 whitespace-pre-line">
                         {collectionItems.length === 0
                             ? <>{viewerEmptyText}</>
                             : <>{viewerText}</>
