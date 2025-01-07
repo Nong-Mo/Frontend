@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import homeImage from "../icons/intro/home.svg";
 import SubmitButton from '../components/features/Sign/SubmitButton.tsx';
 
-
 const Intro: FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
@@ -23,16 +22,16 @@ const Intro: FC = () => {
                   </div>
                 </div>
             )}
-            <img
-                src={homeImage}
-                alt="Home"
-                className={`w-full h-[458px] transition-opacity duration-300 ${
-                    isLoading ? 'opacity-0' : 'opacity-100'
-                }`}
-                width={414}
-                height={451.5}
-                onLoad={() => setIsLoading(false)}
-            />
+            <div className="w-full h-[458px] overflow-hidden">
+              <img
+                  src={homeImage}
+                  alt="Home"
+                  className={`w-[414px] h-[458px] object-cover transition-opacity duration-300 ${
+                      isLoading ? 'opacity-0' : 'opacity-100'
+                  }`}
+                  onLoad={() => setIsLoading(false)}
+              />
+            </div>
           </div>
           <div className="w-[350px] h-[150px]">
             <h1 className="font-bold text-left">
