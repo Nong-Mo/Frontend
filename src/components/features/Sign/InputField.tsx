@@ -31,7 +31,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
     return (
         <div className="w-[350px] h-[90px] relative">
-            <div className="w-[350px] left-0 top-[3px] absolute text-[#393c46] text-[15px] font-semibold font-['Pretendard'] leading-normal">
+            <div className="w-[350px] left-0 top-[3px] absolute text-[#393c46] text-[15px] font-semibold leading-normal">
                 {label}
             </div>
             <div className="w-[350px] left-0 top-[33px] absolute justify-between items-center inline-flex">
