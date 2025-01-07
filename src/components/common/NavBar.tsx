@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FiEdit } from "react-icons/fi"; // React Icons에서 Edit 아이콘 가져오기
 import leftIcon from "../../icons/common/leftIcon.svg";
 import menu from "../../icons/common/menu.svg";
 import search from "../../icons/common/search.svg";
@@ -9,18 +10,20 @@ interface NavigationProps {
     onMenuClick?: () => void;
     title?: string;
     showMenu?: boolean;
-    rightIcon?: 'convert' | 'search';  // 오른쪽 아이콘 타입 지정
-    hideLeftIcon?: boolean;  // 왼쪽 아이콘 숨김 여부
-    alignTitle?: 'left' | 'center';  // 제목 정렬 옵션 추가
+    rightIcon?: 'convert' | 'search' | 'newChat';  // 'newChat' 추가
+    hideLeftIcon?: boolean;
+    alignTitle?: 'left' | 'center';
+    onNewChatClick?: () => void; // 새 채팅 버튼 클릭 이벤트 핸들러
 }
 
 export const NavBar: React.FC<NavigationProps> = ({
                                                       onMenuClick,
                                                       title,
                                                       showMenu = true,
-                                                      rightIcon = 'convert',  // 기본값은 convert
-                                                      hideLeftIcon = false,  // 기본값은 false
-                                                      alignTitle = 'center'  // 기본값은 center
+                                                      rightIcon = 'convert',
+                                                      hideLeftIcon = false,
+                                                      alignTitle = 'center',
+                                                      onNewChatClick
                                                   }) => {
     const navigate = useNavigate();
 
@@ -33,6 +36,7 @@ export const NavBar: React.FC<NavigationProps> = ({
     return (
         <div className="flex justify-center">
             <div className="flex items-center justify-between w-full max-w-[350px] h-[50px] relative">
+                {/* 왼쪽 아이콘 */}
                 {!hideLeftIcon && (
                     <img
                         src={leftIcon}
@@ -42,19 +46,33 @@ export const NavBar: React.FC<NavigationProps> = ({
                     />
                 )}
 
+                {/* 제목 */}
                 <span
                     className={`font-bold text-[20px] text-white flex-1 ${alignTitle === 'left' ? 'text-left' : 'text-center'}`}
-                    style={{lineHeight: '25.2px'}}>
-  {title}
-</span>
+                    style={{ lineHeight: '25.2px' }}
+                >
+                    {title}
+                </span>
 
-                {showMenu && (
+                {/* 오른쪽 아이콘 */}
+                {showMenu && rightIcon !== 'newChat' && (
                     <img
-                        src={icons[rightIcon]}  // rightIcon prop에 따라 아이콘 변경
-                        className="w-4 h-4 cursor-pointer absolute right-1"
+                        src={icons[rightIcon]} // rightIcon prop에 따라 아이콘 변경
+                        className="w-4 h-4 cursor-pointer flex items-center absolute right-1"
                         alt={rightIcon}
                         onClick={onMenuClick}
                     />
+                )}
+
+                {/* 새 채팅 아이콘 */}
+                {rightIcon === 'newChat' && (
+                    <button
+                        className="w-4 h-4 text-white flex items-center absolute right-1"
+                        onClick={onNewChatClick}
+                        aria-label="새 채팅"
+                    >
+                        <FiEdit size={20} /> {/* Edit 아이콘 */}
+                    </button>
                 )}
             </div>
         </div>
