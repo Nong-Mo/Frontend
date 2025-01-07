@@ -75,8 +75,16 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
         <div className="w-full z-10">
             <div className="content-wrapper ml-[32px] mr-[32px] mt-[15px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
                 <div className="w-full">
-                    <NavBar title={viewerTitle}
-                            rightIcon="search"/>
+                    <NavBar
+                        title={viewerTitle}
+                        hideLeftIcon={false}
+                        showMenu={false}
+                        iconNames={{
+                            backIcon: "뒤로가기",
+                            aiIcon: "AI 로봇"
+                        }}
+                        rightIcons={['ai']}
+                    />
                 </div>
                 <div className="w-full">
                     <h1 className="mt-[15px] primary-info-text leading-50">

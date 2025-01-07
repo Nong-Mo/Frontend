@@ -83,8 +83,15 @@ const SignUpPage: React.FC = () => {
       <div className="w-full h-[896px] flex flex-col px-[32px] z-10">
 
         {/* NavBar 영역 */}
-        <NavBar title="회원가입" showMenu={false} />
-
+        <NavBar
+            title="회원가입"
+            hideLeftIcon={false}
+            showMenu={false}
+            iconNames={{
+              backIcon: "뒤로가기"
+            }}
+            rightIcons={[]}
+        />
         {/* Contents 영역 */}
         <div className="w-[350px] h-[729px] flex flex-col items-center">
           {/* InfoText 영역 */}
