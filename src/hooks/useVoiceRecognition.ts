@@ -17,6 +17,7 @@ const useVoiceRecognition = (onResult: (text: string) => void) => {
 
             recognition.onresult = (event: any) => {
                 const result = event.results[0][0].transcript;
+                console.log("Transcript:", result);
                 onResult(result);
             };
 
@@ -27,7 +28,6 @@ const useVoiceRecognition = (onResult: (text: string) => void) => {
 
             recognition.onerror = (event: any) => {
                 console.error("Speech recognition error", event);
-
                 if (event.error === "not-allowed") {
                     alert("마이크 권한이 필요합니다. 브라우저 설정에서 마이크 권한을 허용해주세요.");
                 } else if (event.error === "no-speech") {
@@ -35,9 +35,10 @@ const useVoiceRecognition = (onResult: (text: string) => void) => {
                 } else {
                     alert(`음성 인식 중 오류가 발생했습니다: ${event.error}`);
                 }
-
                 setIsListening(false);
             };
+        } else {
+            alert("현재 브라우저는 음성 인식을 지원하지 않습니다. 최신 Chrome 또는 Edge 브라우저를 사용해주세요.");
         }
     }, [onResult]);
 
@@ -45,7 +46,6 @@ const useVoiceRecognition = (onResult: (text: string) => void) => {
         try {
             // 마이크 권한 요청
             await navigator.mediaDevices.getUserMedia({ audio: true });
-
             const recognition = recognitionRef.current;
             if (recognition && !isListening) {
                 recognition.start();

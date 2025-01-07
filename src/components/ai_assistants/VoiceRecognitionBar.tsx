@@ -5,21 +5,25 @@ const VoiceRecognitionBar: React.FC<{
     isListening: boolean;
     duration: number; // 최대 음성 인식 시간 (초 단위)
     onCancel: () => void; // 취소 버튼 클릭 시 실행
-    onComplete: (text: string) => void; // 완료 버튼 클릭 시 실행
+    onComplete: (text: string) => void; // 완�� 버튼 클릭 시 실행
     transcript: string; // 음성 인식 결과 전달
 }> = ({ isListening, duration, onCancel, onComplete, transcript }) => {
     const [elapsedTime, setElapsedTime] = useState(0);
 
     useEffect(() => {
-        let timer: NodeJS.Timeout;
+        let timer: NodeJS.Timeout | null = null;
         if (isListening) {
             timer = setInterval(() => {
                 setElapsedTime((prev) => prev + 1);
             }, 1000); // 1초마다 업데이트
-        } else {
+        } else if (timer) {
             clearInterval(timer);
         }
-        return () => clearInterval(timer);
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+        };
     }, [isListening]);
 
     const progressPercentage = Math.min((elapsedTime / duration) * 100, 100);
@@ -40,7 +44,6 @@ const VoiceRecognitionBar: React.FC<{
                     >
                         <FaCheck size={13}/>
                     </button>
-
 
                     {/* 진행 바 */}
                     <div className="mx-4 h-2 relative flex items-center w-[180px]">
