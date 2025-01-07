@@ -36,7 +36,7 @@ export const NavBar: React.FC<NavigationProps> = ({
           onClick={() => navigate(-1)}
         />
         
-        <span className="text-xl text-white flex-1 text-center">{title}</span>
+        <span className="font-bold text-[20px] text-white flex-1 text-center">{title}</span>
         
         {showMenu && (
           <img
