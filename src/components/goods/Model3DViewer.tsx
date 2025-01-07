@@ -14,13 +14,13 @@ type GLTFResult = GLTF & {
   };
 };
 
-interface MaxwellModelProps {
+interface ModelProps {
   scale?: number | [number, number, number];
   position?: [number, number, number];
   rotation?: [number, number, number];
 }
 
-function MaxwellModel(props: MaxwellModelProps) {
+function Model(props: ModelProps) {
   const { scene } = useGLTF('/3d/cute_cat_with_strawberries.glb') as GLTFResult;
   return <primitive object={scene} {...props} />;
 }
@@ -42,9 +42,9 @@ export function Model3DViewer(): JSX.Element {
             position={[5, 5, 5]} 
             intensity={1} 
           />
-          <MaxwellModel 
-            scale={2.5}
-            position={[0, -5, 0]}
+          <Model 
+            scale={0.5}
+            position={[0, -1, 0]}
             rotation={[0, Math.PI / 4, 0]}
           />
           <OrbitControls
