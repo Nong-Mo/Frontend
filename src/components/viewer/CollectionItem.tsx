@@ -64,15 +64,15 @@ const CollectionItem = ({title, date, itemType = 'BOOK', onClick}: CollectionIte
                         {getItemIcon()}
                     </div>
                     {/* More Button */}
-                    <button
-                        type="button"
+                    <div
+                        role="button"
                         onClick={handleMoreClick}
-                        className="p-1 hover:bg-[#3d4251] rounded-full transition-colors"
+                        className="p-1 hover:bg-[#3d4251] rounded-full transition-colors cursor-pointer"
                         aria-label="더보기"
                     >
                         <IoMdMore size={20}
                                   className="text-white"/>
-                    </button>
+                    </div>
                 </div>
                 <div className="mt-[16.3px] h-[48px]">
                     <h1 className="leading-[24px] text-white font-bold text-[17.5px]">{title}</h1>
