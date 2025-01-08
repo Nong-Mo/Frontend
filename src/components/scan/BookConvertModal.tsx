@@ -16,6 +16,7 @@ interface BookConvertModalProps {
     onUpload: (photos: PhotoFile[], title: string) => Promise<boolean>;
     onComplete: () => void;
     isLoading: boolean;
+    clearPhotos: () => void;
 }
 
 const BookConvertModal: React.FC<BookConvertModalProps> = ({
@@ -24,6 +25,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                                                                 onUpload,
                                                                 onComplete,
                                                                 isLoading,
+                                                                clearPhotos,
                                                             }) => {
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(1);
@@ -166,7 +168,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => {
-                        onComplete();
+                        clearPhotos();
                         navigate("/library/book");
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
