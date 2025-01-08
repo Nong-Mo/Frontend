@@ -165,7 +165,10 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             <h2 className="my-[15px] text-[50px]">🎉</h2>
             <div className="flex justify-center space-x-4">
                 <button
-                    onClick={() => navigate("/library/book")}
+                    onClick={() => {
+                        onComplete();
+                        navigate("/library/book");
+                    }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
                 >
                     보관함으로
