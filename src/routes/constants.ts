@@ -24,6 +24,11 @@ export const ROUTES = {
         title: 'Scan',
         ko: '스캔'
     },
+    SCANVERTEX: {
+        path:'/scan/vertex',
+        title: 'Scan Vertex',
+        ko: '영역 조정'
+    },
     LIBRARY: {
         BOOK: {
             path: '/library/book',
