@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import CollectionItem from "./CollectionItem.tsx";
 
 export interface CollectionItemProps {
@@ -12,6 +13,7 @@ interface CollectionGridProps {
 }
 
 const CollectionGrid = ({items} : CollectionGridProps) => {
+    const navigate = useNavigate();
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -24,15 +26,20 @@ const CollectionGrid = ({items} : CollectionGridProps) => {
         return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
 
+    const handleItemClick = (fileID: string) => {
+        navigate(`/player/audio/${fileID}`);
+    };
+
     return (
         <div className="w-full">
             <div className="h-full">
-                <div className="grid grid-cols-2 gap-[15px] pb-[30px]">
+                <div className="grid grid-cols-2 gap-4 pb-8">
                     {items?.map(item => (
                         <CollectionItem
                             key={item.fileID}
                             title={item.fileName}
-                            date={formatDate(item.uploadDate)} // 포맷팅된 날짜 전달
+                            date={formatDate(item.uploadDate)}
+                            onClickItem={() => handleItemClick(item.fileID)}
                             itemType="BOOK"
                         />
                     ))}

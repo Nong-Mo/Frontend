@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState, useCallback, useLayoutEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import { NavBar } from '../components/common/NavBar';
 import { BookInfo } from '../components/player/BookInfo';
 import { ProgressBar } from '../components/player/ProgressBar';
@@ -11,6 +11,7 @@ import { AudioData } from '../types/audio';
 
 const Player: React.FC = () => {
   const navigate = useNavigate();
+  const fileID = useParams().id;
   const [audioData, setAudioData] = useState<AudioData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,16 +27,15 @@ const Player: React.FC = () => {
     toggleMute
   } = useAudioPlayer(audioData?.audioUrl || '');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await audioService.fetchAudioData('1');
+        const data = await audioService.fetchAudioData(fileID);
         setAudioData(data);
       } catch (err) {
         setError((err as Error).message);
       }
-    };
-
+    }
     fetchData();
   }, []);
 

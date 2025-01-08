@@ -8,10 +8,10 @@ interface CollectionItemProps {
     title: string;
     date: string;
     itemType: ItemType;
-    onClick?: () => void;
+    onClickItem?: () => void;
 }
 
-const CollectionItem = ({title, date, itemType = 'BOOK', onClick}: CollectionItemProps) => {
+const CollectionItem = ({title, date, itemType = 'BOOK', onClickItem}: CollectionItemProps) => {
     // 아이템 타입에 따른 아이콘 반환 함수
     const getItemIcon = () => {
         const iconSize = 15;  // 모든 아이콘에 동일한 크기 적용
@@ -53,7 +53,7 @@ const CollectionItem = ({title, date, itemType = 'BOOK', onClick}: CollectionIte
     return (
         <button
             className="w-[165px] h-[165px] bg-[#262A34] rounded-[12px] text-left cursor-pointer hover:bg-[#2d3341] transition-colors"
-            onClick={onClick}
+            onClick={onClickItem}
             type="button"
             aria-label={`${title} 열기`}
         >

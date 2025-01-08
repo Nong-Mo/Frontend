@@ -1,21 +1,31 @@
-import { AudioData } from '../types/audio';
+import axiosInstance from '../api/axios.ts';
+import {AudioData} from '../types/audio';
 
-// 임시 테스트 데이터
-const mockAudioData: AudioData = {
-  id: '1',
-  title: '해리포터와 아즈카반의 죄수',
-  bookName: '해리포터와 아즈카반의 죄수',
-  createdAt: '2024-12-31',
-  audioUrl: '/music/운수좋은날.mp3',
-  bookCover: '/covers/audio_cover.png',
-};
+interface StorageResponse {
+    fileID: string;
+    fileName: string;
+    uploadDate: string;
+    fileUrl: string;
+    fileType: string;
+    contents: string;
+    relatedFile?: {
+        fileUrl: string;
+        fileType: string;
+    };
+}
 
 export const audioService = {
-  fetchAudioData: async (id: string): Promise<AudioData> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(mockAudioData);
-      }, 500);
-    });
-  }
+    fetchAudioData: async (id: string): Promise<AudioData> => {
+        const {data} = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
+        console.log(data);
+
+        return {
+            id: data.fileID,
+            title: data.fileName,
+            bookName: data.fileName,
+            createdAt: new Date(data.uploadDate).toISOString().split('T')[0],
+            audioUrl: data.fileUrl,
+            bookCover: data.relatedFile?.fileUrl || '/covers/audio_cover.png'
+        };
+    }
 };

@@ -40,24 +40,24 @@ const App = () => {
                     {/* Protected Routes */}
                     <Route element={<PrivateRoute/>}>
                         <Route path={ROUTES.HOME.path}
-                                element={<Home/>}/>
+                               element={<Home/>}/>
                         <Route path={ROUTES.SCAN.path}
-                                element={<Scan/>}/>
+                               element={<Scan/>}/>
                         <Route path={ROUTES.SCANVERTEX.path}
-                                element={<ScanVertex/>}/>
-                        <Route path={ROUTES.PLAYER.AUDIO.path}
-                                element={<Player/>}/>
-                        <Route path={ROUTES.PLAYER.PDF.path}
-                                element={<PlayerPdfViewer/>}/>
+                               element={<ScanVertex/>}/>
+                        <Route path={`${ROUTES.PLAYER.AUDIO.path}/:id`}
+                               element={<Player/>}/>
+                        <Route path={`${ROUTES.PLAYER.PDF.path}/:id`}
+                               element={<PlayerPdfViewer/>}/>
                         <Route path={ROUTES.LIBRARY.BOOK.path}
-                                element={<LibraryViewer collectionType={API_TYPE.BOOK}/>}/>
+                               element={<LibraryViewer collectionType={API_TYPE.BOOK}/>}/>
                         <Route path={ROUTES.LIBRARY.RECEIPT.path}
-                                element={<LibraryViewer collectionType={API_TYPE.RECEIPT}/>}/>
+                               element={<LibraryViewer collectionType={API_TYPE.RECEIPT}/>}/>
                         <Route path={ROUTES.AI_ASSISTANT.path}
-                                element={<AiAssistant/>}/>
+                               element={<AiAssistant/>}/>
                         <Route path={ROUTES.GOODS.STORAGE.path}
-                                element={<GoodsStorage />}/>
-                      
+                               element={<GoodsStorage/>}/>
+
                     </Route>
                     {/* Redirect */}
                     <Route path="/"
