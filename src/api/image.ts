@@ -34,8 +34,8 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
 
   // 파일들 추가
   files.forEach(item => {
-    if (item.file.size > 5 * 1024 * 1024) {
-      throw new Error('파일 크기가 너무 큽니다. 5MB 이하의 파일만 업로드 가능합니다.');
+    if (item.file.size > 50 * 1024 * 1024) {
+      throw new Error('파일 크기가 너무 큽니다. 50MB 이하의 파일만 업로드 가능합니다.');
     }
     formData.append('files', item.file);
   });

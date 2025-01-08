@@ -24,7 +24,7 @@ interface UploadOptions {
 }
 
 export const UPLOAD_CONSTANTS = {
-    MAX_TOTAL_SIZE: 10 * 1024 * 1024, // 10MB
+    MAX_TOTAL_SIZE: 50 * 1024 * 1024, // 10MB
     MIN_FILE_SIZE: 100, // 100 bytes
     ALLOWED_TYPES: ['image/jpeg', 'image/jpg'],
 } as const;
