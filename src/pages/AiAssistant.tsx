@@ -9,49 +9,81 @@ import VoiceRecognitionBar from "../components/ai_assistants/VoiceRecognitionBar
 import { aiAssistantReducer, initialState } from '../reducers/aiAssistantReducer';
 import { fetchAIResponse } from '../api/ai';
 
+// AIAssistantPage 컴포넌트 정의
 const AIAssistantPage: React.FC = () => {
+    // useReducer를 사용하여 상태와 디스패치 함수를 생성
     const [state, dispatch] = useReducer(aiAssistantReducer, initialState);
+
+    // 음성 인식 훅을 사용하여 음성 인식 시작, 중지 함수와 상태를 가져옴
     const { startRecognition, isListening, stopRecognition } = useVoiceRecognition((text) => {
+        // 음성 인식 결과를 디스패치하고 AI 응답을 가져옴
         dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text } });
         fetchAndAddAIResponse(text);
     });
+
+    // 음성 합성 훅을 사용하여 텍스트를 음성으로 변환하는 함수 가져옴
     const { speakText } = useSpeechSynthesis();
 
+    // 버튼 텍스트 배열
     const buttons = [
         "마지막으로 열어 본 파일을 보여줘",
         "A2D 서비스 사용 방법을 알려줘",
         "내 보관함 통계를 보여줘"
     ];
 
+    // AI 응답을 가져와서 상태에 추가하는 함수
+    // 매개변수: userText (사용자가 입력한 텍스트)
+    // 반환값: 없음
     const fetchAndAddAIResponse = async (userText: string) => {
+        // 로딩 상태로 설정
         dispatch({ type: 'SET_LOADING', payload: true });
 
         try {
+            // AI 응답을 가져옴
             const aiResponse = await fetchAIResponse(userText);
+            // AI 응답을 상태에 추가
             dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'ai', text: aiResponse } });
+            // AI 응답을 음성으로 변환하여 재생
             speakText(aiResponse);
         } catch (error) {
             console.error('Error fetching AI response:', error);
         } finally {
+            // 로딩 상태 해제
             dispatch({ type: 'SET_LOADING', payload: false });
         }
     };
 
+    // 메시지 전송 핸들러
+    // 매개변수: 없음
+    // 반환값: 없음
     const handleSend = async () => {
+        // 입력된 텍스트가 없으면 반환
         if (!state.inputText.trim()) return;
 
+        // 사용자 메시지를 상태에 추가
         dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text: state.inputText } });
+        // 입력 텍스트 초기화
         dispatch({ type: 'SET_INPUT_TEXT', payload: '' });
 
+        // AI 응답을 가져와서 추가
         await fetchAndAddAIResponse(state.inputText);
     };
 
+    // 새로운 채팅 시작 핸들러
+    // 매개변수: 없음
+    // 반환값: 없음
     const handleNewChat = () => {
+        // 상태 초기화
         dispatch({ type: 'RESET' });
     };
 
+    // 버튼 클릭 핸들러
+    // 매개변수: text (버튼 텍스트)
+    // 반환값: 없음
     const handleButtonClick = async (text: string) => {
+        // 버튼 텍스트를 사용자 메시지로 추가
         dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text } });
+        // AI 응답을 가져와서 추가
         await fetchAndAddAIResponse(text);
     };
 
