@@ -318,7 +318,7 @@ const PlayerPdfViewer: React.FC = () => {
         <div className="flex justify-center">
           <div className="w-[350px] h-[768px]" ref={containerRef}>
             <div className="w-full px-4 py-3 border-b flex flex-col items-center border-gray-700 text-white">
-              <h1 className="text-[25px] font-bold whitespace-nowrap overflow-hidden text-ellipsis w-full">{pdfTitle}</h1>
+              <h1 className="text-[25px] text-center font-bold whitespace-nowrap overflow-hidden text-ellipsis w-full">{pdfTitle}</h1>
             </div>
 
             <div
