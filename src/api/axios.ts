@@ -47,17 +47,13 @@ axiosInstance.interceptors.response.use(
 export const uploadInstance = axios.create({
   baseURL: axiosInstance.defaults.baseURL, // baseURL 상속
   timeout: 120000,
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'multipart/form-data', // 명시적으로 설정
-  },
 });
 
 uploadInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers['token'] = `${token}`;
+      config.headers['token'] = token;
     }
     return config;
   },
