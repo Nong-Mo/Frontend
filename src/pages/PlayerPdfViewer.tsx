@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { NavBar } from '../components/common/NavBar';
 import ConvertModal from '../components/player/ConvertModal';
+import axiosInstance from "../api/axios.ts";
+import { StorageResponse } from "../services/audioService.ts";
+import {useParams} from 'react-router-dom';
 
 interface PageInfo {
   url: string;
@@ -16,22 +19,21 @@ const PlayerPdfViewer: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [pdfTitle, setPdfTitle] = useState('Empty');
 
-  // Refs
   const pdfInstanceRef = useRef<any>(null);
   const loadingPagesRef = useRef<Set<number>>(new Set());
   const pageCache = useRef<Map<number, string>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
   const pageDimensionsRef = useRef<Map<number, { width: number; height: number }>>(new Map());
+  const { id } = useParams();
 
-  // 페이지 렌더링 최적화 함수
   const renderPage = useCallback(async (pageNum: number) => {
     try {
       if (!pdfInstanceRef.current || loadingPagesRef.current.has(pageNum)) {
         return null;
       }
 
-      // 캐시 확인
       if (pageCache.current.has(pageNum)) {
         return {
           url: pageCache.current.get(pageNum),
@@ -43,11 +45,10 @@ const PlayerPdfViewer: React.FC = () => {
       loadingPagesRef.current.add(pageNum);
 
       const page = await pdfInstanceRef.current.getPage(pageNum);
-      
-      // 고해상도 렌더링을 위한 스케일 계산
+
       const containerWidth = containerRef.current?.clientWidth || 350;
       const viewport = page.getViewport({ scale: 1.0 });
-      const scale = (containerWidth / viewport.width) * 2; // 2배 더 높은 해상도로 렌더링
+      const scale = (containerWidth / viewport.width) * 2;
       const scaledViewport = page.getViewport({ scale });
 
       const canvas = document.createElement('canvas');
@@ -59,7 +60,6 @@ const PlayerPdfViewer: React.FC = () => {
       canvas.height = scaledViewport.height;
       canvas.width = scaledViewport.width;
 
-      // 페이지 크기 저장
       pageDimensionsRef.current.set(pageNum, {
         width: scaledViewport.width,
         height: scaledViewport.height
@@ -73,16 +73,13 @@ const PlayerPdfViewer: React.FC = () => {
         renderInteractiveForms: false
       }).promise;
 
-      // 이미지 품질 설정
       const quality = getImageQuality(pageNum);
       const url = canvas.toDataURL('image/jpeg', quality);
-      
-      // 메모리 해제
+
       context.clearRect(0, 0, canvas.width, canvas.height);
       canvas.width = 0;
       canvas.height = 0;
-      
-      // 캐시 저장
+
       pageCache.current.set(pageNum, url);
       loadingPagesRef.current.delete(pageNum);
 
@@ -98,7 +95,6 @@ const PlayerPdfViewer: React.FC = () => {
     }
   }, []);
 
-  // 이미지 품질 동적 조정
   const getImageQuality = (pageNum: number) => {
     const distanceFromCurrent = Math.abs(pageNum - currentPage);
     if (distanceFromCurrent === 0) return 0.8;
@@ -106,7 +102,6 @@ const PlayerPdfViewer: React.FC = () => {
     return 0.4;
   };
 
-  // Intersection Observer 설정
   const observerRef = useRef<IntersectionObserver | null>(null);
 
   const initIntersectionObserver = useCallback(() => {
@@ -115,25 +110,24 @@ const PlayerPdfViewer: React.FC = () => {
     }
 
     observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const pageNum = parseInt(entry.target.getAttribute('data-page') || '0', 10);
-            if (pageNum > 0) {
-              loadPage(pageNum);
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const pageNum = parseInt(entry.target.getAttribute('data-page') || '0', 10);
+              if (pageNum > 0) {
+                loadPage(pageNum);
+              }
             }
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: '200px',
-        threshold: 0.1
-      }
+          });
+        },
+        {
+          root: null,
+          rootMargin: '200px',
+          threshold: 0.1
+        }
     );
   }, []);
 
-  // 페이지 로드 함수
   const loadPage = useCallback(async (pageNum: number) => {
     if (pageNum > totalPages || pageNum < 1) return;
 
@@ -155,29 +149,15 @@ const PlayerPdfViewer: React.FC = () => {
     }
   }, [totalPages, pdfPages, renderPage]);
 
-  // 멀리 있는 페이지 언로드
-  const unloadDistantPages = useCallback(() => {
-    const visibleRange = 3;
-    setPdfPages(prev => prev.map(page => {
-      if (Math.abs(page.pageNumber - currentPage) > visibleRange) {
-        return {
-          ...page,
-          url: '',
-          isLoaded: false
-        };
-      }
-      return page;
-    }));
-  }, [currentPage]);
-
-  // PDF 초기 로드
   useEffect(() => {
     const loadPdf = async () => {
+      if (!id) return;
+
       setIsLoading(true);
       setError(null);
+
       try {
-        // PDF.js 라이브러리 동적 로드
-        if (typeof window['pdfjs-dist/build/pdf'] === 'undefined') {
+        if (!window['pdfjs-dist/build/pdf']) {
           await new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
@@ -190,56 +170,56 @@ const PlayerPdfViewer: React.FC = () => {
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-        const timestamp = new Date().getTime();
-        const response = await fetch(`/pdf/sample.pdf?t=${timestamp}`);
-        
-        if (!response.ok) {
-          throw new Error(`PDF 로드 실패: ${response.status} ${response.statusText}`);
-        }
+        const { data } = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
+        setPdfTitle(data.fileName);
+        const pdfUrl = data.relatedFile?.fileUrl;
 
-        const arrayBuffer = await response.arrayBuffer();
-        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+        if (!pdfUrl) throw new Error('PDF 파일을 찾을 수 없습니다.');
 
-        loadingTask.onProgress = ({ loaded, total }) => {
-          const progress = total ? Math.round((loaded / total) * 100) : 0;
-          setLoadingProgress(progress);
-        };
+        try {
+          const loadingTask = pdfjsLib.getDocument(pdfUrl);
+          loadingTask.onProgress = ({ loaded, total }) => {
+            const progress = total ? Math.round((loaded / total) * 100) : 0;
+            setLoadingProgress(progress);
+          };
 
-        const pdf = await loadingTask.promise;
-        pdfInstanceRef.current = pdf;
-        setTotalPages(pdf.numPages);
+          const pdf = await loadingTask.promise;
+          pdfInstanceRef.current = pdf;
+          setTotalPages(pdf.numPages);
 
-        // 초기 페이지 설정
-        const placeholders = Array.from(
-          { length: pdf.numPages },
-          (_, i) => ({
-            url: '',
-            pageNumber: i + 1,
-            isLoaded: false
-          })
-        );
-        setPdfPages(placeholders);
+          const placeholders = Array.from(
+              { length: pdf.numPages },
+              (_, i) => ({
+                url: '',
+                pageNumber: i + 1,
+                isLoaded: false
+              })
+          );
+          setPdfPages(placeholders);
 
-        // 처음 5페이지 프리로드
-        const initialPages = await Promise.all(
-          Array.from({ length: 5 }, (_, i) => i + 1).map(pageNum =>
-            renderPage(pageNum).catch(e => null)
-          )
-        );
+          // 초기 5페이지 프리로드
+          const initialPages = await Promise.all(
+              Array.from({ length: Math.min(5, pdf.numPages) }, (_, i) => i + 1)
+                  .map(pageNum => renderPage(pageNum))
+          );
 
-        setPdfPages(prev => {
-          const newPages = [...prev];
-          initialPages.forEach((page, index) => {
-            if (page) {
-              const pageIndex = newPages.findIndex(p => p.pageNumber === index + 1);
-              if (pageIndex >= 0) {
-                newPages[pageIndex] = page;
+          setPdfPages(prev => {
+            const newPages = [...prev];
+            initialPages.forEach((page, index) => {
+              if (page) {
+                const pageIndex = newPages.findIndex(p => p.pageNumber === index + 1);
+                if (pageIndex >= 0) {
+                  newPages[pageIndex] = page;
+                }
               }
-            }
+            });
+            return newPages;
           });
-          return newPages;
-        });
 
+        } catch (pdfError) {
+          console.error('PDF loading error:', pdfError);
+          throw new Error('PDF 로딩에 실패했습니다.');
+        }
       } catch (error) {
         console.error('PDF 로드 오류:', error);
         setError(error instanceof Error ? error.message : 'PDF 파일을 불러오는데 실패했습니다.');
@@ -255,12 +235,10 @@ const PlayerPdfViewer: React.FC = () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
-      // 캐시 정리
       pageCache.current.clear();
     };
-  }, [initIntersectionObserver, renderPage]);
+  }, [id, initIntersectionObserver, renderPage]);
 
-  // Intersection Observer 설정
   useEffect(() => {
     const observer = observerRef.current;
     if (!observer) return;
@@ -277,14 +255,10 @@ const PlayerPdfViewer: React.FC = () => {
     };
   }, [pdfPages]);
 
-  // 스크롤 이벤트 처리
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
-    const scrollPosition = container.scrollTop;
     const containerHeight = container.clientHeight;
-    const totalHeight = container.scrollHeight;
 
-    // 현재 페이지 계산
     const currentPageElement = Array.from(container.children).find((child) => {
       const rect = child.getBoundingClientRect();
       return rect.top <= containerHeight && rect.bottom >= 0;
@@ -293,8 +267,7 @@ const PlayerPdfViewer: React.FC = () => {
     if (currentPageElement) {
       const pageNum = parseInt(currentPageElement.getAttribute('data-page') || '1', 10);
       setCurrentPage(pageNum);
-      
-      // 현재 페이지 기준으로 앞뒤 3페이지씩 미리 로드
+
       const pagesToPreload = [
         pageNum - 3,
         pageNum - 2,
@@ -304,19 +277,16 @@ const PlayerPdfViewer: React.FC = () => {
         pageNum + 3
       ].filter(num => num > 0 && num <= totalPages);
 
-      // 우선순위를 두어 로드 (가까운 페이지부터)
       Promise.all(
-        pagesToPreload.map(async (num) => {
-          await new Promise(resolve => setTimeout(resolve, Math.abs(num - pageNum) * 100));
-          loadPage(num);
-        })
+          pagesToPreload.map(async (num) => {
+            await new Promise(resolve => setTimeout(resolve, Math.abs(num - pageNum) * 100));
+            loadPage(num);
+          })
       );
     }
 
-    // 멀리 있는 페이지 언로드 (범위 확대)
-    const visibleRange = 5; // 앞뒤 5페이지까지 유지
     setPdfPages(prev => prev.map(page => {
-      if (Math.abs(page.pageNumber - currentPage) > visibleRange) {
+      if (Math.abs(page.pageNumber - currentPage) > 5) {
         return {
           ...page,
           url: '',
@@ -331,90 +301,90 @@ const PlayerPdfViewer: React.FC = () => {
   const handleModalClose = () => setIsModalOpen(false);
 
   return (
-    <div className="w-full h-[896px] flex flex-col pl-10 pr-10 z-10">
-      <NavBar
-          onMenuClick={handleModalOpen}
-          title='PDF 뷰어'
-          hideLeftIcon={false}
-          showMenu={false}
-          iconNames={{
-            backIcon: "뒤로가기",
-            convertIcon: "변환하기",
-            aiIcon: "AI 로봇"
-          }}
-          rightIcons={['convert', 'ai']}
-      />
-      
-      <div className="flex justify-center">
-        <div className="w-[350px] h-[768px]" ref={containerRef}>
-          <div className="w-full px-4 py-3 border-b flex flex-col items-center border-gray-700 text-white">
-            <h1 className="text-[25px] font-bold">해리포터와 아즈카반의 죄수</h1>
-          </div>
+      <div className="w-full h-[896px] flex flex-col pl-10 pr-10 z-10">
+        <NavBar
+            onMenuClick={handleModalOpen}
+            title='PDF 뷰어'
+            hideLeftIcon={false}
+            showMenu={false}
+            iconNames={{
+              backIcon: "뒤로가기",
+              convertIcon: "변환하기",
+              aiIcon: "AI 로봇"
+            }}
+            rightIcons={['convert', 'ai']}
+        />
 
-          <div 
-            className="flex-1 w-full h-[calc(100%-64px)] overflow-auto bg-white"
-            onScroll={handleScroll}
-          >
-            {isLoading && (
-              <div className="w-full h-full flex flex-col items-center justify-center text-gray-700">
-                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-700 mb-2"></div>
-                <p className="text-sm">{loadingProgress}% 로딩중...</p>
-              </div>
-            )}
+        <div className="flex justify-center">
+          <div className="w-[350px] h-[768px]" ref={containerRef}>
+            <div className="w-full px-4 py-3 border-b flex flex-col items-center border-gray-700 text-white">
+              <h1 className="text-[25px] font-bold whitespace-nowrap overflow-hidden text-ellipsis w-full">{pdfTitle}</h1>
+            </div>
 
-            {!isLoading && error && (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                  <p>{error}</p>
-                </div>
-              </div>
-            )}
-
-            {!isLoading && !error && pdfPages.length > 0 && (
-              <div className="w-full">
-                {pdfPages.map((page) => (
-                  <div
-                    key={page.pageNumber}
-                    className="pdf-page-placeholder w-full mb-4"
-                    data-page={page.pageNumber}
-                  >
-                    {page.isLoaded ? (
-                      <img 
-                        src={page.url}
-                        alt={`PDF page ${page.pageNumber}`}
-                        className="w-full h-auto"
-                        loading="lazy"
-                        onError={() => {
-                          setError('PDF 미리보기를 표시하는데 실패했습니다.');
-                        }}
-                      />
-                    ) : (
-                      <div 
-                        className="w-full bg-gray-100 flex items-center justify-center transition-all duration-200"
-                        style={{
-                          height: pageDimensionsRef.current.get(page.pageNumber)?.height || 'auto',
-                          minHeight: '300px'
-                        }}
-                      >
-                        <div className="flex flex-col items-center space-y-2">
-                          <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
-                          <p className="text-gray-400 text-sm">페이지 {page.pageNumber}</p>
-                        </div>
-                      </div>
-                    )}
+            <div
+                className="flex-1 w-full h-[calc(100%-64px)] overflow-auto bg-white"
+                onScroll={handleScroll}
+            >
+              {isLoading && (
+                  <div className="w-full h-full flex flex-col items-center justify-center text-gray-700">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-700 mb-2"></div>
+                    <p className="text-sm">{loadingProgress}% 로딩중...</p>
                   </div>
-                ))}
-              </div>
-            )}
+              )}
+
+              {!isLoading && error && (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                      <p>{error}</p>
+                    </div>
+                  </div>
+              )}
+
+              {!isLoading && !error && pdfPages.length > 0 && (
+                  <div className="w-full">
+                    {pdfPages.map((page) => (
+                        <div
+                            key={page.pageNumber}
+                            className="pdf-page-placeholder w-full mb-4"
+                            data-page={page.pageNumber}
+                        >
+                          {page.isLoaded ? (
+                              <img
+                                  src={page.url}
+                                  alt={`PDF page ${page.pageNumber}`}
+                                  className="w-full h-auto"
+                                  loading="lazy"
+                                  onError={() => {
+                                    setError('PDF 미리보기를 표시하는데 실패했습니다.');
+                                  }}
+                              />
+                          ) : (
+                              <div
+                                  className="w-full bg-gray-100 flex items-center justify-center transition-all duration-200"
+                                  style={{
+                                    height: pageDimensionsRef.current.get(page.pageNumber)?.height || 'auto',
+                                    minHeight: '300px'
+                                  }}
+                              >
+                                <div className="flex flex-col items-center space-y-2">
+                                  <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+                                  <p className="text-gray-400 text-sm">페이지 {page.pageNumber}</p>
+                                </div>
+                              </div>
+                          )}
+                        </div>
+                    ))}
+                  </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <ConvertModal
-        isOpen={isModalOpen}
-        onClose={handleModalClose}
-      />
-    </div>
+        <ConvertModal
+            isOpen={isModalOpen}
+            onClose={handleModalClose}
+        />
+      </div>
   );
 };
 

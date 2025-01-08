@@ -1,7 +1,7 @@
 import axiosInstance from '../api/axios.ts';
 import {AudioData} from '../types/audio';
 
-interface StorageResponse {
+export interface StorageResponse {
     fileID: string;
     fileName: string;
     uploadDate: string;

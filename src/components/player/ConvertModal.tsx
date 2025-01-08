@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import { ListModalOption } from '../common/ListModalOption';
 import music from '../../icons/common/music.png';
 import document from '../../icons/common/document.png';
@@ -10,23 +10,21 @@ interface ConvertModalProps {
 }
 
 const ConvertModal: React.FC<ConvertModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+                                                     isOpen,
+                                                     onClose,
+                                                   }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams(); // fileID 파라미터 가져오기
   const [selectedOption, setSelectedOption] = useState<string>('');
 
   useEffect(() => {
-    // 현재 경로에 따라 초기 선택 상태 설정
-    if (location.pathname === '/playerpdf') {
+    if (location.pathname.includes('playerpdf')) {
       setSelectedOption('pdf');
-    } else if (location.pathname === '/player') {
+    } else if (location.pathname.includes('player/audio')) {
       setSelectedOption('audio');
     }
   }, [location.pathname]);
-
-  if (!isOpen) return null;
 
   const handleOptionChange = (option: string, path?: string) => {
     setSelectedOption(option);
@@ -40,21 +38,24 @@ const ConvertModal: React.FC<ConvertModalProps> = ({
     {
       label: '오디오 듣기',
       value: 'audio',
-      path: '/player',
+      path: `/player/audio/${id}`,
       icon: music,
     },
     {
       label: 'PDF 보기',
       value: 'pdf',
-      path: '/playerpdf',
+      path: `/player/pdf/${id}`,
       icon: document,
     },
   ];
 
+  if(!isOpen) return null;
+
   return (
+
     <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-50">
       <div
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="absolute inset-0 bg-black bg-opacity-50 z-10"
         onClick={onClose}
       />
       <div className="bg-[#262A34] w-full max-w-[310px] rounded-2xl relative z-10 -mt-[570px]">        {options.map((option, index) => (
