@@ -1,8 +1,13 @@
 import axiosInstance, { uploadInstance } from "./axios";
 
+interface UploadImageItem {
+  file: File;
+  vertices?: { x: number; y: number }[];
+}
+
 interface UploadImagesParams {
   title: string;
-  files: File[];
+  files: UploadImageItem[];
 }
 
 interface ImageUploadResponse {
@@ -22,11 +27,14 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
   formData.append('storage_name', '책');
   formData.append('title', title);
 
-  for (const file of files) {
-    if (file.size > 5 * 1024 * 1024) {
+  for (const [index, item] of files.entries()) {
+    if (item.file.size > 5 * 1024 * 1024) {
       throw new Error('파일 크기가 너무 큽니다. 5MB 이하의 파일만 업로드 가능합니다.');
     }
-    formData.append('files', file);
+    formData.append('files', item.file);
+    if (item.vertices) {
+      formData.append(`vertices[${index}]`, JSON.stringify(item.vertices));
+    }
   }
 
   // axios 인스턴스를 사용해 서버에 POST 요청
@@ -46,7 +54,7 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
         }
       }
     );
-    
+
     return data;
   } catch (error: any) {
     throw new Error('글자가 잘 나오도록 다시 찍어 주세요! 😊');
