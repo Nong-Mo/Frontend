@@ -4,6 +4,10 @@ import {uploadImages} from '../api/image';
 interface PhotoFile {
     id: string;
     data: string;
+    vertices?: {
+        x: number;
+        y: number;
+    }[];
 }
 
 interface UploadStatus {
@@ -13,7 +17,10 @@ interface UploadStatus {
 
 interface UploadOptions {
     title: string;
-    files: File[];
+    files: {
+        file: File;
+        vertices?: { x: number; y: number }[];
+    }[];
 }
 
 export const UPLOAD_CONSTANTS = {
@@ -27,17 +34,17 @@ export const usePhotoUpload = () => {
     const [uploadStatus, setUploadStatus] = useState<UploadStatus | null>(null);
 
     // 파일 유효성 검사
-    const validateFiles = (files: File[]): string | null => {
+    const validateFiles = (files: { file: File }[]): string | null => {
         if (files.length === 0) {
             return '업로드할 파일이 없습니다.';
         }
 
-        const validFiles = files.filter(file => file.size >= UPLOAD_CONSTANTS.MIN_FILE_SIZE);
+        const validFiles = files.filter(item => item.file.size >= UPLOAD_CONSTANTS.MIN_FILE_SIZE);
         if (validFiles.length === 0) {
             return '유효한 이미지 파일이 없습니다.';
         }
 
-        const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+        const totalSize = files.reduce((sum, item) => sum + item.file.size, 0);
         if (totalSize > UPLOAD_CONSTANTS.MAX_TOTAL_SIZE) {
             return '전체 파일 크기가 제한을 초과했습니다.';
         }
@@ -46,13 +53,14 @@ export const usePhotoUpload = () => {
     };
 
     // Base64를 File 객체로 변환
-    const convertBase64ToFile = async (photos: PhotoFile[]): Promise<File[]> => {
+    const convertBase64ToFile = async (photos: PhotoFile[]): Promise<{ file: File, vertices?: { x: number, y: number }[] }[]> => {
         const filePromises = photos.map(async (photo) => {
             const base64Response = await fetch(photo.data);
             const blob = await base64Response.blob();
-            return new File([blob], `photo-${photo.id}.jpg`, {
+            const file = new File([blob], `photo-${photo.id}.jpg`, {
                 type: 'image/jpeg'
             });
+            return { file, vertices: photo.vertices };
         });
 
         return Promise.all(filePromises);
@@ -67,10 +75,10 @@ export const usePhotoUpload = () => {
 
         try {
             // Base64 -> File 변환
-            const files = await convertBase64ToFile(photos);
+            const filesWithVertices = await convertBase64ToFile(photos);
 
             // 파일 유효성 검사
-            const validationError = validateFiles(files);
+            const validationError = validateFiles(filesWithVertices);
             if (validationError) {
                 throw new Error(validationError);
             }
@@ -78,7 +86,7 @@ export const usePhotoUpload = () => {
             // 이미지 업로드 API 호출
             const response = await uploadImages({
                 title,
-                files,
+                files: filesWithVertices,
             });
 
             setUploadStatus({
