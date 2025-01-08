@@ -30,7 +30,7 @@ export const uploadImages = async ({ title, files }: UploadImagesParams): Promis
   
   // 모든 vertices 정보를 하나의 배열로 모아서 전송
   const pagesData = files.map(item => item.vertices || null);
-  formData.append('pages_data', JSON.stringify(pagesData));
+  formData.append('pages_vertices_data', JSON.stringify(pagesData));
 
   // 파일들 추가
   files.forEach(item => {
