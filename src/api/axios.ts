@@ -46,23 +46,19 @@ axiosInstance.interceptors.response.use(
 
 // 파일 업로드용 별도 인스턴스
 export const uploadInstance = axios.create({
-    baseURL: axiosInstance.defaults.baseURL, // baseURL 상속
-    timeout: 120000,
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data', // 명시적으로 설정
-    },
+  baseURL: axiosInstance.defaults.baseURL, // baseURL 상속
+  timeout: 120000,
 });
 
 uploadInstance.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            config.headers['token'] = `${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['token'] = token;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
 
 export default axiosInstance;
