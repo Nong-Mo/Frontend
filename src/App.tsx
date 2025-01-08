@@ -17,6 +17,7 @@ import MainLayout from "./components/common/MainLayout";
 import {API_TYPE, ROUTES} from "./routes/constants";
 import AiAssistant from "./pages/AiAssistant.tsx";
 import GoodsStorage from "./pages/GoodsStorage.tsx";
+import ScanVertex from "./pages/ScanVertex.tsx";
 
 const App = () => {
     // 서버 경로 체크 함수
@@ -42,6 +43,8 @@ const App = () => {
                                 element={<Home/>}/>
                         <Route path={ROUTES.SCAN.path}
                                 element={<Scan/>}/>
+                        <Route path={ROUTES.SCANVERTEX.path}
+                                element={<ScanVertex/>}/>
                         <Route path={ROUTES.PLAYER.AUDIO.path}
                                 element={<Player/>}/>
                         <Route path={ROUTES.PLAYER.PDF.path}
