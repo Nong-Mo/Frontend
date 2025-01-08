@@ -9,13 +9,22 @@ import VoiceRecognitionBar from "../components/ai_assistants/VoiceRecognitionBar
 import { aiAssistantReducer, initialState } from '../reducers/aiAssistantReducer';
 import { fetchAIResponse } from '../api/ai';
 
-// AIAssistantPage 컴포넌트 정의
+/**
+ * AI 어시스턴트 페이지 컴포넌트
+ * @component
+ */
 const AIAssistantPage: React.FC = () => {
     // useReducer를 사용하여 상태와 디스패치 함수를 생성
     const [state, dispatch] = useReducer(aiAssistantReducer, initialState);
 
-    // 음성 인식 훅을 사용하여 음성 인식 시작, 중지 함수와 상태를 가져옴
-    const { startRecognition, isListening, stopRecognition } = useVoiceRecognition((text) => {
+    // 음성 인식 훅을 사용하여 음성 인식 관련 상태와 함수들을 가져옴
+    const {
+        isListening,
+        startRecognition,
+        stopRecognition,
+        transcript,
+        startTime
+    } = useVoiceRecognition((text) => {
         // 음성 인식 결과를 디스패치하고 AI 응답을 가져옴
         dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text } });
         fetchAndAddAIResponse(text);
@@ -31,9 +40,10 @@ const AIAssistantPage: React.FC = () => {
         "내 보관함 통계를 보여줘"
     ];
 
-    // AI 응답을 가져와서 상태에 추가하는 함수
-    // 매개변수: userText (사용자가 입력한 텍스트)
-    // 반환값: 없음
+    /**
+     * AI 응답을 가져와서 상태에 추가하는 함수
+     * @param {string} userText - 사용자가 입력한 텍스트
+     */
     const fetchAndAddAIResponse = async (userText: string) => {
         // 로딩 상태로 설정
         dispatch({ type: 'SET_LOADING', payload: true });
@@ -53,9 +63,9 @@ const AIAssistantPage: React.FC = () => {
         }
     };
 
-    // 메시지 전송 핸들러
-    // 매개변수: 없음
-    // 반환값: 없음
+    /**
+     * 메시지 전송 핸들러
+     */
     const handleSend = async () => {
         // 입력된 텍스트가 없으면 반환
         if (!state.inputText.trim()) return;
@@ -69,17 +79,18 @@ const AIAssistantPage: React.FC = () => {
         await fetchAndAddAIResponse(state.inputText);
     };
 
-    // 새로운 채팅 시작 핸들러
-    // 매개변수: 없음
-    // 반환값: 없음
+    /**
+     * 새로운 채팅 시작 핸들러
+     */
     const handleNewChat = () => {
         // 상태 초기화
         dispatch({ type: 'RESET' });
     };
 
-    // 버튼 클릭 핸들러
-    // 매개변수: text (버튼 텍스트)
-    // 반환값: 없음
+    /**
+     * 버튼 클릭 핸들러
+     * @param {string} text - 버튼 텍스트
+     */
     const handleButtonClick = async (text: string) => {
         // 버튼 텍스트를 사용자 메시지로 추가
         dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text } });
@@ -137,21 +148,17 @@ const AIAssistantPage: React.FC = () => {
                     <VoiceRecognitionBar
                         isListening={isListening}
                         duration={60}
-                        transcript={state.inputText} // 현재 음성 인식 결과
+                        transcript={transcript}
+                        startTime={startTime}  // startTime prop 전달
                         onCancel={() => {
                             stopRecognition();
+                            dispatch({ type: 'SET_INPUT_TEXT', payload: '' });
                         }}
-                        onComplete={async (transcript: string) => {
-                            stopRecognition();
-                            dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text: transcript } });
-
-                            // AI 응답 추가
-                            try {
-                                const aiResponse = await fetchAIResponse(transcript);
-                                dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'ai', text: aiResponse } });
-                                speakText(aiResponse);
-                            } catch (error) {
-                                console.error('Error fetching AI response:', error);
+                        onComplete={async (text: string) => {
+                            if (transcript.trim() !== '') {
+                                stopRecognition();
+                                dispatch({ type: 'ADD_MESSAGE', payload: { sender: 'user', text: transcript }});
+                                await fetchAndAddAIResponse(transcript);
                             }
                         }}
                     />
