@@ -1,30 +1,24 @@
-import React, {useRef, useState} from "react";
-import {Camera} from "react-camera-pro";
-import {useNavigate} from "react-router-dom";
-import {NavBar} from "../components/common/NavBar.tsx";
-import {CameraControls} from "../components/scan/CameraControls.tsx";
-import {useCamera} from "../hooks/useCamera";
-import {useCameraState} from "../hooks/useCameraState";
-import {usePhotoUpload} from "../hooks/usePhotoUpload";
-import {ScanViewer} from "../components/scan/ScanViewer.tsx";
+import React, { useRef, useState } from "react";
+import { Camera } from "react-camera-pro";
+import { useNavigate } from "react-router-dom";
+import { NavBar } from "../components/common/NavBar.tsx";
+import { CameraControls } from "../components/scan/CameraControls.tsx";
+import { useCamera } from "../hooks/useCamera";
+import { useCameraState } from "../hooks/useCameraState";
+import { usePhotoUpload } from "../hooks/usePhotoUpload";
+import { ScanViewer } from "../components/scan/ScanViewer.tsx";
 import BookConvertModal from "../components/scan/BookConvertModal";
-import ReceiptConvertModal from "../components/scan/ReceiptConvertModal";
-import GoodsConvertModal from "../components/scan/GoodsConvertModal";
+import { useScanStore } from "../hooks/useScanStore";
 
 export type ScanType = 'BOOK' | 'RECEIPT' | 'GOODS';
-
-interface PhotoFile {
-    id: string;
-    data: string;
-}
 
 const Scan = () => {
     const navigate = useNavigate();
     const cameraRef = useRef<Camera>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [scanType, setScanType] = useState<ScanType>('BOOK');
+    const { photos, addPhoto, clearPhotos: clearStorePhotos } = useScanStore();
 
-    // Custom Hooks
     const {
         isLoading,
         uploadStatus,
@@ -43,21 +37,25 @@ const Scan = () => {
     const {
         hasCameraPermission,
         takePhoto,
-        capturedPhotos,
-        clearPhotos,
-        removePhoto,
     } = useCamera(cameraRef);
 
-    // Event Handlers
     const handleTakePhoto = async () => {
         if (!hasCameraPermission || isLoading) return;
-
+        
         try {
-            setCameraError(null);
             const photo = await takePhoto();
             if (!photo?.data) {
                 throw new Error("사진 데이터를 가져올 수 없습니다.");
             }
+            
+            addPhoto(photo);
+            
+            navigate('/scan/vertex', {
+                state: {
+                    photoId: photo.id,
+                    photoData: photo.data
+                }
+            });
         } catch (error) {
             handleCameraError(error as Error);
         }
@@ -74,16 +72,14 @@ const Scan = () => {
 
     const handleUploadComplete = () => {
         setIsModalOpen(false);
-        clearPhotos();
-        // 업로드 완료 후 필요한 처리 (예: 성공 메시지 표시, 페이지 이동 등)
+        clearStorePhotos();
     };
 
-    // 모달 렌더링 로직
     const renderModal = () => {
         if (!isModalOpen) return null;
 
         const modalProps = {
-            photos: capturedPhotos,
+            photos: photos,
             onClose: handleCloseModal,
             onUpload: handleUpload,
             onComplete: handleUploadComplete,
@@ -93,16 +89,11 @@ const Scan = () => {
         switch (scanType) {
             case 'BOOK':
                 return <BookConvertModal {...modalProps} />;
-            // case 'RECEIPT':
-            //     return <ReceiptConvertModal {...modalProps} />;
-            // case 'GOODS':
-            //     return <GoodsConvertModal {...modalProps} />;
             default:
                 return null;
         }
     };
 
-    // Error View
     if (cameraError) {
         return (
             <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
@@ -132,7 +123,6 @@ const Scan = () => {
                 />
             </div>
 
-            {/* 카메라 뷰어 */}
             <ScanViewer
                 cameraRef={cameraRef}
                 errorMessages={{
@@ -141,22 +131,20 @@ const Scan = () => {
                     switchCamera: "카메라를 전환할 수 없습니다.",
                     canvas: "캔버스를 사용할 수 없습니다.",
                 }}
-                photos={capturedPhotos}
-                onRemove={removePhoto}
+                photos={photos}
+                onRemove={(id) => useScanStore.getState().removePhoto(id)}
                 isPreviewVisible={isPreviewVisible}
             />
 
-            {/* 카메라 컨트롤 */}
             <CameraControls
                 onTakePhoto={handleTakePhoto}
                 onUpload={handlePhotoUpload}
                 isLoading={isLoading}
                 hasCameraPermission={hasCameraPermission}
-                hasPhotos={capturedPhotos.length > 0}
+                hasPhotos={photos.length > 0}
                 scanType={scanType}
             />
 
-            {/* 변환 모달 */}
             {renderModal()}
         </div>
     );
