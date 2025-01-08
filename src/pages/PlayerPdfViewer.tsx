@@ -322,7 +322,7 @@ const PlayerPdfViewer: React.FC = () => {
             </div>
 
             <div
-                className="flex-1 w-full h-[calc(100%-64px)] overflow-auto bg-white"
+                className="flex-1 w-full h-[calc(100%-64px)] overflow-auto"
                 onScroll={handleScroll}
             >
               {isLoading && (
@@ -360,7 +360,7 @@ const PlayerPdfViewer: React.FC = () => {
                               />
                           ) : (
                               <div
-                                  className="w-full bg-gray-100 flex items-center justify-center transition-all duration-200"
+                                  className="w-full flex items-center justify-center transition-all duration-200"
                                   style={{
                                     height: pageDimensionsRef.current.get(page.pageNumber)?.height || 'auto',
                                     minHeight: '300px'
