@@ -17,7 +17,6 @@ interface StorageResponse {
 export const audioService = {
     fetchAudioData: async (id: string): Promise<AudioData> => {
         const {data} = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
-        console.log(data);
 
         return {
             id: data.fileID,
@@ -25,7 +24,7 @@ export const audioService = {
             bookName: data.fileName,
             createdAt: new Date(data.uploadDate).toISOString().split('T')[0],
             audioUrl: data.fileUrl,
-            bookCover: data.relatedFile?.fileUrl || '/covers/audio_cover.png'
+            bookCover: '/covers/audio_cover.png'
         };
     }
 };
