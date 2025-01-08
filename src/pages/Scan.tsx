@@ -84,6 +84,7 @@ const Scan = () => {
             onUpload: handleUpload,
             onComplete: handleUploadComplete,
             isLoading: isLoading,
+            clearPhotos: clearStorePhotos
         };
 
         switch (scanType) {
