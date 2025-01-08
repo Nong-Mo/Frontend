@@ -1,13 +1,15 @@
 import React from 'react';
 import { FaRobot } from 'react-icons/fa';
 
+// ChatMessage 컴포넌트의 props 인터페이스 정의
 interface ChatMessageProps {
-    sender: string;
-    text: string;
+    sender: string; // 메시지 발신자
+    text: string; // 메시지 텍스트
 }
 
+// ChatMessage 컴포넌트 정의
 const ChatMessage: React.FC<ChatMessageProps> = ({ sender, text }) => {
-    const isAI = sender === "ai";
+    const isAI = sender === "ai"; // 발신자가 AI인지 여부
 
     return (
         <div
