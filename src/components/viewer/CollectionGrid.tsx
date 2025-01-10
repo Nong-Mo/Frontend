@@ -50,7 +50,7 @@ const CollectionGrid = ({items, storageName} : CollectionGridProps) => {
                             title={item.fileName}
                             date={formatDate(item.uploadDate)}
                             onClickItem={() => handleItemClick(item.fileID)}
-                            itemType="BOOK"
+                            itemType={storageName}
                         />
                     ))}
                 </div>

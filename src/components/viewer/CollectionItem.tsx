@@ -1,48 +1,36 @@
 import React from 'react';
-import {FaBook, FaHeadphones, FaFilm, FaNewspaper} from "react-icons/fa";
+import {FaBook, FaHeadphones} from "react-icons/fa";
 import {IoMdMore} from "react-icons/io";
-
-type ItemType = 'BOOK' | 'AUDIO' | 'VIDEO' | 'ARTICLE';
 
 interface CollectionItemProps {
     title: string;
     date: string;
-    itemType: ItemType;
+    itemType: string;
     onClickItem?: () => void;
 }
 
-const CollectionItem = ({title, date, itemType = 'BOOK', onClickItem}: CollectionItemProps) => {
+const CollectionItem = ({title, date, itemType, onClickItem}: CollectionItemProps) => {
     // 아이템 타입에 따른 아이콘 반환 함수
     const getItemIcon = () => {
         const iconSize = 15;  // 모든 아이콘에 동일한 크기 적용
 
         switch (itemType) {
-            case 'BOOK':
+            case 'book':
                 return <FaBook size={iconSize}/>;
-            case 'AUDIO':
+            case 'receipt':
                 return <FaHeadphones size={iconSize}/>;
-            case 'VIDEO':
-                return <FaFilm size={iconSize}/>;
-            case 'ARTICLE':
-                return <FaNewspaper size={iconSize}/>;
-            default:
-                return <FaBook size={iconSize}/>;
         }
+
+        console.log(itemType);
     };
 
     // 아이템 타입에 따른 배경색 반환 함수
     const getIconBackgroundColor = () => {
         switch (itemType) {
-            case 'BOOK':
+            case 'book':
                 return 'bg-[#FFDD72]';  // 책은 노란색
-            case 'AUDIO':
+            case 'receipt':
                 return 'bg-[#72FFDD]';  // 오디오는 민트색
-            case 'VIDEO':
-                return 'bg-[#FF72DD]';  // 비디오는 분홍색
-            case 'ARTICLE':
-                return 'bg-[#72DDFF]';  // 아티클은 하늘색
-            default:
-                return 'bg-[#FFDD72]';  // 기본값
         }
     };
 
