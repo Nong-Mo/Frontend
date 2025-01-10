@@ -37,7 +37,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
         } else if (collectionType === API_TYPE.RECEIPT) {
             setViewerTitle('영수증 보관함');
             setViewerEmptyText('영수증이 비었어요!\n추가해 주세요.');
-            setViewerText('감상하고 싶은\n영수증을 선택해 주세요.');
+            setViewerText('확인하고 싶은\n영수증을 선택해 주세요.');
         }
         else {
             setViewerTitle('테스트');
@@ -52,7 +52,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
             try {
                 const data = await getItems(collectionType);
                 setCollectionItems(data.fileList);
-                console.log('데이터 로딩 성공:', data);
             } catch (error) {
                 console.error('데이터 로딩 실패:', error);
             }
@@ -119,7 +118,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                             filterButton === 1 ? 'bg-[#246BFD] rounded-[25px]' : ''
                         }`}
                     >
-                        최근 읽은 책
+                        최근 파일
                     </button>
                 </div>
                 <div className="h-[550px] overflow-y-auto w-full mt-[30px] [&::-webkit-scrollbar]:hidden">
