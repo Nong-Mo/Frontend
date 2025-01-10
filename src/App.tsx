@@ -41,7 +41,7 @@ const App = () => {
                     <Route element={<PrivateRoute/>}>
                         <Route path={ROUTES.HOME.path}
                                element={<Home/>}/>
-                        <Route path={ROUTES.SCAN.path}
+                        <Route path={`${ROUTES.SCAN.path}/:id`}
                                element={<Scan/>}/>
                         <Route path={ROUTES.SCANVERTEX.path}
                                element={<ScanVertex/>}/>
