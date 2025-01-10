@@ -15,7 +15,7 @@ const Home: React.FC = () => {
 
     const storageItems = [
         { id: 1, title: '책', count: 30, icon: <FaBook />, path: '/library/book', countColor: '#FFDD72' },
-        { id: 2, title: '영수증', count: 30, icon: <FaReceipt />, path: '', countColor: '#94F0F0' },
+        { id: 2, title: '영수증', count: 30, icon: <FaReceipt />, path: '/library/receipt', countColor: '#94F0F0' },
         { id: 3, title: '굿즈', count: 30, icon: <FaGift />, path: '', countColor: '#FBA3FF' },
         { id: 4, title: '필름 사진', count: 30, icon: <FaCameraRetro />, path: '', countColor: '#A5F59C' },
         { id: 5, title: '서류', count: 30, icon: <FaFileAlt />, path: '', countColor: '#FF968E' },

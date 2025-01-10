@@ -52,6 +52,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
             try {
                 const data = await getItems(collectionType);
                 setCollectionItems(data.fileList);
+                console.log('데이터 로딩 성공:', data);
             } catch (error) {
                 console.error('데이터 로딩 실패:', error);
             }
@@ -122,7 +123,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                     </button>
                 </div>
                 <div className="h-[550px] overflow-y-auto w-full mt-[30px] [&::-webkit-scrollbar]:hidden">
-                    <CollectionGrid items={collectionItems}/>
+                    <CollectionGrid items={collectionItems} storageName={collectionType}/>
                 </div>
             </div>
         </div>
