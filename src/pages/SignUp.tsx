@@ -97,7 +97,7 @@ const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-[896px] flex flex-col px-[32px] z-10">
+    <div className="mt-[15px] w-full h-[896px] flex flex-col px-[32px] z-10">
       {/* NavBar 영역 */}
       <NavBar
         title="회원가입"

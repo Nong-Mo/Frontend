@@ -127,7 +127,7 @@ const Scan = () => {
 
     if (cameraError) {
         return (
-            <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+            <div className="mt-[15px] w-full h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
                 <h2 className="text-xl mb-4">카메라 오류</h2>
                 <p className="text-center mb-6">{cameraError}</p>
                 <button
@@ -141,7 +141,7 @@ const Scan = () => {
     }
 
     return (
-        <div className="z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
+        <div className="mt-[15px] z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
             <div className="w-full">
                 <NavBar
                     title={currentConfig.title}

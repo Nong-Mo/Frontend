@@ -301,7 +301,7 @@ const PlayerPdfViewer: React.FC = () => {
   const handleModalClose = () => setIsModalOpen(false);
 
   return (
-      <div className="w-full h-[896px] flex flex-col pl-10 pr-10 z-10">
+      <div className="mt-[15px] w-full flex flex-col min-h-screen z-10">
         <NavBar
             onMenuClick={handleModalOpen}
             title='PDF 뷰어'

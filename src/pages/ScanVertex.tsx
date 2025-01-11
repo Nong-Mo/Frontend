@@ -241,6 +241,7 @@ const ScanVertex: React.FC = () => {
 
         try {
             await updatePhotoVertices(photoId, normalizedVertices, photoData);
+
             navigate(`/scan/${type}`,
                 {
                     replace: true,
@@ -248,13 +249,9 @@ const ScanVertex: React.FC = () => {
                         fromVertex: true,
                     }
                 });
-        } catch (error) {
-            console.error('이미지 처리 중 오류 발생:', error);
-        }
-    };
 
     return (
-        <div className="z-50 w-full h-[896px] flex flex-col select-none">
+        <div className="z-50 mt-[15px] w-full h-[896px] flex flex-col select-none">
             <NavBar
                 title="영역 설정"
                 hideLeftIcon={false}
