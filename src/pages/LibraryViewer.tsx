@@ -72,9 +72,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     }
 
     const onClickAddButton = () => {
-        // collectionType이 'book'이면 'BOOK', 'receipt'면 'RECEIPT'로 변환
-        const scanType = collectionType.toUpperCase();
-        navigate(`/scan?type=${scanType}`);
+        navigate(`/scan/${collectionType}`);
     };
 
     return (
