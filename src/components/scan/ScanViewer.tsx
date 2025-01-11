@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Trash2, ZoomIn, Camera, X } from 'lucide-react';
+import React, {useState} from 'react';
+import {Trash2, ZoomIn, Camera, X} from 'lucide-react';
 
 interface Photo {
     id: string;
@@ -13,10 +13,10 @@ interface ScanViewerProps {
 }
 
 export const ScanViewer: React.FC<ScanViewerProps> = ({
-    photos,
-    onRemove,
-    type
-}) => {
+                                                          photos,
+                                                          onRemove,
+                                                          type
+                                                      }) => {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -69,12 +69,19 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                 </div>
 
                 {photos.length > 0 ? (
-                    <div className="w-full h-full overflow-y-auto custom-scrollbar pt-32 pb-6">
+                    <div className="w-full h-full overflow-y-auto [&::-webkit-scrollbar]:w-0
+                                      [&::-webkit-scrollbar-track]:bg-transparent
+                                      [&::-webkit-scrollbar-thumb]:bg-white/10
+                                      [&::-webkit-scrollbar-thumb]:rounded-full
+                                      [&::-webkit-scrollbar-thumb]:border-2
+                                      [&::-webkit-scrollbar-thumb]:border-transparent
+                                      [&::-webkit-scrollbar-thumb:hover]:bg-white/20
+                                      pt-32 pb-6">
                         <div className="space-y-3">
                             {photos.map((photo, index) => (
                                 <div
                                     key={photo.id}
-                                    className="relative group animate-fadeIn"
+                                    className="relative group animate-fade-in"
                                     onMouseEnter={() => setHoveredId(photo.id)}
                                     onMouseLeave={() => setHoveredId(null)}
                                 >
@@ -87,7 +94,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                                 {/* 미리보기 */}
                                                 <div className="relative aspect-[3/4] w-20 rounded-lg overflow-hidden
                                                     bg-black/40 cursor-pointer shadow-lg"
-                                                    onClick={() => setSelectedPhoto(photo)}>
+                                                     onClick={() => setSelectedPhoto(photo)}>
                                                     <img
                                                         src={photo.data}
                                                         alt={`스캔된 ${text.pageLabel} ${index + 1}`}
@@ -108,7 +115,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                                                 hover:bg-white/10 rounded-lg transition-all duration-200"
                                                             aria-label={`${text.pageLabel} 확대`}
                                                         >
-                                                            <ZoomIn className="w-5 h-5" />
+                                                            <ZoomIn className="w-5 h-5"/>
                                                         </button>
                                                         <button
                                                             onClick={() => onRemove(photo.id)}
@@ -116,7 +123,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                                                 hover:bg-red-400/10 rounded-lg transition-all duration-200"
                                                             aria-label={`${text.pageLabel} 삭제`}
                                                         >
-                                                            <Trash2 className="w-5 h-5" />
+                                                            <Trash2 className="w-5 h-5"/>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -130,7 +137,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                 ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center px-6 space-y-4">
                         <div className="p-6 bg-[#262A34] rounded-full">
-                            <Camera className="w-10 h-10 text-neutral-400" />
+                            <Camera className="w-10 h-10 text-neutral-400"/>
                         </div>
                         <div className="text-center space-y-2">
                             <p className="text-lg font-medium text-white">
@@ -161,7 +168,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                 className="p-2 text-neutral-400 hover:text-white
                                     hover:bg-white/10 rounded-lg transition-colors duration-200"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-5 h-5"/>
                             </button>
                         </div>
                         <div className="w-full h-full p-6">
@@ -174,35 +181,6 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                     </div>
                 </div>
             )}
-
-            <style jsx global>{`
-                .custom-scrollbar::-webkit-scrollbar {
-                    width: 0px;
-                }
-
-                .custom-scrollbar::-webkit-scrollbar-track {
-                    background: transparent;
-                }
-
-                .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border-radius: 20px;
-                    border: 2px solid transparent;
-                }
-
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                }
-
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                .animate-fadeIn {
-                    animation: fadeIn 0.3s ease-out;
-                }
-            `}</style>
         </>
     );
 };

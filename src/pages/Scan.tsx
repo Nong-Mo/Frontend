@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import { NavBar } from "../components/common/NavBar.tsx";
 import { CameraControls } from "../components/scan/CameraControls.tsx";
 import { ScanViewer } from "../components/scan/ScanViewer.tsx";
@@ -33,6 +33,8 @@ const Scan = () => {
     const [cameraError, setCameraError] = useState<string | null>(null);
     const { photos, addPhoto, clearPhotos: clearStorePhotos } = useScanStore();
 
+    const location = useLocation();
+
     const {
         isLoading,
         uploadStatus,
@@ -52,6 +54,11 @@ const Scan = () => {
         }
     }, []);
 
+    useEffect( () => {
+        if(location.state?.fromVertex == null)
+            clearStorePhotos();
+    }, [location.state?.fromVertex]);
+
     const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
@@ -63,8 +70,7 @@ const Scan = () => {
                 const photoData = reader.result as string;
 
                 addPhoto({ id: photoId, data: photoData });
-
-                navigate('/scan/vertex', {
+                navigate(`/scan/${currentConfig.viewerType}/vertex`, {
                     state: {
                         photoId: photoId,
                         photoData: photoData
@@ -121,7 +127,7 @@ const Scan = () => {
 
     if (cameraError) {
         return (
-            <div className="w-full h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
+            <div className="mt-[15px] w-full h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
                 <h2 className="text-xl mb-4">카메라 오류</h2>
                 <p className="text-center mb-6">{cameraError}</p>
                 <button
@@ -135,7 +141,7 @@ const Scan = () => {
     }
 
     return (
-        <div className="z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
+        <div className="mt-[15px] z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
             <div className="w-full">
                 <NavBar
                     title={currentConfig.title}

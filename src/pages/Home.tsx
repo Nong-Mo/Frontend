@@ -62,7 +62,7 @@ const Home: React.FC = () => {
     }
 
     return (
-        <div className="w-full flex flex-col min-h-screen z-10">
+        <div className="w-full flex flex-col min-h-screen z-10 mt-[15px]">
             <NavBar
                 title={`${userData.nickname} 님의 보관함`}
                 hideLeftIcon={true}

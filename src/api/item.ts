@@ -13,7 +13,6 @@ export const getItems = async (collectionType: string) => {
 
     try {
         const {data} = await axiosInstance.get<BookItemResponse>(`/storage/${collectionType}`);
-        console.log("Response Data:", data);
         return data;
     } catch (error: any) {
         if (error.response?.status === 401) {

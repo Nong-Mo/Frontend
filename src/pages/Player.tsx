@@ -60,7 +60,7 @@ const Player: React.FC = () => {
   }, [isPlaying, togglePlay]);
 
   return (
-    <div className="w-full flex flex-col min-h-screen z-10">
+    <div className="mt-[15px] w-full flex flex-col min-h-screen z-10">
       <NavBar
           onMenuClick={ () => {onClickConvertModal(true)}}
           title='플레이어'
