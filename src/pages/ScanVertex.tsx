@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate, useLocation, useParams} from 'react-router-dom';
-import { NavBar } from '../components/common/NavBar';
-import { useScanStore } from '../hooks/useScanStore';
+import {NavBar} from '../components/common/NavBar';
+import {useScanStore} from '../hooks/useScanStore';
 
 interface Vertex {
     x: number;
@@ -28,8 +28,8 @@ const ScanVertex: React.FC = () => {
     const svgRef = useRef<SVGSVGElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { photoId, photoData } = location.state as LocationState;
-    const { updatePhotoVertices } = useScanStore();
+    const {photoId, photoData} = location.state as LocationState;
+    const {updatePhotoVertices} = useScanStore();
     const [vertices, setVertices] = useState<Vertex[]>([]);
     const [activeVertex, setActiveVertex] = useState<number | null>(null);
     const [imageBounds, setImageBounds] = useState<ImageBounds | null>(null);
@@ -46,8 +46,8 @@ const ScanVertex: React.FC = () => {
 
         if (isDragging) {
             document.body.style.overflow = 'hidden';
-            document.addEventListener('touchmove', preventDefault, { passive: false });
-            document.addEventListener('wheel', preventDefault, { passive: false });
+            document.addEventListener('touchmove', preventDefault, {passive: false});
+            document.addEventListener('wheel', preventDefault, {passive: false});
         }
 
         return () => {
@@ -64,7 +64,7 @@ const ScanVertex: React.FC = () => {
     };
 
     const screenToImageCoordinates = (screenX: number, screenY: number): Vertex => {
-        if (!imageBounds || !originalImageSize) return { x: screenX, y: screenY };
+        if (!imageBounds || !originalImageSize) return {x: screenX, y: screenY};
 
         const relativeX = (screenX - imageBounds.x) / imageBounds.scale;
         const relativeY = (screenY - imageBounds.y) / imageBounds.scale;
@@ -77,28 +77,28 @@ const ScanVertex: React.FC = () => {
 
     const calculateImageBounds = () => {
         if (!imgRef.current || !svgRef.current || !containerRef.current) return;
-    
+
         const img = imgRef.current;
         const container = containerRef.current;
         const containerRect = container.getBoundingClientRect();
-    
+
         const imgNaturalWidth = img.naturalWidth;
         const imgNaturalHeight = img.naturalHeight;
-        setOriginalImageSize({ width: imgNaturalWidth, height: imgNaturalHeight });
-    
+        setOriginalImageSize({width: imgNaturalWidth, height: imgNaturalHeight});
+
         const scale = calculateImageScale(
             imgNaturalWidth,
             imgNaturalHeight,
             containerRect.width,
             containerRect.height
         );
-    
+
         const scaledWidth = imgNaturalWidth * scale;
         const scaledHeight = imgNaturalHeight * scale;
-    
+
         const offsetX = (containerRect.width - scaledWidth) / 2;
         const offsetY = (containerRect.height - scaledHeight) / 2;
-    
+
         const bounds = {
             x: offsetX,
             y: offsetY,
@@ -106,22 +106,22 @@ const ScanVertex: React.FC = () => {
             height: scaledHeight,
             scale: scale
         };
-    
+
         setImageBounds(bounds);
-    
+
         // 안쪽으로 들어온 여백 설정
         const PADDING = 40;
         const paddedOffsetX = offsetX + PADDING;
         const paddedOffsetY = offsetY + PADDING;
         const paddedWidth = scaledWidth - (PADDING * 2);
         const paddedHeight = scaledHeight - (PADDING * 2);
-    
+
         if (vertices.length === 0) {
             setVertices([
-                { x: paddedOffsetX, y: paddedOffsetY }, // 좌상단
-                { x: paddedOffsetX + paddedWidth, y: paddedOffsetY }, // 우상단
-                { x: paddedOffsetX + paddedWidth, y: paddedOffsetY + paddedHeight }, // 우하단
-                { x: paddedOffsetX, y: paddedOffsetY + paddedHeight } // 좌하단
+                {x: paddedOffsetX, y: paddedOffsetY}, // 좌상단
+                {x: paddedOffsetX + paddedWidth, y: paddedOffsetY}, // 우상단
+                {x: paddedOffsetX + paddedWidth, y: paddedOffsetY + paddedHeight}, // 우하단
+                {x: paddedOffsetX, y: paddedOffsetY + paddedHeight} // 좌하단
             ]);
         } else {
             const updatedVertices = vertices.map(vertex => {
@@ -174,7 +174,7 @@ const ScanVertex: React.FC = () => {
         e.preventDefault();
         e.stopPropagation();
 
-        const { clientX, clientY } = getEventCoordinates(e);
+        const {clientX, clientY} = getEventCoordinates(e);
         const svgRect = svgRef.current.getBoundingClientRect();
 
         let screenX = clientX - svgRect.left;
@@ -185,7 +185,7 @@ const ScanVertex: React.FC = () => {
 
         setVertices(prev => {
             const updated = [...prev];
-            updated[activeVertex] = { x: screenX, y: screenY };
+            updated[activeVertex] = {x: screenX, y: screenY};
             return updated;
         });
     };
@@ -204,7 +204,7 @@ const ScanVertex: React.FC = () => {
                 const screenY = touch.clientY - svgRect.top;
                 setVertices(prev => {
                     const updated = [...prev];
-                    updated[index] = { x: screenX, y: screenY };
+                    updated[index] = {x: screenX, y: screenY};
                     return updated;
                 });
             }
@@ -220,7 +220,7 @@ const ScanVertex: React.FC = () => {
         if (activeVertex !== null) {
             document.addEventListener('mousemove', handleVertexDrag);
             document.addEventListener('mouseup', handleVertexDragEnd);
-            document.addEventListener('touchmove', handleVertexDrag, { passive: false });
+            document.addEventListener('touchmove', handleVertexDrag, {passive: false});
             document.addEventListener('touchend', handleVertexDragEnd);
 
             return () => {
@@ -234,19 +234,25 @@ const ScanVertex: React.FC = () => {
 
     const handleConfirm = async () => {
         if (!imageBounds || !originalImageSize) return;
-    
-        const normalizedVertices = vertices.map(vertex => 
+
+        const normalizedVertices = vertices.map(vertex =>
             screenToImageCoordinates(vertex.x, vertex.y)
         );
-    
+
         try {
             await updatePhotoVertices(photoId, normalizedVertices, photoData);
-            navigate(-1 as Number, { replace: true });
+            navigate(`/scan/${type}`,
+                {
+                    replace: true,
+                    state: {
+                        fromVertex: true,
+                    }
+                });
         } catch (error) {
             console.error('이미지 처리 중 오류 발생:', error);
         }
     };
-    
+
     return (
         <div className="z-50 w-full h-[896px] flex flex-col select-none">
             <NavBar
@@ -258,9 +264,9 @@ const ScanVertex: React.FC = () => {
                 }}
                 rightIcons={[]}
             />
-            
-            <div 
-                ref={containerRef} 
+
+            <div
+                ref={containerRef}
                 className="relative w-[414px] h-[615px] bg-gray-900"
             >
                 <img
@@ -270,23 +276,24 @@ const ScanVertex: React.FC = () => {
                     className="absolute w-full h-full object-contain"
                     draggable={false}
                 />
-                
+
                 <svg
                     ref={svgRef}
                     className="absolute top-0 left-0 w-full h-full"
                 >
                     {vertices.length > 0 && imageBounds && (
-                        <g style={{ pointerEvents: 'all' }}>
+                        <g style={{pointerEvents: 'all'}}>
                             <path
                                 d={`M ${vertices.map(v => `${v.x},${v.y}`).join(' L ')} Z`}
                                 stroke="#2563EB"
                                 strokeWidth="3"
                                 fill="rgba(37, 99, 235, 0.2)"
-                                style={{ pointerEvents: 'none' }}
+                                style={{pointerEvents: 'none'}}
                             />
-                            
+
                             {vertices.map((vertex, index) => (
-                                <g key={index} style={{ cursor: 'pointer' }}>
+                                <g key={index}
+                                   style={{cursor: 'pointer'}}>
                                     <circle
                                         cx={vertex.x}
                                         cy={vertex.y}
@@ -302,7 +309,7 @@ const ScanVertex: React.FC = () => {
                                         fill="#246BFD"
                                         stroke="#ffffff"
                                         strokeWidth="2"
-                                        style={{ pointerEvents: 'none' }}
+                                        style={{pointerEvents: 'none'}}
                                     />
                                     {activeVertex === index && (
                                         <circle
@@ -313,7 +320,7 @@ const ScanVertex: React.FC = () => {
                                             stroke="#2563EB"
                                             strokeWidth="2"
                                             opacity="0.5"
-                                            style={{ pointerEvents: 'none' }}
+                                            style={{pointerEvents: 'none'}}
                                         />
                                     )}
                                 </g>
