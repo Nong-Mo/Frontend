@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import {useNavigate, useLocation, useParams} from 'react-router-dom';
 import { NavBar } from '../components/common/NavBar';
 import { useScanStore } from '../hooks/useScanStore';
 
@@ -23,6 +23,7 @@ interface ImageBounds {
 
 const ScanVertex: React.FC = () => {
     const navigate = useNavigate();
+    const type = useParams().type;
     const location = useLocation();
     const svgRef = useRef<SVGSVGElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
@@ -34,7 +35,7 @@ const ScanVertex: React.FC = () => {
     const [imageBounds, setImageBounds] = useState<ImageBounds | null>(null);
     const [originalImageSize, setOriginalImageSize] = useState<{ width: number; height: number } | null>(null);
     const [isDragging, setIsDragging] = useState(false);
-    
+
     // Prevent scroll when dragging
     useEffect(() => {
         const preventDefault = (e: TouchEvent | WheelEvent) => {
@@ -240,7 +241,7 @@ const ScanVertex: React.FC = () => {
     
         try {
             await updatePhotoVertices(photoId, normalizedVertices, photoData);
-            navigate('/scan', { replace: true });
+            navigate(-1 as Number, { replace: true });
         } catch (error) {
             console.error('이미지 처리 중 오류 발생:', error);
         }
