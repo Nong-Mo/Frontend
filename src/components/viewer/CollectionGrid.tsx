@@ -9,10 +9,11 @@ export interface CollectionItemProps {
 }
 
 interface CollectionGridProps {
+    storageName : string;
     items : CollectionItemProps[];
 }
 
-const CollectionGrid = ({items} : CollectionGridProps) => {
+const CollectionGrid = ({items, storageName} : CollectionGridProps) => {
     const navigate = useNavigate();
 
     const formatDate = (dateString: string) => {
@@ -27,7 +28,16 @@ const CollectionGrid = ({items} : CollectionGridProps) => {
     };
 
     const handleItemClick = (fileID: string) => {
-        navigate(`/player/audio/${fileID}`);
+        switch (storageName) {
+            case 'book':
+                navigate(`/player/audio/${fileID}`);
+                break;
+            case 'receipt':
+                navigate(`/player/pdf/${fileID}`);
+                break;
+            default:
+                break;
+        }
     };
 
     return (
@@ -40,7 +50,7 @@ const CollectionGrid = ({items} : CollectionGridProps) => {
                             title={item.fileName}
                             date={formatDate(item.uploadDate)}
                             onClickItem={() => handleItemClick(item.fileID)}
-                            itemType="BOOK"
+                            itemType={storageName}
                         />
                     ))}
                 </div>
