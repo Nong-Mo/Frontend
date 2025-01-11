@@ -158,7 +158,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                     onClick={() => setSelectedPhoto(null)}
                 >
                     <div
-                        className="relative max-w-3xl w-full aspect-[3/4] bg-[#1A1B1E]
+                        className="relative max-w-3xl w-full aspect-[3/4] bg-[#262A34]
                             rounded-3xl overflow-hidden shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
@@ -168,7 +168,6 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                 className="p-2 text-neutral-400 hover:text-white
                                     hover:bg-white/10 rounded-lg transition-colors duration-200"
                             >
-                                <X className="w-5 h-5"/>
                             </button>
                         </div>
                         <div className="w-full h-full p-6">
