@@ -23,7 +23,7 @@ export const useAudioPlayer = (audioUrl: string) => {
 
         const handleEnded = () => {
             setIsPlaying(false);
-            setCurrentTime(0);
+            setCurrentTime(0)
         }
 
         audio.addEventListener('loadedmetadata', handleLoadedMetadata);
@@ -37,28 +37,26 @@ export const useAudioPlayer = (audioUrl: string) => {
         };
     }, [audioUrl]);
 
-    const togglePlay = useCallback(() => {
-        if (isPlaying) {
-            audioRef.current.pause();
-        } else {
-            audioRef.current.play();
+    const togglePlay = useCallback(async () => {
+        try {
+            if (isPlaying) {
+                await audioRef.current.pause();
+            } else {
+                await audioRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        } catch (error) {
+            console.error('Audio playback error:', error);
+            // 에러 발생 시 재생 상태를 false로 설정
+            setIsPlaying(false);
         }
-        setIsPlaying(!isPlaying);
-    }, [isPlaying]); // isPlaying을 의존성 배열에 포함
+    }, [isPlaying]);
 
     const seek = useCallback((time: number) => {
-        audioRef.current.currentTime = time;
-        setCurrentTime(time);
-    }, []);
-
-    const setAudioVolume = useCallback((newVolume: number) => {
-        setVolume(newVolume);
-    }, []);
-
-    const toggleMute = useCallback(() => {
-        setIsMuted(prevIsMuted => !prevIsMuted);
-    }, []);
-
+        const clampedTime = Math.max(0, Math.min(time, duration));
+        audioRef.current.currentTime = clampedTime;
+        setCurrentTime(clampedTime);
+    }, [duration]);
 
     return {
         isPlaying,
@@ -67,9 +65,7 @@ export const useAudioPlayer = (audioUrl: string) => {
         volume,
         togglePlay,
         seek,
-        setAudioVolume,
         isMuted,
-        toggleMute,
         audioRef,
     };
 };
