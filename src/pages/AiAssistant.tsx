@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { NavBar } from "../components/common/NavBar.tsx";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../routes/constants.ts";
 import InfoText from "../components/common/InfoText.tsx";
 import ChatMessage from "../components/ai_assistants/ChatMessage.tsx";
 import ChatInput from "../components/ai_assistants/ChatInput.tsx";
 import useVoiceRecognition from "../hooks/useVoiceRecognition";
 import useSpeechSynthesis from "../hooks/useSpeechSynthesis";
 import VoiceRecognitionBar from "../components/ai_assistants/VoiceRecognitionBar.tsx";
-import { fetchAIResponse, startNewChat } from '../api/ai';
+import { fetchAIResponse, startNewChat, saveStory } from '../api/ai';
+import SaveStoryModal from '../components/ai_assistants/SaveStoryModal';
 
 interface Message {
     sender: string;
@@ -14,9 +17,12 @@ interface Message {
 }
 
 const AIAssistantPage: React.FC = () => {
+    const navigate = useNavigate();
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputText, setInputText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+    const [savedFileInfo, setSavedFileInfo] = useState<{fileId: string, title: string, storage: string} | null>(null);
 
     const { speakText } = useSpeechSynthesis();
 
@@ -65,6 +71,29 @@ const AIAssistantPage: React.FC = () => {
         await fetchAndAddAIResponse(inputText);
     };
 
+    const isFileRequest = (text: string) => {
+        const keywords = ['파일로 만들어', '파일로 저장', '파일 만들어'];
+        return keywords.some(keyword => text.toLowerCase().includes(keyword));
+    };
+
+    const handleFileNavigation = async (fileId: string, storage: string) => {
+        try {
+            const fileDetail = await getFileDetail(fileId);
+
+            let targetUrl: string;
+            if (storage === '책' && fileDetail.relatedFile) {
+                targetUrl = fileDetail.relatedFile.fileUrl;
+            } else {
+                targetUrl = fileDetail.fileUrl;
+            }
+
+            window.location.href = targetUrl;
+        } catch (error) {
+            console.error('Error navigating to file:', error);
+            addMessage('ai', '파일 위치로 이동하는 중 오류가 발생했습니다.');
+        }
+    };
+
     const handleNewChat = async () => {
         try {
             const success = await startNewChat();
@@ -106,7 +135,78 @@ const AIAssistantPage: React.FC = () => {
 
             <div className="w-[350px] h-[554px] mt-[30px] mb-[20px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
                 {messages.map((msg, index) => (
-                    <ChatMessage key={index} sender={msg.sender} text={msg.text} />
+                    <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
+                        <ChatMessage sender={msg.sender} text={msg.text} />
+                        {msg.sender === 'ai' &&
+                            index === messages.length - 1 &&
+                            (isFileRequest(messages[messages.length - 2]?.text || '') ||
+                                msg.text.includes('파일이 성공적으로 저장되었습니다')) && (
+                                <div className="mt-2">
+                                    {savedFileInfo ? (
+                                        <div className="flex space-x-2 ml-12">
+                                            <div className="w-[130px] h-[35px] rounded-[16.5px] flex items-center justify-center relative">
+                                                <button
+                                                    onClick={() => {
+                                                        switch(savedFileInfo.storage) {
+                                                            case '책':
+                                                                navigate(ROUTES.LIBRARY.BOOK.path);
+                                                                break;
+                                                            case '영수증':
+                                                                navigate(ROUTES.LIBRARY.RECEIPT.path);
+                                                                break;
+                                                            case '굿즈':
+                                                                navigate(ROUTES.GOODS.STORAGE.path);
+                                                                break;
+                                                            case '필름 사진':
+                                                                // 경로가 아직 정의되지 않았다면 임시로 에러 로깅
+                                                                console.error('필름 사진 보관함 경로가 정의되지 않았습니다.');
+                                                                break;
+                                                            case '서류':
+                                                                // 경로가 아직 정의되지 않았다면 임시로 에러 로깅
+                                                                console.error('서류 보관함 경로가 정의되지 않았습니다.');
+                                                                break;
+                                                            case '티켓':
+                                                                // 경로가 아직 정의되지 않았다면 임시로 에러 로깅
+                                                                console.error('티켓 보관함 경로가 정의되지 않았습니다.');
+                                                                break;
+                                                            default:
+                                                                console.error('알 수 없는 보관함 타입:', savedFileInfo.storage);
+                                                        }
+                                                    }}
+                                                    className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
+                                                >
+                                                    <div className="font-bold text-white text-[14px] text-center whitespace-normal">
+                                                        보관함으로 이동
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div className="w-[130px] h-[35px] rounded-[16.5px] flex items-center justify-center relative">
+                                                <button
+                                                    onClick={() => handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
+                                                    className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
+                                                >
+                                                    <div className="font-bold text-white text-[14px] text-center whitespace-normal">
+                                                        파일 감상하기
+                                                    </div>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="w-[130px] h-[35px] rounded-[16.5px] flex items-center justify-center relative ml-12">
+                                            <button
+                                                onClick={() => setIsSaveModalOpen(true)}
+                                                className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
+                                                disabled={isLoading}
+                                            >
+                                                <div className="font-bold text-white text-[14px] text-center whitespace-normal">
+                                                    저장하기
+                                                </div>
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                    </div>
                 ))}
 
                 {!isListening && messages.length === 0 && (
@@ -157,6 +257,28 @@ const AIAssistantPage: React.FC = () => {
                 onSend={handleSend}
                 onStartVoiceRecognition={startRecognition}
                 isListening={isListening}
+            />
+
+            <SaveStoryModal
+                isOpen={isSaveModalOpen}
+                onClose={() => setIsSaveModalOpen(false)}
+                onSave={async (title, storage_name) => {
+                    try {
+                        const response = await saveStory({ title, storage_name });
+                        if (response?.status === 'success') {
+                            setSavedFileInfo({
+                                fileId: response.file_id,
+                                title: title,
+                                storage: storage_name
+                            });
+                            setIsSaveModalOpen(false);
+                            addMessage('ai', `'${title}' 파일이 성공적으로 저장되었습니다. 아래 버튼을 클릭하여 파일로 이동할 수 있습니다.`);
+                        }
+                    } catch (error) {
+                        console.error('Failed to save story:', error);
+                        addMessage('ai', '파일 저장 중 오류가 발생했습니다.');
+                    }
+                }}
             />
         </div>
     );

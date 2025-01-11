@@ -43,6 +43,78 @@ export const fetchAIResponse = async (userText: string): Promise<AIResponse> => 
     }
 };
 
+interface SaveStoryRequest {
+    storage_name: string;
+    title: string;
+}
+
+interface FileDetailResponse {
+    fileID: string;
+    fileUrl: string;
+    fileType: string;
+    relatedFile: {
+        fileUrl: string;
+        fileType: string;
+    } | null;
+}
+
+interface SaveStoryResponse {
+    status: string;
+    message: string;
+    file_id: string;
+}
+
+export const getFileDetail = async (fileId: string): Promise<FileDetailResponse> => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        throw new Error('Authentication required');
+    }
+
+    try {
+        const response = await axiosInstance.get(
+            `/storage/files/${fileId}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            }
+        );
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error getting file detail:', error);
+        throw error;
+    }
+};
+
+export const saveStory = async (request: SaveStoryRequest): Promise<SaveStoryResponse> => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        throw new Error('Authentication required');
+    }
+
+    try {
+        const response = await axiosInstance.post(
+            '/llm/save-story',
+            request,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            }
+        );
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error saving story:', error);
+        throw error;
+    }
+};
+
 export const startNewChat = async (): Promise<boolean> => {
     const token = localStorage.getItem('token');
 
