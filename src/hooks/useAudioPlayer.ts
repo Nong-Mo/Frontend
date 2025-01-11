@@ -46,8 +46,6 @@ export const useAudioPlayer = (audioUrl: string) => {
             }
             setIsPlaying(!isPlaying);
         } catch (error) {
-            console.error('Audio playback error:', error);
-            // 에러 발생 시 재생 상태를 false로 설정
             setIsPlaying(false);
         }
     }, [isPlaying]);
