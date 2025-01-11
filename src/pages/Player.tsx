@@ -1,17 +1,22 @@
-import React, {useEffect, useState, useCallback, useLayoutEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
+import { useNavigate, useParams} from 'react-router-dom';
+import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { audioService } from '../services/audioService';
+
+// [타입]
+import { AudioData } from '../types/audio';
+
+// [컴포넌트]
 import { NavBar } from '../components/common/NavBar';
 import { BookInfo } from '../components/player/BookInfo';
 import { ProgressBar } from '../components/player/ProgressBar';
 import { AudioControls } from '../components/player/AudioControls';
 import ConvertModal from '../components/player/ConvertModal';
-import { useAudioPlayer } from '../hooks/useAudioPlayer';
-import { audioService } from '../services/audioService';
-import { AudioData } from '../types/audio';
 
 const Player: React.FC = () => {
-  const navigate = useNavigate();
   const fileID = useParams().id;
+  const navigate = useNavigate();
+
   const [audioData, setAudioData] = useState<AudioData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,47 +27,43 @@ const Player: React.FC = () => {
     duration,
     togglePlay,
     seek,
-    setAudioVolume,
-    isMuted,
-    toggleMute
   } = useAudioPlayer(audioData?.audioUrl || '');
 
+  // 렌더링이 완료되기 전, 데이터를 가져옴
   useLayoutEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await audioService.fetchAudioData(fileID);
+        if(fileID === undefined) return;
+        const data = await audioService?.fetchAudioData(fileID);
         setAudioData(data);
+
       } catch (err) {
         setError((err as Error).message);
+        alert('잘못된 접근입니다.');
+        navigate(-1);
       }
     }
     fetchData();
   }, []);
 
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
+  // PDF <-> Audio 뷰어 변환 모달을 열고 닫는 함수
+  const onClickConvertModal = (isOpen : boolean) => {
+    setIsModalOpen(isOpen);
   };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
   /* Player 페이지를 벗어나면 노래를 중지 */
   useEffect(() => {
     return () => {
       if (isPlaying) {
         togglePlay();
+        setAudioData(null);
       }
     };
   }, [isPlaying, togglePlay]);
 
-  if (error) return <div>Error: {error}</div>;
-  if (!audioData) return <div>Loading...</div>;
-
   return (
     <div className="w-full flex flex-col min-h-screen z-10">
       <NavBar
-          onMenuClick={handleModalOpen}
+          onMenuClick={ () => {onClickConvertModal(true)}}
           title='플레이어'
           hideLeftIcon={false}
           showMenu={false}
@@ -81,8 +82,8 @@ const Player: React.FC = () => {
           {/* 이미지 섹션 */}
           <div className="flex items-center justify-center">
             <img
-              src={audioData.bookCover}
-              alt="book cover"
+              src="/covers/audio_cover.png"
+              alt="오디오 북 커버 이미지"
               className="w-[319px] h-[319px] object-cover rounded-lg"
             />
           </div>
@@ -91,7 +92,7 @@ const Player: React.FC = () => {
             {/* 책 정보 */}
             <div className="flex flex-col items-center">
               <BookInfo
-                bookName={audioData.bookName}
+                bookName={audioData?.bookName}
               />
               <ProgressBar
                 currentTime={currentTime}
@@ -115,7 +116,7 @@ const Player: React.FC = () => {
       {/* Convert Modal */}
       <ConvertModal 
         isOpen={isModalOpen}
-        onClose={handleModalClose}
+        onClose={() => {onClickConvertModal(false)}}
       />
     </div>
   );
