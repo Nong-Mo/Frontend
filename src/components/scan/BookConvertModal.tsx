@@ -168,8 +168,10 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => {
-                        clearPhotos();
-                        navigate("/library/book");
+                        setTimeout(() => {
+                            clearPhotos();
+                            navigate("/library/book");
+                        }, 300);
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
                 >
