@@ -1,43 +1,56 @@
-import React, { useState } from 'react';
-import fwd from '../../icons/player/fwd.svg';
-import play from '../../icons/player/play.svg';
-import pause from '../../icons/player/pause.svg';
-import rewind from '../../icons/player/rewind.svg';
+import React from 'react';
+import { FaPlay, FaPause } from "react-icons/fa";
+import { IoPlayForward, IoPlayBack } from "react-icons/io5";
+import { MdReplayCircleFilled } from "react-icons/md";
 
 interface AudioControlsProps {
-    isPlaying: boolean;
+    isPlaying: number;
     onPlayPause: () => void;
     onForward: () => void;
     onRewind: () => void;
 }
 
 export const AudioControls: React.FC<AudioControlsProps> = ({
-    isPlaying,
-    onPlayPause,
-    onForward,
-    onRewind,
+                                                                isPlaying,
+                                                                onPlayPause,
+                                                                onForward,
+                                                                onRewind,
+                                                            }) => {
+    const getPlayIcon = () => {
 
-}) => {
+        switch(isPlaying) {
+            case 0:
+                return <FaPlay color="white" size={30} />;
+            case 1:
+                return <FaPause color="white" size={30} />;
+            case 2:
+                return <MdReplayCircleFilled color="white" size={30} />;
+        }
+    }
+
     return (
         <div className="bottom-[135px] w-[250px] h-[85px] flex items-center justify-around rounded-full">
-            <img
-                src={rewind}
-                className="w-8 h-8 cursor-pointer"
-                alt="rewind"
+            <button
+                className="w-12 h-12 cursor-pointer flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
                 onClick={onRewind}
-            />
-            <img
-                src={isPlaying ? pause : play}
-                className="w-[55px] h-[55px] cursor-pointer"
-                alt="play/pause"
+                aria-label="rewind"
+            >
+                <IoPlayBack color="white" size={24} />
+            </button>
+            <button
+                className="w-16 h-16 cursor-pointer flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
                 onClick={onPlayPause}
-            />
-            <img
-                src={fwd}
-                className="w-8 h-8 cursor-pointer"
-                alt="forward"
+                aria-label="play/pause"
+            >
+                {getPlayIcon()}
+            </button>
+            <button
+                className="w-12 h-12 cursor-pointer flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
                 onClick={onForward}
-            />
+                aria-label="forward"
+            >
+                <IoPlayForward color="white" size={24} />
+            </button>
         </div>
     );
-};
+}
