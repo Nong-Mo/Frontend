@@ -86,37 +86,3 @@ body {
     padding-left: 10px !important;
     padding-right: 20px !important;
 }
-
-/* ScanViewer에 관련된 CSS 추가 */
-.custom-scrollbar::-webkit-scrollbar {
-    width: 0px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    border: 2px solid transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fadeIn {
-    animation: fadeIn 0.3s ease-out;
-}

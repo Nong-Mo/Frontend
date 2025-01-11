@@ -42,7 +42,6 @@ const Scan = () => {
 
     // 현재 스캔 타입에 따른 설정
     const currentConfig = SCAN_CONFIG[scanType];
-    console.log(currentConfig);
 
     useEffect(() => {
         if (isInitialMount.current && !photos.length) {
