@@ -249,6 +249,10 @@ const ScanVertex: React.FC = () => {
                         fromVertex: true,
                     }
                 });
+        } catch(e){
+            console.log((e)) 
+        }
+        }
 
     return (
         <div className="z-50 mt-[15px] w-full h-[896px] flex flex-col select-none">
