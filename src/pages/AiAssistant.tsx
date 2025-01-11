@@ -133,6 +133,7 @@ const AIAssistantPage: React.FC = () => {
                 <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
             </div>
 
+            // 채팅 메시지 영역
             <div className="w-[350px] h-[554px] mt-[30px] mb-[20px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
                 {messages.map((msg, index) => (
                     <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
@@ -141,10 +142,11 @@ const AIAssistantPage: React.FC = () => {
                             index === messages.length - 1 &&
                             (isFileRequest(messages[messages.length - 2]?.text || '') ||
                                 msg.text.includes('파일이 성공적으로 저장되었습니다')) && (
-                                <div className="mt-2">
+                                <div className="mt-1">
                                     {savedFileInfo ? (
-                                        <div className="flex space-x-2 ml-12">
-                                            <div className="w-[130px] h-[35px] rounded-[16.5px] flex items-center justify-center relative">
+                                        // savedFileInfo가 있을 때 보관함 이동과 파일 감상 버튼
+                                        <div className="flex flex-row space-x-2 ml-[40px]">
+                                            <div className="inline-block rounded-[16.5px]">
                                                 <button
                                                     onClick={() => {
                                                         switch(savedFileInfo.storage) {
@@ -158,50 +160,50 @@ const AIAssistantPage: React.FC = () => {
                                                                 navigate(ROUTES.GOODS.STORAGE.path);
                                                                 break;
                                                             case '필름 사진':
-                                                                // 경로가 아직 정의되지 않았다면 임시로 에러 로깅
                                                                 console.error('필름 사진 보관함 경로가 정의되지 않았습니다.');
                                                                 break;
                                                             case '서류':
-                                                                // 경로가 아직 정의되지 않았다면 임시로 에러 로깅
                                                                 console.error('서류 보관함 경로가 정의되지 않았습니다.');
                                                                 break;
                                                             case '티켓':
-                                                                // 경로가 아직 정의되지 않았다면 임시로 에러 로깅
                                                                 console.error('티켓 보관함 경로가 정의되지 않았습니다.');
                                                                 break;
                                                             default:
                                                                 console.error('알 수 없는 보관함 타입:', savedFileInfo.storage);
                                                         }
                                                     }}
-                                                    className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
+                                                    className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                 >
-                                                    <div className="font-bold text-white text-[14px] text-center whitespace-normal">
-                                                        보관함으로 이동
-                                                    </div>
+                                                    <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                            보관함 이동
+                                        </span>
                                                 </button>
                                             </div>
-                                            <div className="w-[130px] h-[35px] rounded-[16.5px] flex items-center justify-center relative">
+                                            <div className="inline-block rounded-[16.5px]">
                                                 <button
                                                     onClick={() => handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
-                                                    className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
+                                                    className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                 >
-                                                    <div className="font-bold text-white text-[14px] text-center whitespace-normal">
-                                                        파일 감상하기
-                                                    </div>
+                                                    <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                            파일 감상
+                                        </span>
                                                 </button>
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="w-[130px] h-[35px] rounded-[16.5px] flex items-center justify-center relative ml-12">
-                                            <button
-                                                onClick={() => setIsSaveModalOpen(true)}
-                                                className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
-                                                disabled={isLoading}
-                                            >
-                                                <div className="font-bold text-white text-[14px] text-center whitespace-normal">
-                                                    저장하기
-                                                </div>
-                                            </button>
+                                        // savedFileInfo가 없을 때 파일 저장 버튼
+                                        <div className="ml-[40px]">
+                                            <div className="inline-block rounded-[16.5px]">
+                                                <button
+                                                    onClick={() => setIsSaveModalOpen(true)}
+                                                    className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
+                                                    disabled={isLoading}
+                                                >
+                                                    <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                            파일 저장
+                                        </span>
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
