@@ -1,6 +1,7 @@
 export interface PhotoFile {
     id: string;
     data: string;
+    originalSize?: { width: number; height: number };
 }
 
 interface PhotoPreviewProps {

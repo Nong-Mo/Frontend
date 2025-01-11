@@ -1,26 +1,29 @@
-import React, {useState} from 'react';
-import {Trash2, ZoomIn, Camera, X} from 'lucide-react';
+import React, { useState } from 'react';
+import { Trash2, ZoomIn, Camera, X } from 'lucide-react';
+import VertexPreview from './VertexPreview';
+
+interface Vertex { x: number; y: number; id: string; isDragging: boolean }
 
 interface Photo {
     id: string;
     data: string;
+    vertices?: Vertex[];
+    originalSize?: { width: number; height: number };
 }
 
 interface ScanViewerProps {
     photos: Photo[];
     onRemove: (id: string) => void;
-    type: 'book' | 'receipt'; // 문서 또는 영수증 타입
+    type: 'book' | 'receipt';
 }
 
 export const ScanViewer: React.FC<ScanViewerProps> = ({
-                                                          photos,
-                                                          onRemove,
-                                                          type
-                                                      }) => {
+    photos,
+    onRemove,
+    type
+}) => {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-    const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-    // 타입에 따른 텍스트 설정
     const getText = () => {
         if (type === 'receipt') {
             return {
@@ -69,37 +72,27 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                 </div>
 
                 {photos.length > 0 ? (
-                    <div className="w-full h-full overflow-y-auto [&::-webkit-scrollbar]:w-0
-                                      [&::-webkit-scrollbar-track]:bg-transparent
-                                      [&::-webkit-scrollbar-thumb]:bg-white/10
-                                      [&::-webkit-scrollbar-thumb]:rounded-full
-                                      [&::-webkit-scrollbar-thumb]:border-2
-                                      [&::-webkit-scrollbar-thumb]:border-transparent
-                                      [&::-webkit-scrollbar-thumb:hover]:bg-white/20
-                                      pt-32 pb-6">
+                    <div className="w-full h-full overflow-y-auto pt-32 pb-6">
                         <div className="space-y-3">
                             {photos.map((photo, index) => (
                                 <div
                                     key={photo.id}
                                     className="relative group animate-fade-in"
-                                    onMouseEnter={() => setHoveredId(photo.id)}
-                                    onMouseLeave={() => setHoveredId(null)}
                                 >
-                                    {/* 페이지 카드 */}
-                                    <div className="relative overflow-hidden rounded-2xl
-                                        bg-[#262A34] hover:bg-[#2d3341] shadow-lg
-                                        transition-all duration-300">
+                                    <div className="relative overflow-hidden rounded-2xl bg-[#262A34] hover:bg-[#2d3341] shadow-lg transition-all duration-300">
                                         <div className="p-4">
                                             <div className="flex items-center gap-4">
                                                 {/* 미리보기 */}
-                                                <div className="relative aspect-[3/4] w-20 rounded-lg overflow-hidden
-                                                    bg-black/40 cursor-pointer shadow-lg"
-                                                     onClick={() => setSelectedPhoto(photo)}>
-                                                    <img
-                                                        src={photo.data}
-                                                        alt={`스캔된 ${text.pageLabel} ${index + 1}`}
-                                                        className="w-full h-full object-cover"
-                                                    />
+                                                <div 
+                                                    className="relative aspect-[3/4] w-20 rounded-lg overflow-hidden bg-black/40 cursor-pointer shadow-lg"
+                                                    onClick={() => setSelectedPhoto(photo)}
+                                                >
+                                                <VertexPreview
+                                                    imageData={photo.data}
+                                                    initialVertices={photo.vertices}
+                                                    originalSize={photo.originalSize}
+                                                    className="w-full h-full"
+                                                />
                                                 </div>
 
                                                 {/* 정보 & 액션 */}
@@ -111,16 +104,14 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                                     <div className="flex gap-1">
                                                         <button
                                                             onClick={() => setSelectedPhoto(photo)}
-                                                            className="p-2 text-neutral-400 hover:text-white
-                                                                hover:bg-white/10 rounded-lg transition-all duration-200"
+                                                            className="p-2 text-neutral-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
                                                             aria-label={`${text.pageLabel} 확대`}
                                                         >
                                                             <ZoomIn className="w-5 h-5"/>
                                                         </button>
                                                         <button
                                                             onClick={() => onRemove(photo.id)}
-                                                            className="p-2 text-neutral-400 hover:text-red-400
-                                                                hover:bg-red-400/10 rounded-lg transition-all duration-200"
+                                                            className="p-2 text-neutral-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all duration-200"
                                                             aria-label={`${text.pageLabel} 삭제`}
                                                         >
                                                             <Trash2 className="w-5 h-5"/>
@@ -158,26 +149,17 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                     onClick={() => setSelectedPhoto(null)}
                 >
                     <div
-                        className="relative max-w-3xl w-full aspect-[3/4] bg-[#1A1B1E]
-                            rounded-3xl overflow-hidden shadow-2xl"
+                        className="relative max-w-3xl w-full aspect-[3/4] bg-[#262A34] rounded-3xl overflow-hidden shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
-                        <div className="absolute top-4 right-4 z-10">
-                            <button
-                                onClick={() => setSelectedPhoto(null)}
-                                className="p-2 text-neutral-400 hover:text-white
-                                    hover:bg-white/10 rounded-lg transition-colors duration-200"
-                            >
-                                <X className="w-5 h-5"/>
-                            </button>
-                        </div>
-                        <div className="w-full h-full p-6">
-                            <img
-                                src={selectedPhoto.data}
-                                alt="확대된 이미지"
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
+                    <div className="w-full h-full p-6">
+                    <VertexPreview
+                        imageData={selectedPhoto.data}
+                        initialVertices={selectedPhoto.vertices}
+                        originalSize={selectedPhoto.originalSize}
+                        className="w-full h-full"
+                    />
+                    </div>
                     </div>
                 </div>
             )}
