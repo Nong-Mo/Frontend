@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 
 export const useAudioPlayer = (audioUrl: string) => {
     const [isPlaying, setIsPlaying] = useState(false);
@@ -8,6 +8,7 @@ export const useAudioPlayer = (audioUrl: string) => {
     const [isMuted, setIsMuted] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(new Audio());
 
+    // audioUrl이 변경될 때마다 useEffect가 실행됨
     useEffect(() => {
         const audio = audioRef.current;
         audio.src = audioUrl;
@@ -24,7 +25,7 @@ export const useAudioPlayer = (audioUrl: string) => {
             setIsPlaying(false);
             setCurrentTime(0);
         }
-      
+
         audio.addEventListener('loadedmetadata', handleLoadedMetadata);
         audio.addEventListener('timeupdate', handleTimeUpdate);
         audio.addEventListener('ended', handleEnded);
@@ -36,10 +37,6 @@ export const useAudioPlayer = (audioUrl: string) => {
         };
     }, [audioUrl]);
 
-    useEffect(() => {
-        audioRef.current.volume = isMuted ? 0 : volume;
-    }, [volume, isMuted]);
-
     const togglePlay = useCallback(() => {
         if (isPlaying) {
             audioRef.current.pause();
@@ -50,8 +47,8 @@ export const useAudioPlayer = (audioUrl: string) => {
     }, [isPlaying]); // isPlaying을 의존성 배열에 포함
 
     const seek = useCallback((time: number) => {
-      audioRef.current.currentTime = time;
-      setCurrentTime(time);
+        audioRef.current.currentTime = time;
+        setCurrentTime(time);
     }, []);
 
     const setAudioVolume = useCallback((newVolume: number) => {
@@ -61,18 +58,18 @@ export const useAudioPlayer = (audioUrl: string) => {
     const toggleMute = useCallback(() => {
         setIsMuted(prevIsMuted => !prevIsMuted);
     }, []);
-  
+
 
     return {
-      isPlaying,
-      currentTime,
-      duration,
-      volume,
-      togglePlay,
-      seek,
-      setAudioVolume,
-      isMuted,
-      toggleMute,
-      audioRef,
+        isPlaying,
+        currentTime,
+        duration,
+        volume,
+        togglePlay,
+        seek,
+        setAudioVolume,
+        isMuted,
+        toggleMute,
+        audioRef,
     };
 };
