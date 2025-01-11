@@ -1,5 +1,7 @@
+// ScanViewer.tsx
 import React, { useState } from 'react';
 import { Trash2, ZoomIn, Camera, X } from 'lucide-react';
+import '../../styles/global.css';
 
 interface Photo {
     id: string;
@@ -9,14 +11,14 @@ interface Photo {
 interface ScanViewerProps {
     photos: Photo[];
     onRemove: (id: string) => void;
-    type: 'book' | 'receipt'; // 문서 또는 영수증 타입
+    type: 'book' | 'receipt';
 }
 
 export const ScanViewer: React.FC<ScanViewerProps> = ({
-    photos,
-    onRemove,
-    type
-}) => {
+                                                          photos,
+                                                          onRemove,
+                                                          type
+                                                      }) => {
     const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
@@ -87,7 +89,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                                 {/* 미리보기 */}
                                                 <div className="relative aspect-[3/4] w-20 rounded-lg overflow-hidden
                                                     bg-black/40 cursor-pointer shadow-lg"
-                                                    onClick={() => setSelectedPhoto(photo)}>
+                                                     onClick={() => setSelectedPhoto(photo)}>
                                                     <img
                                                         src={photo.data}
                                                         alt={`스캔된 ${text.pageLabel} ${index + 1}`}
@@ -174,35 +176,6 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                     </div>
                 </div>
             )}
-
-            <style jsx global>{`
-                .custom-scrollbar::-webkit-scrollbar {
-                    width: 0px;
-                }
-
-                .custom-scrollbar::-webkit-scrollbar-track {
-                    background: transparent;
-                }
-
-                .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background-color: rgba(255, 255, 255, 0.1);
-                    border-radius: 20px;
-                    border: 2px solid transparent;
-                }
-
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background-color: rgba(255, 255, 255, 0.2);
-                }
-
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                .animate-fadeIn {
-                    animation: fadeIn 0.3s ease-out;
-                }
-            `}</style>
         </>
     );
 };
