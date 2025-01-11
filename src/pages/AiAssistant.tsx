@@ -6,16 +6,14 @@ import ChatInput from "../components/ai_assistants/ChatInput.tsx";
 import useVoiceRecognition from "../hooks/useVoiceRecognition";
 import useSpeechSynthesis from "../hooks/useSpeechSynthesis";
 import VoiceRecognitionBar from "../components/ai_assistants/VoiceRecognitionBar.tsx";
-import { fetchAIResponse } from '../api/ai';
+import { fetchAIResponse, startNewChat } from '../api/ai';
 
-// Message 타입 정의
 interface Message {
     sender: string;
     text: string;
 }
 
 const AIAssistantPage: React.FC = () => {
-    // useState를 사용한 상태 관리
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputText, setInputText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +37,6 @@ const AIAssistantPage: React.FC = () => {
         "내 보관함 통계를 보여줘"
     ];
 
-    // 메시지 추가 헬퍼 함수
     const addMessage = (sender: string, text: string) => {
         setMessages(prev => [...prev, { sender, text }]);
     };
@@ -47,31 +44,44 @@ const AIAssistantPage: React.FC = () => {
     const fetchAndAddAIResponse = async (userText: string) => {
         setIsLoading(true);
         try {
-            const aiResponse = await fetchAIResponse(userText);
-            addMessage('ai', aiResponse);
-            speakText(aiResponse);
+            const response = await fetchAIResponse(userText);
+            if (response?.type === 'chat') {
+                addMessage('ai', response.message);
+                speakText(response.message);
+            }
         } catch (error) {
             console.error('Error fetching AI response:', error);
+            addMessage('ai', '죄송합니다. 오류가 발생했습니다.');
         } finally {
             setIsLoading(false);
         }
     };
 
     const handleSend = async () => {
-        if (!inputText.trim()) return;
+        if (!inputText.trim() || isLoading) return;
 
         addMessage('user', inputText);
         setInputText('');
         await fetchAndAddAIResponse(inputText);
     };
 
-    const handleNewChat = () => {
-        setMessages([]);
-        setInputText('');
-        setIsLoading(false);
+    const handleNewChat = async () => {
+        try {
+            const success = await startNewChat();
+            if (success) {
+                setMessages([]);
+                setInputText('');
+                setIsLoading(false);
+            } else {
+                console.error('Failed to start new chat');
+            }
+        } catch (error) {
+            console.error('Error starting new chat:', error);
+        }
     };
 
     const handleButtonClick = async (text: string) => {
+        if (isLoading) return;
         addMessage('user', text);
         await fetchAndAddAIResponse(text);
     };
@@ -107,6 +117,7 @@ const AIAssistantPage: React.FC = () => {
                                     <button
                                         className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
                                         onClick={() => handleButtonClick(text)}
+                                        disabled={isLoading}
                                     >
                                         <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
                                         <div className="w-[95px] h-auto font-bold text-white text-[14px] text-left whitespace-normal z-10">

@@ -22,15 +22,15 @@ interface NavigationProps {
 }
 
 export const NavBar: React.FC<NavigationProps> = ({
-                                                      onMenuClick,
-                                                      title,
-                                                      showMenu = true,
-                                                      hideLeftIcon = false,
-                                                      alignTitle = 'center',
-                                                      onNewChatClick,
-                                                      iconNames = {},
-                                                      rightIcons = []
-                                                  }) => {
+    onMenuClick,
+    title,
+    showMenu = true,
+    hideLeftIcon = false,
+    alignTitle = 'center',
+    onNewChatClick,
+    iconNames = {},
+    rightIcons = []
+}) => {
     const navigate = useNavigate();
 
     const renderIcon = (icon: 'convert' | 'ai' | 'edit') => {
@@ -90,8 +90,12 @@ export const NavBar: React.FC<NavigationProps> = ({
                     {title}
                 </span>
 
-                <div className="absolute right-0 flex">
-                    {rightIcons.map(icon => renderIcon(icon))}
+                <div className="absolute right-0 flex gap-3">
+                    {rightIcons.map((icon, index) => (
+                        <div key={index}>
+                            {renderIcon(icon)}
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
