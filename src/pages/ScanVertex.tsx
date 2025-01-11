@@ -325,7 +325,7 @@ const ScanVertex: React.FC = () => {
             <div className="flex justify-center items-center bg-[#181A20] h-[187.5px]">
                 <button
                     onClick={handleConfirm}
-                    className="w-[80%] py-4 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white text-[25px] font-bold cursor-pointer"
+                    className="w-[80%] py-4 rounded-[24px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white text-[25px] font-bold cursor-pointer"
                 >
                     영역 설정 완료
                 </button>
