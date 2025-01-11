@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 interface ProgressBarProps {
     currentTime: number;
@@ -52,7 +52,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
         };
     });
 
-    const progress = (currentTime / duration) * 100;
+    const progress = (currentTime <= 0 ) ? 0 : (currentTime / duration) * 100;
 
     return (
         <div className="w-full flex flex-col items-center">

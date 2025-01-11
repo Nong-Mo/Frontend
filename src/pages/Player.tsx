@@ -50,14 +50,15 @@ const Player: React.FC = () => {
   const onClickConvertModal = (isOpen : boolean) => {
     setIsModalOpen(isOpen);
   };
+
   /* Player 페이지를 벗어나면 노래를 중지 */
   useEffect(() => {
     return () => {
-      if (isPlaying) {
+      if (isPlaying === 1) {
         togglePlay();
       }
     };
-  }, [isPlaying, togglePlay]);
+  }, []);
 
   return (
     <div className="mt-[15px] w-full flex flex-col min-h-screen z-10">
