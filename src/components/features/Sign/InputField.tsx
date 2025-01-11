@@ -13,6 +13,7 @@ interface InputFieldProps {
     apiError?: string;
     autoComplete?: string;
     showPasswordToggle?: boolean;
+    maxLength?: number;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -21,6 +22,7 @@ const InputField: React.FC<InputFieldProps> = ({
                                                    name,
                                                    value,
                                                    onChange,
+                                                   maxLength,
                                                    placeholder,
                                                    validationError,
                                                    apiError,
