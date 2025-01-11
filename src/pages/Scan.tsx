@@ -64,20 +64,27 @@ const Scan = () => {
         if (files && files.length > 0) {
             const file = files[0];
             const reader = new FileReader();
-
+    
             reader.onloadend = () => {
                 const photoId = Date.now().toString();
                 const photoData = reader.result as string;
-
-                addPhoto({ id: photoId, data: photoData });
-                navigate(`/scan/${currentConfig.viewerType}/vertex`, {
-                    state: {
-                        photoId: photoId,
-                        photoData: photoData
-                    }
-                });
+                const img = new Image();
+                img.onload = () => {
+                    addPhoto({
+                        id: photoId,
+                        data: photoData,
+                        originalSize: { width: img.width, height: img.height }
+                    });
+                    navigate(`/scan/${currentConfig.viewerType}/vertex`, {
+                        state: {
+                            photoId: photoId,
+                            photoData: photoData
+                        }
+                    });
+                };
+                img.src = photoData;
             };
-
+    
             reader.readAsDataURL(file);
         }
     };
@@ -155,7 +162,10 @@ const Scan = () => {
             </div>
 
             <ScanViewer 
-                photos={photos}
+                photos={photos.map(photo => ({
+                    ...photo,
+                    originalSize: photo.originalSize || { width: 0, height: 0 }
+                }))}
                 onRemove={(id) => useScanStore.getState().removePhoto(id)}
                 type={currentConfig.viewerType}
             />
