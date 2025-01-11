@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// 1. 여기가 첫번째 수정사항: useRef와 useEffect를 추가했습니다
+import React, { useState, useRef, useEffect } from 'react';
 import { NavBar } from "../components/common/NavBar.tsx";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../routes/constants.ts";
@@ -24,7 +25,17 @@ const AIAssistantPage: React.FC = () => {
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [savedFileInfo, setSavedFileInfo] = useState<{fileId: string, title: string, storage: string} | null>(null);
 
+    // 2. 여기가 두번째 수정사항: messagesEndRef 추가
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
     const { speakText } = useSpeechSynthesis();
+
+    // 3. 여기가 세번째 수정사항: 스크롤 effect 추가
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
 
     const {
         isListening,
@@ -133,7 +144,6 @@ const AIAssistantPage: React.FC = () => {
                 <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
             </div>
 
-            // 채팅 메시지 영역
             <div className="w-[350px] h-[554px] mt-[30px] mb-[20px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
                 {messages.map((msg, index) => (
                     <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
@@ -144,7 +154,6 @@ const AIAssistantPage: React.FC = () => {
                                 msg.text.includes('파일이 성공적으로 저장되었습니다')) && (
                                 <div className="mt-1">
                                     {savedFileInfo ? (
-                                        // savedFileInfo가 있을 때 보관함 이동과 파일 감상 버튼
                                         <div className="flex flex-row space-x-2 ml-[40px]">
                                             <div className="inline-block rounded-[16.5px]">
                                                 <button
@@ -175,8 +184,8 @@ const AIAssistantPage: React.FC = () => {
                                                     className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                 >
                                                     <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                            보관함 이동
-                                        </span>
+                                                        보관함 이동
+                                                    </span>
                                                 </button>
                                             </div>
                                             <div className="inline-block rounded-[16.5px]">
@@ -185,13 +194,12 @@ const AIAssistantPage: React.FC = () => {
                                                     className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                 >
                                                     <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                            파일 감상
-                                        </span>
+                                                        파일 감상
+                                                    </span>
                                                 </button>
                                             </div>
                                         </div>
                                     ) : (
-                                        // savedFileInfo가 없을 때 파일 저장 버튼
                                         <div className="ml-[40px]">
                                             <div className="inline-block rounded-[16.5px]">
                                                 <button
@@ -200,8 +208,8 @@ const AIAssistantPage: React.FC = () => {
                                                     disabled={isLoading}
                                                 >
                                                     <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                            파일 저장
-                                        </span>
+                                                        파일 저장
+                                                    </span>
                                                 </button>
                                             </div>
                                         </div>
@@ -210,6 +218,8 @@ const AIAssistantPage: React.FC = () => {
                             )}
                     </div>
                 ))}
+                {/* 4. 여기가 네번째 수정사항: 스크롤 기준점 추가 */}
+                <div ref={messagesEndRef} />
 
                 {!isListening && messages.length === 0 && (
                     <div className="flex mt-auto overflow-x-auto whitespace-nowrap">
