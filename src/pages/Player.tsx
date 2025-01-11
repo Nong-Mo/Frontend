@@ -55,7 +55,6 @@ const Player: React.FC = () => {
     return () => {
       if (isPlaying) {
         togglePlay();
-        setAudioData(null);
       }
     };
   }, [isPlaying, togglePlay]);
