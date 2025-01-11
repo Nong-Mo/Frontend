@@ -1,22 +1,40 @@
-import React, { useRef, useState } from "react";
-import { Camera } from "react-camera-pro";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { NavBar } from "../components/common/NavBar.tsx";
 import { CameraControls } from "../components/scan/CameraControls.tsx";
-import { useCamera } from "../hooks/useCamera";
-import { useCameraState } from "../hooks/useCameraState";
-import { usePhotoUpload } from "../hooks/usePhotoUpload";
 import { ScanViewer } from "../components/scan/ScanViewer.tsx";
 import BookConvertModal from "../components/scan/BookConvertModal";
 import { useScanStore } from "../hooks/useScanStore";
+import { usePhotoUpload } from "../hooks/usePhotoUpload";
+
+const CAPTURE_IMAGE_MIME_TYPES = 'image/png,image/jpeg,image/webp';
 
 export type ScanType = 'BOOK' | 'RECEIPT' | 'GOODS';
 
+// 스캔 타입별 설정 매핑
+const SCAN_CONFIG = {
+    BOOK: {
+        viewerType: 'document' as const,
+        title: '도서 스캔',
+    },
+    RECEIPT: {
+        viewerType: 'receipt' as const,
+        title: '영수증 스캔',
+    },
+    GOODS: {
+        viewerType: 'document' as const,
+        title: '물품 스캔',
+    }
+};
+
 const Scan = () => {
+    const isInitialMount = useRef(true);
     const navigate = useNavigate();
-    const cameraRef = useRef<Camera>(null);
+    const [searchParams] = useSearchParams();
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [scanType, setScanType] = useState<ScanType>('BOOK');
+    const [cameraError, setCameraError] = useState<string | null>(null);
     const { photos, addPhoto, clearPhotos: clearStorePhotos } = useScanStore();
 
     const {
@@ -26,38 +44,54 @@ const Scan = () => {
         resetUploadState
     } = usePhotoUpload();
 
-    const {
-        isPreviewVisible,
-        cameraError,
-        resetCamera,
-        handleCameraError,
-        setCameraError,
-    } = useCameraState(cameraRef);
+    // URL 쿼리 파라미터에서 type 가져오기
+    useEffect(() => {
+        const typeParam = searchParams.get('type') as ScanType;
+        if (typeParam && Object.keys(SCAN_CONFIG).includes(typeParam)) {
+            setScanType(typeParam);
+        }
+    }, [searchParams]);
 
-    const {
-        hasCameraPermission,
-        takePhoto,
-    } = useCamera(cameraRef);
+    // 현재 스캔 타입에 따른 설정
+    const currentConfig = SCAN_CONFIG[scanType];
 
-    const handleTakePhoto = async () => {
-        if (!hasCameraPermission || isLoading) return;
-        
-        try {
-            const photo = await takePhoto();
-            if (!photo?.data) {
-                throw new Error("사진 데이터를 가져올 수 없습니다.");
-            }
+    useEffect(() => {
+        if (isInitialMount.current && !photos.length) {
+            isInitialMount.current = false;
+            setTimeout(() => {
+                handleTakePhoto();
+            }, 100);
+        }
+    }, []);
+
+    const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
             
-            addPhoto(photo);
+            reader.onloadend = () => {
+                const photoId = Date.now().toString();
+                const photoData = reader.result as string;
+                
+                addPhoto({ id: photoId, data: photoData });
+                
+                navigate('/scan/vertex', {
+                    state: {
+                        photoId: photoId,
+                        photoData: photoData
+                    }
+                });
+            };
             
-            navigate('/scan/vertex', {
-                state: {
-                    photoId: photo.id,
-                    photoData: photo.data
-                }
-            });
-        } catch (error) {
-            handleCameraError(error as Error);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleTakePhoto = () => {
+        if (isLoading) return;
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
         }
     };
 
@@ -114,7 +148,7 @@ const Scan = () => {
         <div className="z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
             <div className="w-full">
                 <NavBar
-                    title="스캔하기"
+                    title={currentConfig.title}
                     hideLeftIcon={false}
                     showMenu={false}
                     iconNames={{
@@ -125,25 +159,27 @@ const Scan = () => {
             </div>
 
             <ScanViewer
-                cameraRef={cameraRef}
-                errorMessages={{
-                    noCameraAccessible: "카메라에 접근할 수 없습니다.",
-                    permissionDenied: "카메라 권한이 거부되었습니다.",
-                    switchCamera: "카메라를 전환할 수 없습니다.",
-                    canvas: "캔버스를 사용할 수 없습니다.",
-                }}
                 photos={photos}
                 onRemove={(id) => useScanStore.getState().removePhoto(id)}
-                isPreviewVisible={isPreviewVisible}
+                type={currentConfig.viewerType}
             />
 
             <CameraControls
                 onTakePhoto={handleTakePhoto}
                 onUpload={handlePhotoUpload}
                 isLoading={isLoading}
-                hasCameraPermission={hasCameraPermission}
+                hasCameraPermission={true}
                 hasPhotos={photos.length > 0}
                 scanType={scanType}
+            />
+
+            <input
+                type="file"
+                accept={CAPTURE_IMAGE_MIME_TYPES}
+                onChange={handleImageCapture}
+                className="hidden"
+                ref={fileInputRef}
+                capture="environment"
             />
 
             {renderModal()}
