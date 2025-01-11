@@ -279,8 +279,8 @@ const ScanVertex: React.FC = () => {
                             <path
                                 d={`M ${vertices.map(v => `${v.x},${v.y}`).join(' L ')} Z`}
                                 stroke="#2563EB"
-                                strokeWidth="2"
-                                fill="none"
+                                strokeWidth="3"
+                                fill="rgba(37, 99, 235, 0.2)"
                                 style={{ pointerEvents: 'none' }}
                             />
                             
@@ -298,7 +298,7 @@ const ScanVertex: React.FC = () => {
                                         cx={vertex.x}
                                         cy={vertex.y}
                                         r="8"
-                                        fill="#2563EB"
+                                        fill="#246BFD"
                                         stroke="#ffffff"
                                         strokeWidth="2"
                                         style={{ pointerEvents: 'none' }}
@@ -325,7 +325,7 @@ const ScanVertex: React.FC = () => {
             <div className="flex justify-center items-center bg-[#181A20] h-[187.5px]">
                 <button
                     onClick={handleConfirm}
-                    className="w-[80%] py-4 rounded-[24px] bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition-colors text-white text-[25px] font-bold cursor-pointer"
+                    className="w-[80%] py-4 rounded-[24px] bg-[#246BFD] hover:bg-blue-700 active:bg-blue-800 transition-colors text-white text-[25px] font-bold cursor-pointer"
                 >
                     영역 설정 완료
                 </button>

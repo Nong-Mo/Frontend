@@ -70,6 +70,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     const onClickAddButton = () => {
         navigate(`/scan/${collectionType}`);
     }
+
     return (
         <div className="w-full z-10">
             <div className="content-wrapper ml-[32px] mr-[32px] mt-[15px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
