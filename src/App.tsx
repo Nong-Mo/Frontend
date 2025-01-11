@@ -43,7 +43,7 @@ const App = () => {
                                element={<Home/>}/>
                         <Route path={`${ROUTES.SCAN.path}/:id`}
                                element={<Scan/>}/>
-                        <Route path={`${ROUTES.SCANVERTEX.path}/:type/:id`}
+                        <Route path={`${ROUTES.SCAN.path}/:type${ROUTES.SCAN_VERTEX.path}`}
                                element={<ScanVertex/>}/>
                         <Route path={`${ROUTES.PLAYER.AUDIO.path}/:id`}
                                element={<Player/>}/>
