@@ -24,8 +24,8 @@ export const ROUTES = {
         title: 'Scan',
         ko: '스캔'
     },
-    SCANVERTEX: {
-        path:'/scan/vertex',
+    SCAN_VERTEX: {
+        path:'/vertex',
         title: 'Scan Vertex',
         ko: '영역 조정'
     },
