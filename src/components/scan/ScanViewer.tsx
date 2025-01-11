@@ -9,7 +9,7 @@ interface Photo {
 interface ScanViewerProps {
     photos: Photo[];
     onRemove: (id: string) => void;
-    type: 'document' | 'receipt'; // 문서 또는 영수증 타입
+    type: 'book' | 'receipt'; // 문서 또는 영수증 타입
 }
 
 export const ScanViewer: React.FC<ScanViewerProps> = ({
@@ -29,6 +29,15 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                 empty: '스캔된 영수증이 없습니다',
                 guide: '카메라로 영수증을 스캔해주세요',
                 pageLabel: '영수증'
+            };
+        }
+        if (type === 'book') {
+            return {
+                title: '책을 스캔합니다',
+                count: `총 ${photos.length}장의 페이지가 스캔되었습니다`,
+                empty: '스캔된 페이지가 없습니다',
+                guide: '카메라로 책의 페이지를 스캔해주세요',
+                pageLabel: '책'
             };
         }
         return {
