@@ -63,7 +63,7 @@ const Scan = () => {
                 const photoData = reader.result as string;
 
                 addPhoto({ id: photoId, data: photoData });
-                navigate(`/scan/${currentConfig.viewerType}`, {
+                navigate(`/scan/${currentConfig.viewerType}/vertex`, {
                     state: {
                         photoId: photoId,
                         photoData: photoData
