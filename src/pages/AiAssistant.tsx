@@ -87,7 +87,7 @@ const AIAssistantPage: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-[817px] flex flex-col px-[32px] z-10 relative">
+        <div className="w-full h-[817px] mt-[15px] flex flex-col px-[32px] z-10 relative">
             <NavBar
                 title="AI 어시스턴트"
                 hideLeftIcon={false}
