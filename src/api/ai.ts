@@ -6,7 +6,7 @@ interface AIResponse {
     data: any | null;
 }
 
-export const fetchAIResponse = async (userText: string): Promise<AIResponse> => {
+export const fetchAIResponse = async (userText: string, new_chat: boolean = false): Promise<AIResponse> => {
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -16,7 +16,10 @@ export const fetchAIResponse = async (userText: string): Promise<AIResponse> => 
     try {
         const response = await axiosInstance.post(
             '/llm/query',
-            { query: userText },
+            {
+                query: userText,
+                new_chat: new_chat  // 새로운 채팅 여부 전달
+            },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,7 +28,6 @@ export const fetchAIResponse = async (userText: string): Promise<AIResponse> => 
             }
         );
 
-        // API 응답 형식에 맞게 수정
         if (!response.data) {
             throw new Error('Invalid response format');
         }
@@ -33,8 +35,6 @@ export const fetchAIResponse = async (userText: string): Promise<AIResponse> => 
         return response.data;
     } catch (error: any) {
         console.error('Error querying LLM:', error);
-
-        // 에러 응답 포맷 통일
         return {
             type: 'error',
             message: error.response?.data?.detail || 'AI 응답을 가져오는 중 오류가 발생했습니다.',

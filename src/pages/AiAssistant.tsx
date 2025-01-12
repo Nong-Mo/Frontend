@@ -100,7 +100,8 @@ const AIAssistantPage: React.FC = () => {
     const fetchAndAddAIResponse = async (userText: string) => {
         setIsLoading(true);
         try {
-            const response = await fetchAIResponse(userText);
+            // new_chat: false로 설정하여 이전 대화 컨텍스트 유지
+            const response = await fetchAIResponse(userText, false);
 
             if (response?.type === 'file_found') {
                 // 파일을 찾은 경우
@@ -108,9 +109,7 @@ const AIAssistantPage: React.FC = () => {
                     setSavedFileInfo({
                         fileId: response.data.file_id,
                         title: response.data.title,
-                        storage: response.data.storage_type || '',
-                        fileType: response.data.file_type || '',  // 파일 타입 추가
-                        relatedFileType: response.data.related_file_type || ''  // 관련 파일 타입 추가
+                        storage: response.data.storage_type || ''
                     });
                 }
                 addMessage('ai', response.message);
