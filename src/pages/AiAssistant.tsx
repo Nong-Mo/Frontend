@@ -108,7 +108,9 @@ const AIAssistantPage: React.FC = () => {
                     setSavedFileInfo({
                         fileId: response.data.file_id,
                         title: response.data.title,
-                        storage: response.data.storage_type || ''
+                        storage: response.data.storage_type || '',
+                        fileType: response.data.file_type || '',  // 파일 타입 추가
+                        relatedFileType: response.data.related_file_type || ''  // 관련 파일 타입 추가
                     });
                 }
                 addMessage('ai', response.message);
@@ -141,24 +143,23 @@ const AIAssistantPage: React.FC = () => {
 
     const handleFileNavigation = async (fileId: string, storage: string) => {
         try {
+            // Get file details and log the response
             const fileDetail = await getFileDetail(fileId);
+            console.log('Received file details:', fileDetail);
 
-            let targetUrl: string;
+            // The main file URL is already the audio URL since it's the primary file
+            let targetUrl = fileDetail.fileUrl;
 
-            // 관련 파일이 있고 오디오 파일인 경우, 오디오 파일 URL을 우선 사용
-            if (fileDetail.relatedFile && fileDetail.relatedFile.fileType === 'audio') {
-                targetUrl = fileDetail.relatedFile.fileUrl;
-            }
-            // 관련 파일이 있고 메인 파일이 PDF인 경우, 메인 파일 URL 사용
-            else if (fileDetail.fileType === 'pdf') {
-                targetUrl = fileDetail.fileUrl;
-            }
-            // 그 외의 경우, 기존 로직대로 처리
-            else if (fileDetail.relatedFile) {
-                targetUrl = fileDetail.relatedFile.fileUrl;
-            }
-            else {
-                targetUrl = fileDetail.fileUrl;
+            // Log the navigation details for debugging
+            console.log('Navigating to file:', {
+                fileId,
+                storage,
+                fileType: fileDetail.fileType,
+                targetUrl
+            });
+
+            if (!targetUrl) {
+                throw new Error('No valid URL found for the file');
             }
 
             window.location.href = targetUrl;

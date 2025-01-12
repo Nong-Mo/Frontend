@@ -82,6 +82,10 @@ export const getFileDetail = async (fileId: string): Promise<FileDetailResponse>
             }
         );
 
+        // Log the response to see what's coming from backend
+        console.log('File detail response:', response.data);
+
+        // Return exactly what we're getting from the backend
         return response.data;
     } catch (error: any) {
         console.error('Error getting file detail:', error);
