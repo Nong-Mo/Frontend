@@ -67,7 +67,7 @@ export const usePhotoUpload = () => {
     };
 
     // 이미지 업로드 처리
-    const handleUpload = async (photos: PhotoFile[], title: string): Promise<boolean> => {
+    const handleUpload = async (photos: PhotoFile[], title: string, type : number): Promise<boolean> => {
         if (isLoading || photos.length === 0) return false;
 
         setIsLoading(true);
@@ -87,6 +87,7 @@ export const usePhotoUpload = () => {
             const response = await uploadImages({
                 title,
                 files: filesWithVertices,
+                type
             });
 
             setUploadStatus({

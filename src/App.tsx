@@ -18,6 +18,7 @@ import {API_TYPE, ROUTES} from "./routes/constants";
 import AiAssistant from "./pages/AiAssistant.tsx";
 import GoodsStorage from "./pages/GoodsStorage.tsx";
 import ScanVertex from "./pages/ScanVertex.tsx";
+import {useEffect} from "react";
 
 const App = () => {
     // 서버 경로 체크 함수

@@ -2,31 +2,32 @@ import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {PhotoFile} from "../../types/scan";
 
-interface BookConvertModalProps {
+
+interface ReceiptConvertModalProps {
     photos: PhotoFile[];
     onClose: () => void;
-    onUpload: (photos: PhotoFile[], title: string) => Promise<boolean>;
+    onUpload: (photos: PhotoFile[], title: string, type : number) => Promise<boolean>;
     onComplete: () => void;
     isLoading: boolean;
     clearPhotos: () => void;
 }
 
-const BookConvertModal: React.FC<BookConvertModalProps> = ({
-                                                                photos,
-                                                                onClose,
-                                                                onUpload,
-                                                                onComplete,
-                                                                isLoading,
-                                                                clearPhotos,
-                                                            }) => {
+const ReceiptConvertModal = ({
+                              photos,
+                              onClose,
+                              onUpload,
+                              onComplete,
+                              isLoading,
+                              clearPhotos,
+                          }: ReceiptConvertModalProps) => {
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(1);
-    const [bookTitle, setBookTitle] = useState<string>("");
+    const [receiptTitle, setReceiptTitle] = useState<string>("");
     const [progress, setProgress] = useState<number>(0);
 
     const resetModal = () => {
         setStep(1);
-        setBookTitle("");
+        setReceiptTitle("");
         setProgress(0);
     };
 
@@ -52,45 +53,20 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
     }, [step]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setBookTitle(e.target.value);
+        setReceiptTitle(e.target.value);
     };
 
     const handleConvert = async () => {
-        if (!bookTitle) return;
+        if (!receiptTitle) return;
         setStep(2);
 
         try {
-            // vertices 정보와 함께 photos 로그 출력
-            console.log('Photos with vertices:', photos.map(photo => ({
-                id: photo.id,
-                hasVertices: !!photo.vertices,
-                verticesData: photo.vertices
-            })));
-
-            // bookTitle을 onUpload 함수에 전달
-            const uploadResult = await onUpload(photos, bookTitle);
-
-            // 업로드 시도할 데이터 구조 확인
-            console.log('Upload payload:', {
-                title: bookTitle,
-                photos: photos.map(photo => ({
-                    id: photo.id,
-                    data: photo.data.substring(0, 50) + '...', // 데이터는 길어서 축약
-                    vertices: photo.vertices
-                }))
-            });
+            const uploadResult = await onUpload(photos, receiptTitle, 2);
 
             if (uploadResult) {
                 setStep(3);
-                // 성공 시 최종 상태 로그
-                console.log('Upload successful!', {
-                    title: bookTitle,
-                    photoCount: photos.length,
-                    photosWithVertices: photos.filter(p => p.vertices).length
-                });
             } else {
                 setStep(1);
-                console.log('Upload failed');
             }
         } catch (error) {
             console.error('Upload error:', error);
@@ -107,17 +83,17 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                 <input
                     type="text"
                     name="title"
-                    value={bookTitle}
+                    value={receiptTitle}
                     onChange={handleInputChange}
-                    placeholder="책 제목을 입력하세요"
+                    placeholder="영수증 제목을 입력하세요"
                     className="w-[225px] h-[30px] -translate-y-[5px] bg-transparent text-white my-[45px] text-center placeholder:text-white border-b border-white focus:outline-none"
                 />
                 <div className="flex w-[215px] justify-around items-center">
                     <button
                         onClick={handleConvert}
-                        disabled={!bookTitle || isLoading}
+                        disabled={!receiptTitle || isLoading}
                         className={`w-[100px] h-[35px] rounded-3xl font-medium
-                    ${!bookTitle || isLoading
+                    ${!receiptTitle || isLoading
                             ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                             : 'bg-blue-600 text-white hover:bg-blue-700'}`}
                     >
@@ -162,7 +138,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                     onClick={() => {
                         setTimeout(() => {
                             clearPhotos();
-                            navigate("/library/book");
+                            navigate("/library/receipt");
                         }, 300);
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
@@ -190,4 +166,4 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
     );
 };
 
-export default BookConvertModal;
+export default ReceiptConvertModal;
