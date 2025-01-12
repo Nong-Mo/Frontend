@@ -20,7 +20,7 @@ export interface StorageItem {
       const response = await fetch('https://nongmo-a2d.com/storage/list', {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'token': token,
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },

@@ -11,20 +11,20 @@ export const signIn = async (credentials: SignIn): Promise<{ data: SignInRespons
     return await axiosInstance.post<SignInResponse>(`${API_BASE_URL}/auth/signin`, credentials);
 };
 
-export const verifyToken = async (): Promise<void> => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-        throw new Error('No token found');
-    }
+// export const verifyToken = async (): Promise<void> => {
+//     const token = sessionStorage.getItem('token');
+//     if (!token) {
+//         throw new Error('No token found');
+//     }
     
-    try {
-        await axiosInstance.get(`${API_BASE_URL}/auth/verify`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-    } catch (error) {
-        sessionStorage.removeItem('token');
-        throw error;
-    }
-};
+//     try {
+//         await axiosInstance.get(`${API_BASE_URL}/auth/verify`, {
+//             headers: {
+//                 Authorization: `Bearer ${token}`
+//             }
+//         });
+//     } catch (error) {
+//         sessionStorage.removeItem('token');
+//         throw error;
+//     }
+// };
