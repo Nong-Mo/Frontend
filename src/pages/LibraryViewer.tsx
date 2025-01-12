@@ -31,6 +31,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
         const fetchCollectionItems = async () => {
             try {
                 const data = await getItems(collectionType);
+
                 if (collectionType === API_TYPE.BOOK) {
                     setViewerTitle('책 보관함');
                     setViewerEmptyText('보관함이 비었어요!\n책을 추가해 주세요.');

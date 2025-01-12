@@ -26,7 +26,7 @@ const PlayerPdfViewer: React.FC = () => {
     const pageCache = useRef<Map<number, string>>(new Map());
     const containerRef = useRef<HTMLDivElement>(null);
     const pageDimensionsRef = useRef<Map<number, { width: number; height: number }>>(new Map());
-    const {id} = useParams();
+    const {type, id} = useParams();
 
     const renderPage = useCallback(async (pageNum: number) => {
         try {
@@ -172,7 +172,7 @@ const PlayerPdfViewer: React.FC = () => {
 
                 const {data} = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
                 setPdfTitle(data.fileName);
-                const pdfUrl = data.relatedFile?.fileUrl;
+                const pdfUrl = (type === 'book') ? data.relatedFile?.fileUrl : data.fileUrl;
 
                 if (!pdfUrl) throw new Error('PDF 파일을 찾을 수 없습니다.');
 

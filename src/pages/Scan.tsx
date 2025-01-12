@@ -7,6 +7,7 @@ import BookConvertModal from "../components/scan/BookConvertModal";
 import { useScanStore } from "../hooks/useScanStore";
 import { usePhotoUpload } from "../hooks/usePhotoUpload";
 import { APITypeKeys } from "./LibraryViewer.tsx";
+import ReceiptConvertModal from "../components/scan/ReceiptConvertModal.tsx";
 
 const CAPTURE_IMAGE_MIME_TYPES = 'image/png,image/jpeg,image/webp';
 
@@ -126,7 +127,7 @@ const Scan = () => {
             case 'book':
                 return <BookConvertModal {...modalProps} />;
             case 'receipt':
-                return <BookConvertModal {...modalProps} />;
+                return <ReceiptConvertModal {...modalProps} />;
             default:
                 return null;
         }
