@@ -23,12 +23,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ sender, text }) => {
             <div
                 className={`rounded-[16.5px] flex items-center justify-center ${
                     isAI
-                        ? "bg-[#252934] text-white flex-1"
+                        ? "bg-[#252934] text-white"
                         : "bg-[#246BFD] text-white"
                 } text-[14px] font-bold leading-[20px]`}
                 style={{
                     wordBreak: "break-word",
-                    minWidth: "100px"
+                    width: 'auto',
+                    minWidth: 'auto'
                 }}
             >
                 <p className="w-full text-[14px] font-bold leading-[20px] p-[14px]">
@@ -36,7 +37,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ sender, text }) => {
                 </p>
             </div>
         </div>
-);
+    );
 };
 
 export default ChatMessage;
