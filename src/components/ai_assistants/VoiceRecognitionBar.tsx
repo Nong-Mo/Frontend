@@ -66,7 +66,7 @@ const VoiceRecognitionBar: React.FC<{
     // 음성 인식 중일 때만 컴포넌트 렌더링
     return (
         isListening && (
-            <div className="fixed bottom-[35px] w-[350px] h-[48px] bg-[#262A34] rounded-[16.5px] flex items-center justify-center">
+            <div className="fixed bottom-[58.5px] w-[350px] h-[48px] bg-[#262A34] rounded-[16.5px] flex items-center justify-center">
                 <div className="flex items-center w-[315px] justify-between">
                     {/* 취소 버튼 */}
                     <button

@@ -149,47 +149,47 @@ const Scan = () => {
     }
 
     return (
-        <div className="mt-[15px] z-50 content-wrapper ml-[32px] mr-[32px] md-[34px] w-[414px] flex flex-col items-center h-[896px]">
-            <div className="w-full">
-                <NavBar
-                    title={currentConfig.title}
-                    hideLeftIcon={false}
-                    showMenu={false}
-                    iconNames={{
-                        backIcon: "뒤로가기"  
-                    }}
-                    backPageName= { `/library/${scanType}` }
-                    rightIcons={[]}
+        <div className="w-full flex flex-col min-h-screen z-10 mt-[15px]">
+            <NavBar
+                title={currentConfig.title}
+                hideLeftIcon={false}
+                showMenu={false}
+                iconNames={{
+                    backIcon: "뒤로가기"  
+                }}
+                backPageName= { `/library/${scanType}` }
+                rightIcons={[]}
+            />
+            <div className="w-full flex flex-col items-center">
+
+                <ScanViewer 
+                    photos={photos.map(photo => ({
+                        ...photo,
+                        originalSize: photo.originalSize || { width: 0, height: 0 }
+                    }))}
+                    onRemove={(id) => useScanStore.getState().removePhoto(id)}
+                    type={currentConfig.viewerType}
                 />
+                
+                <CameraControls
+                    onTakePhoto={handleTakePhoto}
+                    onUpload={handlePhotoUpload}
+                    isLoading={isLoading}  
+                    hasCameraPermission={true}
+                    hasPhotos={photos.length > 0}
+                    scanType={scanType as ScanType}
+                />
+
+                <input
+                    type="file"
+                    accept={CAPTURE_IMAGE_MIME_TYPES}
+                    onChange={handleImageCapture}
+                    className="hidden"
+                    ref={fileInputRef}
+                    capture="environment"
+                />
+
             </div>
-
-            <ScanViewer 
-                photos={photos.map(photo => ({
-                    ...photo,
-                    originalSize: photo.originalSize || { width: 0, height: 0 }
-                }))}
-                onRemove={(id) => useScanStore.getState().removePhoto(id)}
-                type={currentConfig.viewerType}
-            />
-            
-            <CameraControls
-                onTakePhoto={handleTakePhoto}
-                onUpload={handlePhotoUpload}
-                isLoading={isLoading}  
-                hasCameraPermission={true}
-                hasPhotos={photos.length > 0}
-                scanType={scanType as ScanType}
-            />
-
-            <input
-                type="file"
-                accept={CAPTURE_IMAGE_MIME_TYPES}
-                onChange={handleImageCapture}
-                className="hidden"
-                ref={fileInputRef}
-                capture="environment"
-            />
-
             {renderModal()}
         </div>
     );

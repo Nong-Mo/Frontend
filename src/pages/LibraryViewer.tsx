@@ -72,30 +72,28 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     }
 
     return (
-        <div className="w-full z-10">
-            <div className="content-wrapper ml-[32px] mr-[32px] mt-[15px] md-[34px] w-[350px] flex flex-col items-center h-[896px]">
-                <div className="w-full">
-                    <NavBar
-                        title={viewerTitle}
-                        hideLeftIcon={false}
-                        showMenu={false}
-                        iconNames={{
-                            backIcon: "뒤로가기",
-                            aiIcon: "AI 로봇"
-                        }}
-                        backPageName='/home'
-                        rightIcons={['ai']}
-                    />
-                </div>
-                <div className="w-full">
-                    <h1 className="min-h-[100px] mt-[15px] primary-info-text leading-50 whitespace-pre-line">
+        <div className="w-full z-10 mt-[15px]">
+            <NavBar
+                title={viewerTitle}
+                hideLeftIcon={false}
+                showMenu={false}
+                iconNames={{
+                    backIcon: "뒤로가기",
+                    aiIcon: "AI 로봇"
+                }}
+                backPageName='/home'
+                rightIcons={['ai']}
+            />
+            <div className="w-full flex flex-col items-center">
+                <div className="w-[350px]">
+                    <h1 className="pt-[15px] min-h-[115px] primary-info-text leading-50 whitespace-pre-line">
                         {collectionItems.length === 0
                             ? <>{viewerEmptyText}</>
                             : <>{viewerText}</>
                         }
                     </h1>
                 </div>
-                <div className="w-full h-[67.2px] mt-[30px]">
+                <div className="w-[350px] h-[67.2px] mt-[30px]">
                     <button className="w-full h-full flex items-center justify-center rounded-[16.5px] bg-[#262A34]"
                             onClick={onClickAddButton}>
                         <FaPlus className="w-[15.14px] h-[16.8px] text-white"/>
@@ -119,7 +117,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                         최근 파일
                     </button>
                 </div>
-                <div className="h-[550px] overflow-y-auto w-full mt-[30px] [&::-webkit-scrollbar]:hidden">
+                <div className="w-[350px] h-[550px] overflow-y-auto mt-[30px] [&::-webkit-scrollbar]:hidden">
                     <CollectionGrid items={collectionItems} storageName={collectionType}/>
                 </div>
             </div>

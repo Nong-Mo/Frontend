@@ -36,8 +36,13 @@ const AIAssistantPage: React.FC = () => {
 
     // 3. 여기가 세번째 수정사항: 스크롤 effect 추가
     useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        // 메시지가 추가될 때만 스크롤하도록 조건 추가
+        if (messagesEndRef.current && messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            // 새 메시지가 추가될 때만 스크롤
+            if (lastMessage.sender === 'user' || lastMessage.sender === 'ai') {
+                messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
         }
     }, [messages]);
 
@@ -177,7 +182,7 @@ const AIAssistantPage: React.FC = () => {
     };
 
     return (
-        <div className="w-full h-[817px] mt-[15px] flex flex-col px-[32px] z-10 relative">
+        <div className="w-full flex flex-col min-h-screen z-10 mt-[15px]">
             <NavBar
                 title="AI 어시스턴트"
                 hideLeftIcon={false}
@@ -190,192 +195,196 @@ const AIAssistantPage: React.FC = () => {
                 rightIcons={['edit']}
             />
 
-            <div className="w-full primary-info-text mb-4">
-                <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
-            </div>
+            <div className="w-full flex flex-col items-center">
+                <div className="w-[350px] primary-info-text mb-4">
+                    <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
+                </div>
 
-            <div className="w-[350px] h-[554px] mt-[30px] mb-[20px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
-                        <ChatMessage sender={msg.sender} text={msg.text} />
-                        {msg.sender === 'ai' &&
-                            index === messages.length - 1 && (
-                                <div className="mt-1">
-                                    {(() => {
-                                        const prevUserMessage = messages[messages.length - 2]?.text || '';
-                                        const messageType = getMessageType(prevUserMessage, msg.text);
+                <div className="w-[350px] h-[554px] mt-[30px] mb-[12px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
+                            <ChatMessage sender={msg.sender} text={msg.text} />
+                            {msg.sender === 'ai' &&
+                                index === messages.length - 1 && (
+                                    <div className="mt-1">
+                                        {(() => {
+                                            const prevUserMessage = messages[messages.length - 2]?.text || '';
+                                            const messageType = getMessageType(prevUserMessage, msg.text);
 
-                                        // 파일 저장 완료 시
-                                        if (messageType === 'save_complete' && savedFileInfo) {
-                                            return (
-                                                <div className="flex flex-row space-x-2 ml-[40px]">
-                                                    <div className="inline-block rounded-[16.5px]">
-                                                        <button
-                                                            onClick={() => {
-                                                                switch(savedFileInfo.storage) {
-                                                                    case '책':
-                                                                        navigate(ROUTES.LIBRARY.BOOK.path);
-                                                                        break;
-                                                                    case '영수증':
-                                                                        navigate(ROUTES.LIBRARY.RECEIPT.path);
-                                                                        break;
-                                                                    case '굿즈':
-                                                                        navigate(ROUTES.GOODS.STORAGE.path);
-                                                                        break;
-                                                                    case '필름 사진':
-                                                                        console.error('필름 사진 보관함 경로가 정의되지 않았습니다.');
-                                                                        break;
-                                                                    case '서류':
-                                                                        console.error('서류 보관함 경로가 정의되지 않았습니다.');
-                                                                        break;
-                                                                    case '티켓':
-                                                                        console.error('티켓 보관함 경로가 정의되지 않았습니다.');
-                                                                        break;
-                                                                    default:
-                                                                        console.error('알 수 없는 보관함 타입:', savedFileInfo.storage);
-                                                                }
-                                                            }}
-                                                            className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
-                                                        >
-                                            <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                                보관함 이동
-                                            </span>
-                                                        </button>
+                                            // 파일 저장 완료 시
+                                            if (messageType === 'save_complete' && savedFileInfo) {
+                                                return (
+                                                    <div className="flex flex-row space-x-2 ml-[40px]">
+                                                        <div className="inline-block rounded-[16.5px]">
+                                                            <button
+                                                                onClick={() => {
+                                                                    switch(savedFileInfo.storage) {
+                                                                        case '책':
+                                                                            navigate(ROUTES.LIBRARY.BOOK.path);
+                                                                            break;
+                                                                        case '영수증':
+                                                                            navigate(ROUTES.LIBRARY.RECEIPT.path);
+                                                                            break;
+                                                                        case '굿즈':
+                                                                            navigate(ROUTES.GOODS.STORAGE.path);
+                                                                            break;
+                                                                        case '필름 사진':
+                                                                            console.error('필름 사진 보관함 경로가 정의되지 않았습니다.');
+                                                                            break;
+                                                                        case '서류':
+                                                                            console.error('서류 보관함 경로가 정의되지 않았습니다.');
+                                                                            break;
+                                                                        case '티켓':
+                                                                            console.error('티켓 보관함 경로가 정의되지 않았습니다.');
+                                                                            break;
+                                                                        default:
+                                                                            console.error('알 수 없는 보관함 타입:', savedFileInfo.storage);
+                                                                    }
+                                                                }}
+                                                                className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
+                                                            >
+                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                    보관함 이동
+                                                </span>
+                                                            </button>
+                                                        </div>
+                                                        <div className="inline-block rounded-[16.5px]">
+                                                            <button
+                                                                onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
+                                                                className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
+                                                            >
+                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                    파일 감상
+                                                </span>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                    <div className="inline-block rounded-[16.5px]">
-                                                        <button
-                                                            onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
-                                                            className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
-                                                        >
-                                            <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                                파일 감상
-                                            </span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }
+                                                );
+                                            }
 
-                                        // 파일 찾기/이동 완료 시
-                                        if (msg.text.includes('파일을 찾았습니다')) {
-                                            const fileInfo = savedFileInfo;
-                                            return (
-                                                <div className="ml-[40px]">
-                                                    <div className="inline-block rounded-[16.5px]">
-                                                        <button
-                                                            onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
-                                                            className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
-                                                            disabled={isLoading}
-                                                        >
-                                            <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                                파일 이동
-                                            </span>
-                                                        </button>
+                                            // 파일 찾기/이동 완료 시
+                                            if (msg.text.includes('파일을 찾았습니다')) {
+                                                const fileInfo = savedFileInfo;
+                                                return (
+                                                    <div className="ml-[40px]">
+                                                        <div className="inline-block rounded-[16.5px]">
+                                                            <button
+                                                                onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
+                                                                className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
+                                                                disabled={isLoading}
+                                                            >
+                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                    파일 이동
+                                                </span>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        }
+                                                );
+                                            }
 
-                                        // 파일 저장 요청 시
-                                        if (messageType === 'save_request') {
-                                            return (
-                                                <div className="ml-[40px]">
-                                                    <div className="inline-block rounded-[16.5px]">
-                                                        <button
-                                                            onClick={() => setIsSaveModalOpen(true)}
-                                                            className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
-                                                            disabled={isLoading}
-                                                        >
-                                            <span className="text-[14px] font-bold leading-[20px] p-[14px]">
-                                                파일 저장
-                                            </span>
-                                                        </button>
+                                            // 파일 저장 요청 시
+                                            if (messageType === 'save_request') {
+                                                return (
+                                                    <div className="ml-[40px]">
+                                                        <div className="inline-block rounded-[16.5px]">
+                                                            <button
+                                                                onClick={() => setIsSaveModalOpen(true)}
+                                                                className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
+                                                                disabled={isLoading}
+                                                            >
+                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                    파일 저장
+                                                </span>
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        }
+                                                );
+                                            }
 
-                                        return null;
-                                    })()}
+                                            return null;
+                                        })()}
+                                    </div>
+                                )}
+                        </div>
+                    ))}
+
+                    {/* 4. 여기가 네번째 수정사항: 스크롤 기준점 추가 */}
+                    <div ref={messagesEndRef} />
+
+                    {!isListening && messages.length === 0 && (
+                        <div className="flex mt-auto overflow-x-auto whitespace-nowrap">
+                            {buttons.map((text, index) => (
+                                <div key={index} className="inline-block mr-[20px]">
+                                    <div className="hover:border-gradient w-[130px] h-[67px] rounded-[16.5px] flex items-center justify-center relative group">
+                                        <button
+                                            className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
+                                            onClick={() => handleButtonClick(text)}
+                                            disabled={isLoading}
+                                        >
+                                            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
+                                            <div className="w-[95px] h-auto font-bold text-white text-[14px] text-left whitespace-normal z-10">
+                                                {text}
+                                            </div>
+                                        </button>
+                                    </div>
                                 </div>
-                            )}
-                    </div>
-                ))}
+                            ))}
+                        </div>
+                    )}
 
-                {/* 4. 여기가 네번째 수정사항: 스크롤 기준점 추가 */}
-                <div ref={messagesEndRef} />
-
-                {!isListening && messages.length === 0 && (
-                    <div className="flex mt-auto overflow-x-auto whitespace-nowrap">
-                        {buttons.map((text, index) => (
-                            <div key={index} className="inline-block mr-[20px]">
-                                <div className="hover:border-gradient w-[130px] h-[67px] rounded-[16.5px] flex items-center justify-center relative group">
-                                    <button
-                                        className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
-                                        onClick={() => handleButtonClick(text)}
-                                        disabled={isLoading}
-                                    >
-                                        <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity"></div>
-                                        <div className="w-[95px] h-auto font-bold text-white text-[14px] text-left whitespace-normal z-10">
-                                            {text}
-                                        </div>
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {isListening && (
-                    <VoiceRecognitionBar
-                        isListening={isListening}
-                        duration={60}
-                        transcript={transcript}
-                        startTime={startTime}
-                        onCancel={() => {
-                            stopRecognition();
-                            setInputText('');
-                        }}
-                        onComplete={async (text: string) => {
-                            if (transcript.trim() !== '') {
+                    {isListening && (
+                        <VoiceRecognitionBar
+                            isListening={isListening}
+                            duration={60}
+                            transcript={transcript}
+                            startTime={startTime}
+                            onCancel={() => {
                                 stopRecognition();
-                                addMessage('user', transcript);
-                                await fetchAndAddAIResponse(transcript);
-                            }
-                        }}
-                    />
-                )}
+                                setInputText('');
+                            }}
+                            onComplete={async (text: string) => {
+                                if (transcript.trim() !== '') {
+                                    stopRecognition();
+                                    addMessage('user', transcript);
+                                    await fetchAndAddAIResponse(transcript);
+                                }
+                            }}
+                        />
+                    )}
+                </div>
             </div>
 
-            <ChatInput
-                inputText={inputText}
-                setInputText={setInputText}
-                onSend={handleSend}
-                onStartVoiceRecognition={startRecognition}
-                isListening={isListening}
-            />
+            <div className="w-full flex flex-col items-center">
+                <ChatInput
+                    inputText={inputText}
+                    setInputText={setInputText}
+                    onSend={handleSend}
+                    onStartVoiceRecognition={startRecognition}
+                    isListening={isListening}
+                />
 
-            <SaveStoryModal
-                isOpen={isSaveModalOpen}
-                onClose={() => setIsSaveModalOpen(false)}
-                onSave={async (title, storage_name) => {
-                    try {
-                        const response = await saveStory({ title, storage_name });
-                        if (response?.status === 'success') {
-                            setSavedFileInfo({
-                                fileId: response.file_id,
-                                title: title,
-                                storage: storage_name
-                            });
-                            setIsSaveModalOpen(false);
-                            addMessage('ai', `'${title}' 파일이 성공적으로 저장되었습니다. 아래 버튼을 클릭하여 파일로 이동할 수 있습니다.`);
+                <SaveStoryModal
+                    isOpen={isSaveModalOpen}
+                    onClose={() => setIsSaveModalOpen(false)}
+                    onSave={async (title, storage_name) => {
+                        try {
+                            const response = await saveStory({ title, storage_name });
+                            if (response?.status === 'success') {
+                                setSavedFileInfo({
+                                    fileId: response.file_id,
+                                    title: title,
+                                    storage: storage_name
+                                });
+                                setIsSaveModalOpen(false);
+                                addMessage('ai', `'${title}' 파일이 성공적으로 저장되었습니다. 아래 버튼을 클릭하여 파일로 이동할 수 있습니다.`);
+                            }
+                        } catch (error) {
+                            console.error('Failed to save story:', error);
+                            addMessage('ai', '파일 저장 중 오류가 발생했습니다.');
                         }
-                    } catch (error) {
-                        console.error('Failed to save story:', error);
-                        addMessage('ai', '파일 저장 중 오류가 발생했습니다.');
-                    }
-                }}
-            />
+                    }}
+                />
+            </div>
         </div>
     );
 };

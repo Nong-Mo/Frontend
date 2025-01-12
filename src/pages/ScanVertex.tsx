@@ -94,7 +94,7 @@ const ScanVertex: React.FC = () => {
     };
 
     return (
-        <div className="z-50 mt-[15px] w-full h-[896px] flex flex-col select-none">
+        <div className="w-full flex flex-col min-h-screen z-10 mt-[15px] select-none">
             <NavBar
                 title="영역 설정"
                 hideLeftIcon={false}
@@ -107,13 +107,13 @@ const ScanVertex: React.FC = () => {
 
             <div
                 ref={containerRef}
-                className="relative w-[414px] h-[615px] bg-gray-900"
+                className="relative w-full h-[615px]"
             >
                 <img
                     ref={imgRef}
                     src={photoData}
                     alt="scanned"
-                    className="absolute w-full h-full object-contain"
+                    className="w-full h-full object-contain"
                     draggable={false}
                 />
 

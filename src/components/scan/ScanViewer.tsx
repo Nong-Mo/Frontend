@@ -31,7 +31,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                 count: `총 ${photos.length}개의 영수증이 스캔되었습니다`,
                 empty: '스캔된 영수증이 없습니다',
                 guide: '카메라로 영수증을 스캔해주세요',
-                pageLabel: '영수증'
+                pageLabel: '번 째 영수증'
             };
         }
         if (type === 'book') {
@@ -40,7 +40,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                 count: `총 ${photos.length}장의 페이지가 스캔되었습니다`,
                 empty: '스캔된 페이지가 없습니다',
                 guide: '카메라로 책의 페이지를 스캔해주세요',
-                pageLabel: '책'
+                pageLabel: '번 째 페이지'
             };
         }
         return {
@@ -70,16 +70,16 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                         )}
                     </div>
                 </div>
-
+    
                 {photos.length > 0 ? (
                     <div className="w-full h-full overflow-y-auto pt-32 pb-6">
-                        <div className="space-y-3">
+                        <div className="flex flex-col items-center space-y-3">
                             {photos.map((photo, index) => (
                                 <div
                                     key={photo.id}
-                                    className="relative group animate-fade-in"
+                                    className="relative group animate-fade-in w-[350px]"
                                 >
-                                    <div className="relative overflow-hidden rounded-2xl bg-[#262A34] hover:bg-[#2d3341] shadow-lg transition-all duration-300">
+                                    <div className="relative overflow-hidden rounded-2xl bg-[#262A34] hover:bg-[#2d3341] shadow-lg transition-all duration-300 [&::-webkit-scrollbar]:hidden">
                                         <div className="p-4">
                                             <div className="flex items-center gap-4">
                                                 {/* 미리보기 */}
@@ -94,13 +94,13 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                                                     className="w-full h-full"
                                                 />
                                                 </div>
-
+    
                                                 {/* 정보 & 액션 */}
                                                 <div className="flex flex-1 justify-between items-center">
                                                     <span className="text-white font-medium">
-                                                        {text.pageLabel} {index + 1}
+                                                    {index + 1}{text.pageLabel}
                                                     </span>
-
+    
                                                     <div className="flex gap-1">
                                                         <button
                                                             onClick={() => setSelectedPhoto(photo)}
@@ -141,7 +141,7 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                     </div>
                 )}
             </div>
-
+    
             {/* 확대 모달 */}
             {selectedPhoto && (
                 <div
@@ -152,14 +152,14 @@ export const ScanViewer: React.FC<ScanViewerProps> = ({
                         className="relative max-w-3xl w-full aspect-[3/4] bg-[#262A34] rounded-3xl overflow-hidden shadow-2xl"
                         onClick={e => e.stopPropagation()}
                     >
-                    <div className="w-full h-full p-6">
-                    <VertexPreview
-                        imageData={selectedPhoto.data}
-                        initialVertices={selectedPhoto.vertices}
-                        originalSize={selectedPhoto.originalSize}
-                        className="w-full h-full"
-                    />
-                    </div>
+                        <div className="w-full h-full p-6">
+                            <VertexPreview
+                                imageData={selectedPhoto.data}
+                                initialVertices={selectedPhoto.vertices}
+                                originalSize={selectedPhoto.originalSize}
+                                className="w-full h-full"
+                            />
+                        </div>
                     </div>
                 </div>
             )}

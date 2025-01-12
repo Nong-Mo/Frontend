@@ -28,7 +28,7 @@ const SignInPage: React.FC = () => {
   };
 
   return (
-      <div className="mt-[15px] w-full h-[896px] flex flex-col px-[32px] z-10">
+      <div className="w-full flex flex-col min-h-screen z-10 mt-[15px]">
 
         {/* NavBar 영역 */}
         <NavBar
@@ -43,14 +43,14 @@ const SignInPage: React.FC = () => {
 
 
         {/* Contents 영역 */}
-        <div className="w-[350px] h-[545px] flex flex-col items-center">
+        <div className="w-full h-[545px] flex flex-col items-center">
           {/* InfoText 영역 */}
-          <div className="w-full primary-info-text">
+          <div className="w-[350px] primary-info-text">
             <InfoText title="환영합니다!" subtitle={<><span className="info-point-text">로그인</span> 해주세요.</>}/>
           </div>
 
           {/* Form 영역 */}
-          <div className="w-full flex flex-col">
+          <div className="w-[350px] flex flex-col items-center">
             <form className="mt-[65px] w-full h-[195px] justify-between flex flex-col mb-[65px]" onSubmit={handleSubmit}>
               <InputField
                   label="이메일"
