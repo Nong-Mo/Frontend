@@ -88,7 +88,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                     />
                 </div>
                 <div className="w-full">
-                    <h1 className="mt-[15px] primary-info-text leading-50 whitespace-pre-line">
+                    <h1 className="min-h-[100px] mt-[15px] primary-info-text leading-50 whitespace-pre-line">
                         {collectionItems.length === 0
                             ? <>{viewerEmptyText}</>
                             : <>{viewerText}</>
