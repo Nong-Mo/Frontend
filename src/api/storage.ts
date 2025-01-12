@@ -17,7 +17,7 @@ export interface StorageItem {
     }
   
     try {
-      const response = await fetch('http://127.0.0.1:8000/storage/list', {
+      const response = await fetch('https://nongmo-a2d.com/storage/list', {
         method: 'GET',
         headers: {
           'token': `${token}`,
