@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect} from "react";
+import {useNavigate, useNavigationType} from "react-router-dom";
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { RiRobot2Fill } from "react-icons/ri";
@@ -11,6 +11,8 @@ interface NavigationProps {
     showMenu?: boolean;
     hideLeftIcon?: boolean;
     alignTitle?: 'left' | 'center';
+    backPageName?: string;
+    replacePageName?: boolean;
     onNewChatClick?: () => void;
     iconNames?: {
         backIcon?: string;
@@ -27,11 +29,18 @@ export const NavBar: React.FC<NavigationProps> = ({
     showMenu = true,
     hideLeftIcon = false,
     alignTitle = 'center',
+    backPageName = '',
+    replacePageName = false,
     onNewChatClick,
     iconNames = {},
     rightIcons = []
 }) => {
     const navigate = useNavigate();
+    const navigationList = useNavigationType();
+
+    useEffect(() => {
+        console.trace(navigationList + " : " + window.location.pathname);
+    }, [navigationList]);
 
     const renderIcon = (icon: 'convert' | 'ai' | 'edit') => {
         switch (icon) {
@@ -76,7 +85,7 @@ export const NavBar: React.FC<NavigationProps> = ({
                 {!hideLeftIcon && (
                     <button
                         className="absolute left-0 text-white flex items-center justify-center w-7 h-7 p-0"
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate(backPageName === '' ? -1 as number : backPageName)}
                         aria-label={iconNames.backIcon || "뒤로가기"}
                     >
                         <IoChevronBackOutline size={24} />
