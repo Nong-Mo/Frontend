@@ -38,7 +38,7 @@ const useAuth = () => {
 
     // 컴포넌트 마운트 시 토큰 검증
     useEffect(() => {
-        validateStoredToken();
+        // validateStoredToken();
     }, []);
 
     // 인증 상태 변경 감지 및 리다이렉션
@@ -178,7 +178,7 @@ const useAuth = () => {
         logout,
         clearErrors: () => setErrors({}),
         setErrors,
-        validateStoredToken,
+        // validateStoredToken,
     };
 };
 
