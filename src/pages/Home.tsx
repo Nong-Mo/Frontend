@@ -58,7 +58,7 @@ const Home: React.FC = () => {
     };
 
     if (isLoading) {
-        return <div>Loading...</div>; // 로딩 상태 처리
+        return <div className="w-full min-h-screen" />;
     }
 
     return (
