@@ -157,6 +157,7 @@ const Scan = () => {
                     iconNames={{
                         backIcon: "뒤로가기"  
                     }}
+                    backPageName= { `/library/${scanType}` }
                     rightIcons={[]}
                 />
             </div>
