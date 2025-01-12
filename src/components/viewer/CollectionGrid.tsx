@@ -30,10 +30,10 @@ const CollectionGrid = ({items, storageName} : CollectionGridProps) => {
     const handleItemClick = (fileID: string) => {
         switch (storageName) {
             case 'book':
-                navigate(`/player/audio/${fileID}`);
+                navigate(`/player/${storageName}/audio/${fileID}`);
                 break;
             case 'receipt':
-                navigate(`/player/pdf/${fileID}`);
+                navigate(`/player/${storageName}/pdf/${fileID}`);
                 break;
             default:
                 break;

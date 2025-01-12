@@ -72,6 +72,7 @@ const Player: React.FC = () => {
             convertIcon: "변환하기",
             aiIcon: "AI 로봇"
           }}
+          backPageName={`/library/${useParams().type}`}
           rightIcons={['convert', 'ai']}
       />
 
