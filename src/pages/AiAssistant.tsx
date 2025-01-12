@@ -142,29 +142,16 @@ const AIAssistantPage: React.FC = () => {
 
     const handleFileNavigation = async (fileId: string, storage: string) => {
         try {
-            // Get file details and log the response
             const fileDetail = await getFileDetail(fileId);
-            console.log('Received file details:', fileDetail);
 
-            // The main file URL is already the audio URL since it's the primary file
-            let targetUrl = fileDetail.fileUrl;
-
-            // Log the navigation details for debugging
-            console.log('Navigating to file:', {
-                fileId,
-                storage,
-                fileType: fileDetail.fileType,
-                targetUrl
-            });
-
-            if (!targetUrl) {
-                throw new Error('No valid URL found for the file');
+            if (fileDetail.fileType === 'audio') {
+                navigate(`/player/book/audio/${fileDetail.fileID}`);
+            } else if (fileDetail.fileType === 'pdf') {
+                navigate(`/player/pdf/view/${fileId}`);
             }
-
-            window.location.href = targetUrl;
         } catch (error) {
-            console.error('Error navigating to file:', error);
-            addMessage('ai', '파일 위치로 이동하는 중 오류가 발생했습니다.');
+            console.error('File navigation error:', error);
+            addMessage('ai', '파일을 찾을 수 없거나 접근할 수 없습니다.');
         }
     };
 
@@ -257,7 +244,7 @@ const AIAssistantPage: React.FC = () => {
                                                     </div>
                                                     <div className="inline-block rounded-[16.5px]">
                                                         <button
-                                                            onClick={() => handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
+                                                            onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
                                                             className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                         >
                                             <span className="text-[14px] font-bold leading-[20px] p-[14px]">
@@ -276,7 +263,7 @@ const AIAssistantPage: React.FC = () => {
                                                 <div className="ml-[40px]">
                                                     <div className="inline-block rounded-[16.5px]">
                                                         <button
-                                                            onClick={() => fileInfo && handleFileNavigation(fileInfo.fileId, fileInfo.storage)}
+                                                            onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
                                                             className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                             disabled={isLoading}
                                                         >
