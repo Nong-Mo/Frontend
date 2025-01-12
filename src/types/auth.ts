@@ -10,7 +10,6 @@ export interface SignInResponse {
   status: string;
 }
 
-// 나머지 타입들은 그대로 유지
 export interface SignIn {
   email: string;
   password: string;
@@ -29,4 +28,21 @@ export interface AuthError {
   password_confirmation?: string;
   apiError?: string;
   nickname?: string;
+}
+
+export interface TokenResponse {
+  status: string;
+  message: string;
+  data: {
+    access_token: string;
+  }
+}
+
+export interface SignInResponse {
+  status: string;
+  message: string;
+  data: {
+    access_token: string;
+    refresh_token: string;
+  }
 }
