@@ -19,7 +19,7 @@ interface ImageUploadResponse {
 // title과 files를 인자로 받아 서버에 이미지 파일을 업로드
 // image.ts의 uploadImages 함수 수정
 export const uploadImages = async ({ title, files }: UploadImagesParams): Promise<ImageUploadResponse> => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (!token) {
     throw new Error('인증 토큰이 없습니다. 다시 로그인해주세요.');
   }

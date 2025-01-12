@@ -19,7 +19,7 @@ export const useGallery = ({ onSaveSuccess }: UseGalleryProps = {}) => {
   useEffect(() => {
     const loadGallery = () => {
       try {
-        const storedItems = localStorage.getItem(STORAGE_KEY);
+        const storedItems = sessionStorage.getItem(STORAGE_KEY);
         if (storedItems) {
           setGalleryItems(JSON.parse(storedItems));
         }
@@ -39,10 +39,10 @@ export const useGallery = ({ onSaveSuccess }: UseGalleryProps = {}) => {
         timestamp: Date.now(),
       };
 
-      // localStorage 조회와 상태 업데이트를 함께 처리
+      // sessionStorage 조회와 상태 업데이트를 함께 처리
       setGalleryItems(prevItems => {
         const updatedItems = [...prevItems, newItem];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
         return updatedItems;
       });
 
@@ -58,7 +58,7 @@ export const useGallery = ({ onSaveSuccess }: UseGalleryProps = {}) => {
   const removeFromGallery = (id: string) => {
     setGalleryItems(prevItems => {
       const updatedItems = prevItems.filter(item => item.id !== id);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(updatedItems));
       return updatedItems;
     });
   };

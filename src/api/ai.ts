@@ -7,7 +7,7 @@ interface AIResponse {
 }
 
 export const fetchAIResponse = async (userText: string, new_chat: boolean = false): Promise<AIResponse> => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (!token) {
         throw new Error('Authentication required');
@@ -65,7 +65,7 @@ interface SaveStoryResponse {
 }
 
 export const getFileDetail = async (fileId: string): Promise<FileDetailResponse> => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (!token) {
         throw new Error('Authentication required');
@@ -94,7 +94,7 @@ export const getFileDetail = async (fileId: string): Promise<FileDetailResponse>
 };
 
 export const saveStory = async (request: SaveStoryRequest): Promise<SaveStoryResponse> => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (!token) {
         throw new Error('Authentication required');
@@ -120,7 +120,7 @@ export const saveStory = async (request: SaveStoryRequest): Promise<SaveStoryRes
 };
 
 export const startNewChat = async (): Promise<boolean> => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (!token) {
         throw new Error('Authentication required');
