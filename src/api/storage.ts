@@ -10,7 +10,7 @@ export interface StorageItem {
   
   // Storage API 함수
   export const getStorageList = async (): Promise<StorageResponse> => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     
     if (!token) {
       throw new Error('No token found');
@@ -20,7 +20,7 @@ export interface StorageItem {
       const response = await fetch('https://nongmo-a2d.com/storage/list', {
         method: 'GET',
         headers: {
-          'token': `${token}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
