@@ -1,5 +1,5 @@
 import React from 'react';
-import {FaBook, FaHeadphones} from "react-icons/fa";
+import { FaBook, FaReceipt, FaGift, FaCameraRetro, FaFileAlt, FaTicketAlt } from 'react-icons/fa';
 import {IoMdMore} from "react-icons/io";
 
 interface CollectionItemProps {
@@ -18,7 +18,7 @@ const CollectionItem = ({title, date, itemType, onClickItem}: CollectionItemProp
             case 'book':
                 return <FaBook size={iconSize}/>;
             case 'receipt':
-                return <FaHeadphones size={iconSize}/>;
+                return <FaReceipt size={iconSize}/>;
         }
 
         console.log(itemType);
@@ -30,7 +30,7 @@ const CollectionItem = ({title, date, itemType, onClickItem}: CollectionItemProp
             case 'book':
                 return 'bg-[#FFDD72]';  // 책은 노란색
             case 'receipt':
-                return 'bg-[#72FFDD]';  // 오디오는 민트색
+                return 'bg-[#94F0F0]';
         }
     };
 
