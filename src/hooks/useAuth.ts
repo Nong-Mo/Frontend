@@ -14,27 +14,27 @@ const useAuth = () => {
     const location = useLocation();
 
     // 토큰 유효성 검증
-    const validateStoredToken = async () => {
-        const token = sessionStorage.getItem('token');
-        if (!token) {
-            setIsAuthenticated(false);
-            return;
-        }
+    // const validateStoredToken = async () => {
+    //     const token = sessionStorage.getItem('token');
+    //     if (!token) {
+    //         setIsAuthenticated(false);
+    //         return;
+    //     }
 
-        try {
-            await verifyToken();
-            setIsAuthenticated(true);
-        } catch (error) {
-            console.error('Token validation error:', error);
-            sessionStorage.removeItem('token');
-            setIsAuthenticated(false);
-            if (location.pathname !== '/signin') {
-                navigate('/signin', {
-                    state: { message: '세션이 만료되었습니다. 다시 로그인해주세요.' }
-                });
-            }
-        }
-    };
+    //     try {
+    //         await verifyToken();
+    //         setIsAuthenticated(true);
+    //     } catch (error) {
+    //         console.error('Token validation error:', error);
+    //         sessionStorage.removeItem('token');
+    //         setIsAuthenticated(false);
+    //         if (location.pathname !== '/signin') {
+    //             navigate('/signin', {
+    //                 state: { message: '세션이 만료되었습니다. 다시 로그인해주세요.' }
+    //             });
+    //         }
+    //     }
+    // };
 
     // 컴포넌트 마운트 시 토큰 검증
     useEffect(() => {
