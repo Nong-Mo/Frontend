@@ -82,6 +82,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                             backIcon: "뒤로가기",
                             aiIcon: "AI 로봇"
                         }}
+                        backPageName='/home'
                         rightIcons={['ai']}
                     />
                 </div>

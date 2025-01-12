@@ -42,13 +42,14 @@ export const ROUTES = {
         }
     },
     PLAYER: {
+        path : '/player',
         AUDIO: {
-            path: '/player/audio',
+            path: '/audio',
             title: 'Audio Player',
             ko: '플레이어'
         },
         PDF: {
-            path: '/player/pdf',
+            path: '/pdf',
             title: 'PDF Player',
             ko: 'PDF 뷰'
         }
