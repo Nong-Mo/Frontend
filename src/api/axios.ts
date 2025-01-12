@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // 기본 axios 인스턴스 생성
 const axiosInstance = axios.create({
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'https://nongmo-a2d.com/',
     timeout: 30000,
     headers: {
         'Accept': 'application/json',
