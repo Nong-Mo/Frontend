@@ -45,9 +45,9 @@ const App = () => {
                                element={<Scan/>}/>
                         <Route path={`${ROUTES.SCAN.path}/:type${ROUTES.SCAN_VERTEX.path}`}
                                element={<ScanVertex/>}/>
-                        <Route path={`${ROUTES.PLAYER.AUDIO.path}/:id`}
+                        <Route path={`${ROUTES.PLAYER.path}/:type${ROUTES.PLAYER.AUDIO.path}/:id`}
                                element={<Player/>}/>
-                        <Route path={`${ROUTES.PLAYER.PDF.path}/:id`}
+                        <Route path={`${ROUTES.PLAYER.path}/:type${ROUTES.PLAYER.PDF.path}/:id`}
                                element={<PlayerPdfViewer/>}/>
                         <Route path={ROUTES.LIBRARY.BOOK.path}
                                element={<LibraryViewer collectionType={API_TYPE.BOOK}/>}/>

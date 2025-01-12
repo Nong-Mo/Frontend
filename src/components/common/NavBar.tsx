@@ -1,9 +1,9 @@
 import React, {useEffect} from "react";
 import {useNavigate, useNavigationType} from "react-router-dom";
-import { LiaExchangeAltSolid } from "react-icons/lia";
-import { IoChevronBackOutline } from "react-icons/io5";
-import { RiRobot2Fill } from "react-icons/ri";
-import { BiEdit } from "react-icons/bi";
+import {LiaExchangeAltSolid} from "react-icons/lia";
+import {IoChevronBackOutline} from "react-icons/io5";
+import {RiRobot2Fill} from "react-icons/ri";
+import {BiEdit} from "react-icons/bi";
 
 interface NavigationProps {
     onMenuClick?: () => void;
@@ -24,23 +24,19 @@ interface NavigationProps {
 }
 
 export const NavBar: React.FC<NavigationProps> = ({
-    onMenuClick,
-    title,
-    showMenu = true,
-    hideLeftIcon = false,
-    alignTitle = 'center',
-    backPageName = '',
-    replacePageName = false,
-    onNewChatClick,
-    iconNames = {},
-    rightIcons = []
-}) => {
+                                                      onMenuClick,
+                                                      title,
+                                                      showMenu = true,
+                                                      hideLeftIcon = false,
+                                                      alignTitle = 'center',
+                                                      backPageName = '',
+                                                      replacePageName = false,
+                                                      onNewChatClick,
+                                                      iconNames = {},
+                                                      rightIcons = []
+                                                  }) => {
     const navigate = useNavigate();
     const navigationList = useNavigationType();
-
-    useEffect(() => {
-        console.trace(navigationList + " : " + window.location.pathname);
-    }, [navigationList]);
 
     const renderIcon = (icon: 'convert' | 'ai' | 'edit') => {
         switch (icon) {
@@ -51,7 +47,7 @@ export const NavBar: React.FC<NavigationProps> = ({
                         onClick={onMenuClick}
                         aria-label={iconNames.convertIcon || "변환하기"}
                     >
-                        <LiaExchangeAltSolid size={24} />
+                        <LiaExchangeAltSolid size={24}/>
                     </button>
                 );
             case 'ai':
@@ -61,7 +57,7 @@ export const NavBar: React.FC<NavigationProps> = ({
                         onClick={() => navigate('/ai-assistant')}
                         aria-label={iconNames.aiIcon || "AI 로봇"}
                     >
-                        <RiRobot2Fill size={24} />
+                        <RiRobot2Fill size={24}/>
                     </button>
                 );
             case 'edit':
@@ -71,7 +67,7 @@ export const NavBar: React.FC<NavigationProps> = ({
                         onClick={onNewChatClick}
                         aria-label={iconNames.editIcon || "편집"}
                     >
-                        <BiEdit size={24} />
+                        <BiEdit size={24}/>
                     </button>
                 );
             default:
@@ -88,13 +84,13 @@ export const NavBar: React.FC<NavigationProps> = ({
                         onClick={() => navigate(backPageName === '' ? -1 as number : backPageName)}
                         aria-label={iconNames.backIcon || "뒤로가기"}
                     >
-                        <IoChevronBackOutline size={24} />
+                        <IoChevronBackOutline size={24}/>
                     </button>
                 )}
 
                 <span
                     className={`font-bold text-[20px] text-white flex-1 ${alignTitle === 'left' ? 'text-left' : 'text-center'}`}
-                    style={{ lineHeight: '25.2px' }}
+                    style={{lineHeight: '25.2px'}}
                 >
                     {title}
                 </span>
