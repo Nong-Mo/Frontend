@@ -31,7 +31,7 @@ export const uploadImages = async ({title, files, type = 1}: UploadImagesParams)
     }
   };
   const curr_api = (type === 1) ? API_DATA_TYPE.BOOK : API_DATA_TYPE.RECEIPT;
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (!token) {
     throw new Error('인증 토큰이 없습니다. 다시 로그인해주세요.');
   }
