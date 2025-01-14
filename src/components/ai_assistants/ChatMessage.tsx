@@ -6,24 +6,31 @@ import {Dialog} from '@headlessui/react';
 interface ChatMessageProps {
     sender: string;
     text: string;
-    onClickChat: () => void;
 }
 
 const parseMarkdown = (text: string): string => {
     return text
-        .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 p-2 rounded my-2 overflow-x-auto">$1</pre>')
-        .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 rounded">$1</code>')
-        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold">$1</strong>')
-        .replace(/\*([^*]+)\*/g, '<em class="italic">$1</em>')
-        .replace(/#{3} ([^\n]+)/g, '<h3 class="text-lg font-bold my-2">$1</h3>')
-        .replace(/#{2} ([^\n]+)/g, '<h2 class="text-xl font-bold my-3">$1</h2>')
-        .replace(/# ([^\n]+)/g, '<h1 class="text-2xl font-bold my-4">$1</h1>')
-        .replace(/^\s*[-*+]\s+([^\n]+)/gm, '<li class="ml-4">$1</li>')
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-500 hover:underline">$1</a>')
+        // Code blocks with relative padding
+        .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 p-2 rounded my-2 overflow-x-auto text-[1em]">$1</pre>')
+        // Inline code
+        .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 rounded text-[1em]">$1</code>')
+        // Bold
+        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-[1em]">$1</strong>')
+        // Italic
+        .replace(/\*([^*]+)\*/g, '<em class="italic text-[1em]">$1</em>')
+        // Headers with relative sizes
+        .replace(/#{3} ([^\n]+)/g, '<h3 class="font-bold my-2 text-[1.1em]">$1</h3>')
+        .replace(/#{2} ([^\n]+)/g, '<h2 class="font-bold my-3 text-[1.2em]">$1</h2>')
+        .replace(/# ([^\n]+)/g, '<h1 class="font-bold my-4 text-[1.3em]">$1</h1>')
+        // List items
+        .replace(/^\s*[-*+]\s+([^\n]+)/gm, '<li class="ml-2 text-[1em]">$1</li>')
+        // Links
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-500 hover:underline text-[1em]">$1</a>')
+        // Line breaks
         .replace(/\n/g, '<br />');
 };
 
-const ChatMessage: React.FC<ChatMessageProps> = ({sender, text, onClickChat}) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({sender, text}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isAI = sender === "ai";
 
@@ -53,9 +60,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text, onClickChat}) =>
                         }}
                     >
                         <div
-                            className="text-[14px] font-bold leading-[20px] p-[14px]"
+                            className="text-[18px] font-bold leading-[20px] p-[14px] leading-tight"
                             dangerouslySetInnerHTML={{__html: parseMarkdown(text)}}
-                            onClick={onClickChat}
                         />
                     </div>
                     <button
@@ -64,11 +70,11 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text, onClickChat}) =>
                             e.stopPropagation();
                             setIsModalOpen(true);
                         }}
-                        className={`w-6 h-6 rounded-full bg-black bg-opacity-20 
-                        flex items-center justify-center hover:bg-opacity-30 
+                        className={`w-6 h-6 rounded-full  
+                        flex items-center justify-center
                         transition-all mr-2 flex-shrink-0 ${isAI ? '' : 'opacity-0'}`}
                     >
-                        <Search className="w-3 h-3 text-white"/>
+                        <Search className="w-5 h-5 mt-[5px] text-white"/>
                     </button>
                 </div>
             </div>
@@ -78,11 +84,10 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text, onClickChat}) =>
                 onClose={() => setIsModalOpen(false)}
                 className="relative z-50"
             >
-                <div className="fixed inset-0 bg-black bg-opacity-30"
-                     aria-hidden="true"/>
+                <div className="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true"/>
 
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <Dialog.Panel className="w-[320px] max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:hidden bg-white rounded-lg">
+                    <Dialog.Panel className="w-[320px] h-[600px] overflow-y-auto [&::-webkit-scrollbar]:hidden bg-white rounded-lg">
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-4">
                                 <Dialog.Title className={`text-lg font-medium ${isAI ? "text-[#246BFD]" : "text-gray-800"}`}>
@@ -96,7 +101,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text, onClickChat}) =>
                                 </button>
                             </div>
                             <div
-                                className="text-xl leading-relaxed whitespace-pre-wrap text-gray-800"
+                                className="text-[1.8em] leading-relaxed whitespace-pre-wrap text-gray-800"
                                 dangerouslySetInnerHTML={{__html: parseMarkdown(text)}}
                             />
                         </div>
