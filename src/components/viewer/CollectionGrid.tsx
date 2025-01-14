@@ -47,13 +47,11 @@ const CollectionGrid = ({items, storageName, onItemsChange}: CollectionGridProps
         setLoading(prev => ({...prev, [fileID]: true}));
 
         try {
-            console.log(fileID);
-
             await axiosInstance.delete(`/storage/files/${fileID}`);
 
-            // 삭제된 아이템을 제외한 새로운 배열 생성
             const updatedItems = items.filter(item => item.fileID !== fileID);
             onItemsChange?.(updatedItems);
+
         } catch (error) {
             console.error('파일 삭제 실패:', error);
         } finally {

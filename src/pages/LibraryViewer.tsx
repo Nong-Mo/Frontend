@@ -37,6 +37,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     const fetchCollectionItems = async () => {
         try {
             const data = await getItems(collectionType);
+            console.log(data);
 
             if (collectionType === API_TYPE.BOOK) {
                 setViewerTitle('책 보관함');
@@ -58,6 +59,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     };
 
     const handleItemsChange = async () => {
+        setCollectionItems([]);
         await fetchCollectionItems();
     };
 

@@ -53,6 +53,7 @@ const CollectionItem = ({
             type="button"
             aria-label={`${title} 열기`}
             disabled={isDeleting}
+            style={{opacity: (isDeleting) ? '0' : ''}}
         >
             {isDeleting && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 rounded-[12px] flex items-center justify-center">
