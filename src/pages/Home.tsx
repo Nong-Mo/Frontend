@@ -32,12 +32,12 @@ const Home: React.FC = () => {
     }, []);
 
     const storageItems = [
-        { id: 1, title: '책', icon: <FaBook />, path: '/library/book', countColor: '#FFDD72' },
-        { id: 2, title: '영수증', icon: <FaReceipt />, path: '/library/receipt', countColor: '#94F0F0' },
-        { id: 3, title: '굿즈', icon: <FaGift />, path: '', countColor: '#FBA3FF' },
-        { id: 4, title: '필름 사진', icon: <FaCameraRetro />, path: '', countColor: '#A5F59C' },
-        { id: 5, title: '서류', icon: <FaFileAlt />, path: '', countColor: '#FF968E' },
-        { id: 6, title: '티켓', icon: <FaTicketAlt />, path: '', countColor: '#FFDD72' },
+        { id: 1, title: '책', icon: <FaBook />, path: '/library/book', countColor: '#FFDD72', isActive : true },
+        { id: 2, title: '영수증', icon: <FaReceipt />, path: '/library/receipt', countColor: '#94F0F0', isActive : true },
+        { id: 3, title: '굿즈', icon: <FaGift />, path: '', countColor: '#FBA3FF', isActive : false },
+        { id: 4, title: '필름 사진', icon: <FaCameraRetro />, path: '', countColor: '#A5F59C', isActive : false },
+        { id: 5, title: '서류', icon: <FaFileAlt />, path: '', countColor: '#FF968E', isActive : false },
+        { id: 6, title: '티켓', icon: <FaTicketAlt />, path: '', countColor: '#FFDD72', isActive : false },
     ];
 
     const getFileCount = (storageName: string) => {
@@ -104,6 +104,7 @@ const Home: React.FC = () => {
                                     count={getFileCount(item.title)}
                                     icon={item.icon}
                                     countColor={item.countColor}
+                                    isActive={item.isActive}
                                 />
                             </div>
                         ))}
