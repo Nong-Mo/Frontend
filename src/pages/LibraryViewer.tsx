@@ -54,7 +54,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
         };
 
         fetchCollectionItems();
-    }, [collectionType]);
+    }, []);
 
     const onClickAllButton = () => {
         setFilterButton(0);
