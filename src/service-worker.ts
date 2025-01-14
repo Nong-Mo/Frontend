@@ -62,9 +62,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', (event) => {
-    const storageEndpoints = ['/storage/book', '/storage/receipt'];
-    if (storageEndpoints.some(endpoint => event.request.url.includes(endpoint))) {
-        return;
-    }
-    event.respondWith(fetch(event.request));
+    event.respondWith(
+        fetch(event.request).then((response) => {
+            return response;
+        })
+    );
 });

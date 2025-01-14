@@ -5,6 +5,7 @@ import {FaPlus} from "react-icons/fa";
 import {useLocation, useNavigate} from "react-router-dom";
 import { API_TYPE } from "../routes/constants";
 import { getItems } from "../api/item.ts";
+import { Loader2 } from "lucide-react";
 
 export type APITypeKeys = typeof API_TYPE[keyof typeof API_TYPE];
 
@@ -18,11 +19,19 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     const [viewerText, setViewerText] = useState('');
     const [collectionItems, setCollectionItems] = useState<CollectionItemProps[]>([]);
     const [filterButton, setFilterButton] = useState(0);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
-        fetchCollectionItems();
+        setLoading(true);
+        setTimeout(() => {
+            const fetchData = async () => {
+                await fetchCollectionItems();
+                setLoading(false);
+            };
+            fetchData();
+        }, 500);
     }, [location])
 
     const fetchCollectionItems = async () => {
@@ -49,7 +58,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     };
 
     const handleItemsChange = async () => {
-        // 아이템이 삭제된 후 목록을 다시 불러옴
         await fetchCollectionItems();
     };
 
@@ -79,45 +87,54 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                 rightIcons={['ai']}
             />
             <div className="w-full flex flex-col items-center">
-                <div className="w-[350px]">
-                    <h1 className="pt-[15px] min-h-[115px] primary-info-text leading-50 whitespace-pre-line">
-                        {collectionItems.length === 0
-                            ? <>{viewerEmptyText}</>
-                            : <>{viewerText}</>
-                        }
-                    </h1>
-                </div>
-                <div className="w-[350px] h-[67.2px] mt-[30px]">
-                    <button className="w-full h-full flex items-center justify-center rounded-[16.5px] bg-[#262A34]"
-                            onClick={onClickAddButton}>
-                        <FaPlus className="w-[15.14px] h-[16.8px] text-white"/>
-                    </button>
-                </div>
-                <div className="flex justify-center h-8 mt-[30px]">
-                    <button
-                        onClick={onClickAllButton}
-                        className={`w-[93px] h-full text-white mr-[5px] ${
-                            filterButton === 0 ? 'bg-[#246BFD] rounded-[25px]' : ''
-                        }`}
-                    >
-                        전체 목록
-                    </button>
-                    <button
-                        onClick={onClickRecentButton}
-                        className={`w-[93px] h-full text-white ml-[5px] ${
-                            filterButton === 1 ? 'bg-[#246BFD] rounded-[25px]' : ''
-                        }`}
-                    >
-                        최근 파일
-                    </button>
-                </div>
-                <div className="w-[350px] h-[464px] mt-[30px] [&::-webkit-scrollbar]:hidden">
-                    <CollectionGrid
-                        items={collectionItems}
-                        storageName={collectionType}
-                        onItemsChange={handleItemsChange}
-                    />
-                </div>
+                {loading ? (
+                    <div className="flex items-center justify-center h-screen">
+                        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                    </div>
+                ) : (
+                    <>
+                        <div className="w-[350px]">
+                            <h1 className="pt-[15px] min-h-[115px] primary-info-text leading-50 whitespace-pre-line">
+                                {collectionItems.length === 0
+                                    ? <>{viewerEmptyText}</>
+                                    : <>{viewerText}</>
+                                }
+                            </h1>
+                        </div>
+                        <div className="w-[350px] h-[67.2px] mt-[30px]">
+                            <button className="w-full h-full flex items-center justify-center rounded-[16.5px] bg-[#262A34]"
+                                    onClick={onClickAddButton}>
+                                <FaPlus className="w-[15.14px] h-[16.8px] text-white"/>
+                            </button>
+                        </div>
+                        <div className="flex justify-center h-8 mt-[30px]">
+                            <button
+                                onClick={onClickAllButton}
+                                className={`w-[93px] h-full text-white mr-[5px] ${
+                                    filterButton === 0 ? 'bg-[#246BFD] rounded-[25px]' : ''
+                                }`}
+                            >
+                                전체 목록
+                            </button>
+                            <button
+                                onClick={onClickRecentButton}
+                                className={`w-[93px] h-full text-white ml-[5px] ${
+                                    filterButton === 1 ? 'bg-[#246BFD] rounded-[25px]' : ''
+                                }`}
+                            >
+                                최근 파일
+                            </button>
+                        </div>
+                        <div className="w-[350px] h-[464px] mt-[30px] [&::-webkit-scrollbar]:hidden">
+                            <CollectionGrid
+                                items={collectionItems}
+                                storageName={collectionType}
+                                onItemsChange={handleItemsChange}
+                                loading={loading}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
