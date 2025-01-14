@@ -60,7 +60,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text}) => {
                         }}
                     >
                         <div
-                            className="text-[18px] font-bold leading-[20px] p-[14px] leading-tight"
+                            className="text-[18px] font-bold p-[14px] leading-tight"
                             dangerouslySetInnerHTML={{__html: parseMarkdown(text)}}
                         />
                     </div>
