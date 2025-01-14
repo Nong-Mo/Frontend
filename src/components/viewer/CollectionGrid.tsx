@@ -44,7 +44,7 @@ const CollectionGrid = ({items, storageName} : CollectionGridProps) => {
         <div className="w-full">
             <div className="h-full">
                 <div className="grid grid-cols-2 gap-4 pb-8">
-                    {items?.map(item => (
+                    {items?.slice().reverse().map(item => (
                         <CollectionItem
                             key={item.fileID}
                             title={item.fileName}
