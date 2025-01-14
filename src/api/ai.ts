@@ -18,7 +18,7 @@ export const fetchAIResponse = async (userText: string, new_chat: boolean = fals
             '/llm/query',
             {
                 query: userText,
-                new_chat: new_chat  // 새로운 채팅 여부 전달
+                new_chat: new_chat
             },
             {
                 headers: {
@@ -46,6 +46,7 @@ export const fetchAIResponse = async (userText: string, new_chat: boolean = fals
 interface SaveStoryRequest {
     storage_name: string;
     title: string;
+    message_id?: string;
 }
 
 interface FileDetailResponse {

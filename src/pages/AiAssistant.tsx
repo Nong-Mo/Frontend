@@ -29,6 +29,7 @@ const AIAssistantPage: React.FC = () => {
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [savedFileInfo, setSavedFileInfo] = useState<{fileId: string, title: string, storage: string} | null>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    const [lastMessageId, setLastMessageId] = useState<string | null>(null);
 
     const { speakText } = useSpeechSynthesis();
 
@@ -125,7 +126,10 @@ const AIAssistantPage: React.FC = () => {
                 // "방금 작성한 이야기를 저장하시겠습니까?" 라고 안내
                 addMessage('ai', response.message);
                 speakText(response.message);
-    
+
+                const msgId = response.data?.message_id || null;
+                setLastMessageId(msgId);
+                
                 // 필요한 경우, 모달을 자동으로 띄울 수도 있음
                 // setIsSaveModalOpen(true);
             } else if (response?.type === 'error') {
@@ -372,25 +376,37 @@ const AIAssistantPage: React.FC = () => {
                 />
 
                 <SaveStoryModal
-                    isOpen={isSaveModalOpen}
-                    onClose={() => setIsSaveModalOpen(false)}
-                    onSave={async (title, storage_name) => {
-                        try {
-                            const response = await saveStory({ title, storage_name });
-                            if (response?.status === 'success') {
-                                setSavedFileInfo({
-                                    fileId: response.file_id,
-                                    title: title,
-                                    storage: storage_name
-                                });
-                                setIsSaveModalOpen(false);
-                                addMessage('ai', `'${title}' 파일이 성공적으로 저장되었습니다. 아래 버튼을 클릭하여 파일로 이동할 수 있습니다.`);
-                            }
-                        } catch (error) {
-                            console.error('Failed to save story:', error);
-                            addMessage('ai', '파일 저장 중 오류가 발생했습니다.');
-                        }
-                    }}
+                isOpen={isSaveModalOpen}
+                onClose={() => setIsSaveModalOpen(false)}
+                onSave={async (title, storage_name) => {
+                    try {
+                    if (!lastMessageId) {
+                        console.error('No last message ID found.'); 
+                        addMessage('ai', '저장할 메시지 ID가 없습니다.');
+                        return;
+                    }
+
+                    // message_id를 같이 전달
+                    const response = await saveStory({
+                        title,
+                        storage_name,
+                        message_id: lastMessageId
+                    });
+
+                    if (response?.status === 'success') {
+                        setSavedFileInfo({
+                        fileId: response.file_id,
+                        title: title,
+                        storage: storage_name
+                        });
+                        setIsSaveModalOpen(false);
+                        addMessage('ai', `'${title}' 파일이 성공적으로 저장되었습니다. 아래 버튼을 클릭하여 파일로 이동할 수 있습니다.`);
+                    }
+                    } catch (error) {
+                    console.error('Failed to save story:', error);
+                    addMessage('ai', '파일 저장 중 오류가 발생했습니다.');
+                    }
+                }}
                 />
             </div>
         </div>
