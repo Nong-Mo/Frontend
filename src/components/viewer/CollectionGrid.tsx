@@ -65,7 +65,7 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
         <div className="w-full">
             <div className="h-full">
                 <div className="grid grid-cols-2 gap-4 pb-8">
-                    {items?.map(item => (
+                    {items?.reverse().map(item => (
                         <CollectionItem
                             key={item.fileID}
                             id={item.fileID}

@@ -136,10 +136,8 @@ const ReceiptConvertModal = ({
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => {
-                        setTimeout(() => {
-                            clearPhotos();
-                            navigate("/library/receipt");
-                        }, 300);
+                        clearPhotos();
+                        navigate("/library/receipt");
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
                 >
