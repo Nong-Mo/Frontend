@@ -181,6 +181,10 @@ const AIAssistantPage: React.FC = () => {
         await fetchAndAddAIResponse(text);
     };
 
+    const handleChatClick = () => {
+        console.log("Test");
+    }
+
     return (
         <div className="w-full flex flex-col min-h-screen z-10 mt-[15px]">
             <NavBar
@@ -200,10 +204,10 @@ const AIAssistantPage: React.FC = () => {
                     <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
                 </div>
 
-                <div className="w-[350px] h-[554px] mt-[30px] mb-[12px] rounded-[16.5px] flex flex-col overflow-y-auto relative">
+                <div className="w-[350px] h-[554px] mt-[30px] mb-[12px] flex flex-col overflow-y-auto relative [&::-webkit-scrollbar]:hidden">
                     {messages.map((msg, index) => (
                         <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
-                            <ChatMessage sender={msg.sender} text={msg.text} />
+                            <ChatMessage sender={msg.sender} text={msg.text} onClickChat={handleChatClick} />
                             {msg.sender === 'ai' &&
                                 index === messages.length - 1 && (
                                     <div className="mt-1">
