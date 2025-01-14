@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/common/NavBar.tsx";
 import CollectionGrid, { CollectionItemProps } from "../components/viewer/CollectionGrid";
 import {FaPlus} from "react-icons/fa";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { API_TYPE } from "../routes/constants";
 import { getItems } from "../api/item.ts";
 
@@ -19,6 +19,11 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
     const [collectionItems, setCollectionItems] = useState<CollectionItemProps[]>([]);
     const [filterButton, setFilterButton] = useState(0);
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        fetchCollectionItems();
+    }, [location])
 
     const fetchCollectionItems = async () => {
         try {
@@ -42,10 +47,6 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
             console.error('데이터 로딩 실패:', error);
         }
     };
-
-    useEffect(() => {
-        fetchCollectionItems();
-    }, []);
 
     const handleItemsChange = async () => {
         // 아이템이 삭제된 후 목록을 다시 불러옴
