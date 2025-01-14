@@ -28,23 +28,9 @@ const AIAssistantPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [savedFileInfo, setSavedFileInfo] = useState<{fileId: string, title: string, storage: string} | null>(null);
-
-    // 2. 여기가 두번째 수정사항: messagesEndRef 추가
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
     const { speakText } = useSpeechSynthesis();
-
-    // 3. 여기가 세번째 수정사항: 스크롤 effect 추가
-    useEffect(() => {
-        // 메시지가 추가될 때만 스크롤하도록 조건 추가
-        if (messagesEndRef.current && messages.length > 0) {
-            const lastMessage = messages[messages.length - 1];
-            // 새 메시지가 추가될 때만 스크롤
-            if (lastMessage.sender === 'user' || lastMessage.sender === 'ai') {
-                messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    }, [messages]);
 
     const {
         isListening,
@@ -74,6 +60,12 @@ const AIAssistantPage: React.FC = () => {
     ) => {
         setMessages(prev => [...prev, { sender, text, fileInfo }]);
     };
+
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     // 메시지 타입 체크 함수
     const getMessageType = (userMessage: string, aiMessage: string) => {
@@ -181,10 +173,6 @@ const AIAssistantPage: React.FC = () => {
         await fetchAndAddAIResponse(text);
     };
 
-    const handleChatClick = () => {
-        console.log("Test");
-    }
-
     return (
         <div className="w-full flex flex-col min-h-screen z-10 mt-[15px]">
             <NavBar
@@ -204,10 +192,12 @@ const AIAssistantPage: React.FC = () => {
                     <InfoText title="AI와 함께 원하는" subtitle="데이터를 찾아 보세요." />
                 </div>
 
-                <div className="w-[350px] h-[554px] mt-[30px] mb-[12px] flex flex-col overflow-y-auto relative [&::-webkit-scrollbar]:hidden">
+                <div ref={chatContainerRef} id="chat-container" className="w-[350px] h-[554px] mt-[30px] mb-[12px] flex flex-col overflow-y-auto relative [&::-webkit-scrollbar]:hidden">
                     {messages.map((msg, index) => (
-                        <div key={index} className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
-                            <ChatMessage sender={msg.sender} text={msg.text} onClickChat={handleChatClick} />
+                        <div key={index}
+                             className={`mb-[20px] ${msg.sender === 'ai' ? 'self-start' : 'self-end'}`}>
+                            <ChatMessage sender={msg.sender}
+                                         text={msg.text}/>
                             {msg.sender === 'ai' &&
                                 index === messages.length - 1 && (
                                     <div className="mt-1">
@@ -222,7 +212,7 @@ const AIAssistantPage: React.FC = () => {
                                                         <div className="inline-block rounded-[16.5px]">
                                                             <button
                                                                 onClick={() => {
-                                                                    switch(savedFileInfo.storage) {
+                                                                    switch (savedFileInfo.storage) {
                                                                         case '책':
                                                                             navigate(ROUTES.LIBRARY.BOOK.path);
                                                                             break;
@@ -312,13 +302,11 @@ const AIAssistantPage: React.FC = () => {
                         </div>
                     ))}
 
-                    {/* 4. 여기가 네번째 수정사항: 스크롤 기준점 추가 */}
-                    <div ref={messagesEndRef} />
-
                     {!isListening && messages.length === 0 && (
                         <div className="flex mt-auto overflow-x-auto whitespace-nowrap">
                             {buttons.map((text, index) => (
-                                <div key={index} className="inline-block mr-[20px]">
+                                <div key={index}
+                                     className="inline-block mr-[20px]">
                                     <div className="hover:border-gradient w-[130px] h-[67px] rounded-[16.5px] flex items-center justify-center relative group">
                                         <button
                                             className="w-full h-full bg-[#262A34] rounded-[14.5px] flex justify-center items-center relative overflow-hidden"
