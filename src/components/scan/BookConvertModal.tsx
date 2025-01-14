@@ -12,13 +12,13 @@ interface BookConvertModalProps {
 }
 
 const BookConvertModal: React.FC<BookConvertModalProps> = ({
-                                                                photos,
-                                                                onClose,
-                                                                onUpload,
-                                                                onComplete,
-                                                                isLoading,
-                                                                clearPhotos,
-                                                            }) => {
+                                                               photos,
+                                                               onClose,
+                                                               onUpload,
+                                                               onComplete,
+                                                               isLoading,
+                                                               clearPhotos,
+                                                           }) => {
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(1);
     const [bookTitle, setBookTitle] = useState<string>("");
@@ -160,10 +160,8 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => {
-                        setTimeout(() => {
-                            clearPhotos();
-                            navigate("/library/book");
-                        }, 300);
+                        clearPhotos();
+                        navigate("/library/book");
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
                 >

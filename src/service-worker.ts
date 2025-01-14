@@ -60,3 +60,11 @@ self.addEventListener('activate', event => {
     );
     return self.clients.claim();
 });
+
+self.addEventListener('fetch', (event) => {
+    const storageEndpoints = ['/storage/book', '/storage/receipt'];
+    if (storageEndpoints.some(endpoint => event.request.url.includes(endpoint))) {
+        return;
+    }
+    event.respondWith(fetch(event.request));
+});
