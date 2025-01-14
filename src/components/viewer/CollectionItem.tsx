@@ -2,39 +2,26 @@ import React from 'react';
 import { FaBook, FaReceipt, FaTrash } from 'react-icons/fa';
 import { IoMdMore } from "react-icons/io";
 import { Menu } from '@headlessui/react';
-import axiosInstance from "../../api/axios";
 
 interface CollectionItemProps {
     id: string;
     title: string;
     date: string;
     itemType: string;
+    isDeleting?: boolean;
     onClickItem?: () => void;
     onDeleteSuccess?: () => void;
 }
-
 
 const CollectionItem = ({
                             id,
                             title,
                             date,
                             itemType,
+                            isDeleting,
                             onClickItem,
                             onDeleteSuccess
                         }: CollectionItemProps) => {
-    const handleDelete = async (e: React.MouseEvent) => {
-        e.stopPropagation();
-
-        try {
-            await axiosInstance.delete(`/storage/files/${id}`);
-            onDeleteSuccess?.();
-        } catch (error) {
-            console.error('파일 삭제 실패:', error);
-            // 에러 처리 로직 추가 가능
-            // 401 에러는 axiosInstance interceptor에서 자동으로 처리됨
-        }
-    };
-
     const getItemIcon = () => {
         const iconSize = 15;
 
@@ -61,11 +48,17 @@ const CollectionItem = ({
 
     return (
         <button
-            className="w-[165px] h-[165px] bg-[#262A34] rounded-[12px] text-left cursor-pointer hover:bg-[#2d3341] transition-colors"
+            className="w-[165px] h-[165px] bg-[#262A34] rounded-[12px] text-left cursor-pointer hover:bg-[#2d3341] transition-colors relative"
             onClick={onClickItem}
             type="button"
             aria-label={`${title} 열기`}
+            disabled={isDeleting}
         >
+            {isDeleting && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-[12px] flex items-center justify-center">
+                    <div className="text-white text-sm">삭제 중...</div>
+                </div>
+            )}
             <div className="w-full h-full pl-[15px] pr-[15px] pt-[19px] pb-[18.5px]">
                 <div className="flex justify-between items-center w-full h-[31px]">
                     <div className={`flex justify-center items-center w-[31px] h-[31px] ${getIconBackgroundColor()} rounded-[12px]`}>
@@ -73,9 +66,10 @@ const CollectionItem = ({
                     </div>
                     <Menu as="div" className="relative">
                         <Menu.Button
-                            className="p-1 hover:bg-[#3d4251] rounded-full transition-colors cursor-pointer"
+                            className="p-1 hover:bg-[#3d4251] rounded-full transition-colors cursor-pointer disabled:opacity-50"
                             onClick={(e) => e.stopPropagation()}
                             aria-label="더보기"
+                            disabled={isDeleting}
                         >
                             <IoMdMore size={20} className="text-white"/>
                         </Menu.Button>
@@ -86,8 +80,12 @@ const CollectionItem = ({
                                         <button
                                             className={`${
                                                 active ? 'bg-[#2d3341]' : ''
-                                            } text-[#FF6B6B] group flex rounded-[12px] items-center w-full px-3 py-2 text-sm`}
-                                            onClick={handleDelete}
+                                            } text-[#FF6B6B] group flex rounded-[12px] items-center w-full px-3 py-2 text-sm disabled:opacity-50`}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onDeleteSuccess?.();
+                                            }}
+                                            disabled={isDeleting}
                                         >
                                             <FaTrash className="mr-2 h-4 w-4" />
                                             삭제
