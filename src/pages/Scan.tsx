@@ -30,6 +30,7 @@ const Scan = () => {
     const isInitialMount = useRef(true);
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const galleryInputRef = useRef<HTMLInputElement>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [cameraError, setCameraError] = useState<string | null>(null);
     const { photos, addPhoto, clearPhotos: clearStorePhotos } = useScanStore();
@@ -45,15 +46,6 @@ const Scan = () => {
 
     // 현재 스캔 타입에 따른 설정
     const currentConfig = SCAN_CONFIG[scanType];
-
-    useEffect(() => {
-        if (isInitialMount.current && !photos.length) {
-            isInitialMount.current = false;
-            setTimeout(() => {
-                handleTakePhoto();
-            }, 100);
-        }
-    }, []);
 
     useEffect( () => {
         if(location.state?.fromVertex == null)
@@ -96,6 +88,13 @@ const Scan = () => {
             fileInputRef.current.click();
         }
     };
+
+    const handleGalleryTakePhoto = () => {
+        if(isLoading) return;
+        if(galleryInputRef.current) {
+            galleryInputRef.current.click();
+        }
+    }
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
@@ -162,19 +161,20 @@ const Scan = () => {
             />
             <div className="w-full flex flex-col items-center">
 
-                <ScanViewer 
+                <ScanViewer
                     photos={photos.map(photo => ({
                         ...photo,
-                        originalSize: photo.originalSize || { width: 0, height: 0 }
+                        originalSize: photo.originalSize || {width: 0, height: 0}
                     }))}
                     onRemove={(id) => useScanStore.getState().removePhoto(id)}
                     type={currentConfig.viewerType}
                 />
-                
+
                 <CameraControls
                     onTakePhoto={handleTakePhoto}
                     onUpload={handlePhotoUpload}
-                    isLoading={isLoading}  
+                    onGalleryPhoto={handleGalleryTakePhoto}
+                    isLoading={isLoading}
                     hasCameraPermission={true}
                     hasPhotos={photos.length > 0}
                     scanType={scanType as ScanType}
@@ -187,6 +187,13 @@ const Scan = () => {
                     className="hidden"
                     ref={fileInputRef}
                     capture="environment"
+                />
+                <input
+                    type="file"
+                    accept={`${CAPTURE_IMAGE_MIME_TYPES};capture=gallery`}
+                    onChange={handleImageCapture}
+                    className="hidden"
+                    ref={galleryInputRef}
                 />
 
             </div>
