@@ -110,7 +110,7 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                         최근 파일
                     </button>
                 </div>
-                <div className="w-[350px] h-[550px] overflow-y-auto mt-[30px] [&::-webkit-scrollbar]:hidden">
+                <div className="w-[350px] h-[464px] mt-[30px] [&::-webkit-scrollbar]:hidden">
                     <CollectionGrid
                         items={collectionItems}
                         storageName={collectionType}

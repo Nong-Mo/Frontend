@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axiosInstance from '../../api/axios';
 import CollectionItem from "./CollectionItem";
 
@@ -15,9 +15,9 @@ interface CollectionGridProps {
     onItemsChange?: (items: CollectionItemProps[]) => void;
 }
 
-const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridProps) => {
+const CollectionGrid = ({items, storageName, onItemsChange}: CollectionGridProps) => {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState<{[key: string]: boolean}>({});
+    const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -44,7 +44,7 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
     };
 
     const handleDeleteItem = async (fileID: string) => {
-        setLoading(prev => ({ ...prev, [fileID]: true }));
+        setLoading(prev => ({...prev, [fileID]: true}));
 
         try {
             console.log(fileID);
@@ -57,27 +57,25 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
         } catch (error) {
             console.error('파일 삭제 실패:', error);
         } finally {
-            setLoading(prev => ({ ...prev, [fileID]: false }));
+            setLoading(prev => ({...prev, [fileID]: false}));
         }
     };
 
     return (
-        <div className="w-full">
-            <div className="h-full">
-                <div className="grid grid-cols-2 gap-4 pb-8">
-                    {items?.reverse().map(item => (
-                        <CollectionItem
-                            key={item.fileID}
-                            id={item.fileID}
-                            title={item.fileName}
-                            date={formatDate(item.uploadDate)}
-                            onClickItem={() => handleItemClick(item.fileID)}
-                            onDeleteSuccess={() => handleDeleteItem(item.fileID)}
-                            itemType={storageName}
-                            isDeleting={loading[item.fileID]}
-                        />
-                    ))}
-                </div>
+        <div className="w-full overflow-y-auto h-full [&::-webkit-scrollbar]:hidden">
+            <div className="grid grid-cols-2 gap-4 pb-8">
+                {items?.reverse().map(item => (
+                    <CollectionItem
+                        key={item.fileID}
+                        id={item.fileID}
+                        title={item.fileName}
+                        date={formatDate(item.uploadDate)}
+                        onClickItem={() => handleItemClick(item.fileID)}
+                        onDeleteSuccess={() => handleDeleteItem(item.fileID)}
+                        itemType={storageName}
+                        isDeleting={loading[item.fileID]}
+                    />
+                ))}
             </div>
         </div>
     );
