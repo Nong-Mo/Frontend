@@ -99,7 +99,7 @@ const AIAssistantPage: React.FC = () => {
         try {
             // new_chat: false로 설정하여 이전 대화 컨텍스트 유지
             const response = await fetchAIResponse(userText, false);
-
+    
             if (response?.type === 'file_found') {
                 // 파일을 찾은 경우
                 if (response.data) {
@@ -111,10 +111,25 @@ const AIAssistantPage: React.FC = () => {
                 }
                 addMessage('ai', response.message);
                 speakText(response.message);
+    
             } else if (response?.type === 'chat') {
                 // 일반 채팅 응답
                 addMessage('ai', response.message);
                 speakText(response.message);
+    
+            // -------------------------------------------
+            // 여기에 story_save_ready 분기 추가
+            // -------------------------------------------
+            } else if (response?.type === 'story_save_ready') {
+                // 예) 백엔드가 "저장 준비"라는 메시지를 준 상태
+                // "방금 작성한 이야기를 저장하시겠습니까?" 라고 안내
+                addMessage('ai', response.message);
+                speakText(response.message);
+    
+                // 필요한 경우, 모달을 자동으로 띄울 수도 있음
+                // setIsSaveModalOpen(true);
+            } else if (response?.type === 'error') {
+                addMessage('ai', response.message);
             }
         } catch (error) {
             console.error('Error fetching AI response:', error);
@@ -123,6 +138,7 @@ const AIAssistantPage: React.FC = () => {
             setIsLoading(false);
         }
     };
+    
 
     const handleSend = async () => {
         if (!inputText.trim() || isLoading) return;
