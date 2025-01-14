@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {NavBar} from "../components/common/NavBar.tsx";
 import CollectionGrid, { CollectionItemProps } from "../components/viewer/CollectionGrid";
 import {FaPlus} from "react-icons/fa";
@@ -6,65 +6,58 @@ import {useNavigate} from "react-router-dom";
 import { API_TYPE } from "../routes/constants";
 import { getItems } from "../api/item.ts";
 
-
 export type APITypeKeys = typeof API_TYPE[keyof typeof API_TYPE];
 
 interface LibraryViewerProps {
-    collectionType: APITypeKeys;  // 'book' | 'receipt' 타입이 됨
+    collectionType: APITypeKeys;
 }
 
 const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
-    // 라이브러리 타이틀
     const [viewerTitle, setViewerTitle] = useState('');
-    // 라이브러리 설명 텍스트 - Empty and Non-Empty
     const [viewerEmptyText, setViewerEmptyText] = useState('');
     const [viewerText, setViewerText] = useState('');
-    // 라이브러리 컬렉션 아이템 CollectionItemProps
     const [collectionItems, setCollectionItems] = useState<CollectionItemProps[]>([]);
-    // 이동을 위한 Navigate
+    const [filterButton, setFilterButton] = useState(0);
     const navigate = useNavigate();
 
-    // 필터 버튼 상태 변화를 위한 State
-    const [filterButton, setFilterButton] = useState(0);
+    const fetchCollectionItems = async () => {
+        try {
+            const data = await getItems(collectionType);
+
+            if (collectionType === API_TYPE.BOOK) {
+                setViewerTitle('책 보관함');
+                setViewerEmptyText('보관함이 비었어요!\n책을 추가해 주세요.');
+                setViewerText('감상하고 싶은\n책을 선택해 주세요.');
+            } else if (collectionType === API_TYPE.RECEIPT) {
+                setViewerTitle('영수증 보관함');
+                setViewerEmptyText('영수증이 비었어요!\n추가해 주세요.');
+                setViewerText('확인하고 싶은\n영수증을 선택해 주세요.');
+            } else {
+                setViewerTitle('테스트');
+                setViewerEmptyText('Empty 테스트\n테스트');
+                setViewerText('테스트\n테스트');
+            }
+            setCollectionItems(data.fileList);
+        } catch (error) {
+            console.error('데이터 로딩 실패:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchCollectionItems = async () => {
-            try {
-                const data = await getItems(collectionType);
-
-                if (collectionType === API_TYPE.BOOK) {
-                    setViewerTitle('책 보관함');
-                    setViewerEmptyText('보관함이 비었어요!\n책을 추가해 주세요.');
-                    setViewerText('감상하고 싶은\n책을 선택해 주세요.');
-
-                } else if (collectionType === API_TYPE.RECEIPT) {
-                    setViewerTitle('영수증 보관함');
-                    setViewerEmptyText('영수증이 비었어요!\n추가해 주세요.');
-                    setViewerText('확인하고 싶은\n영수증을 선택해 주세요.');
-                }
-                else {
-                    setViewerTitle('테스트');
-                    setViewerEmptyText('Empty 테스트\n테스트');
-                    setViewerText('테스트\n테스트');
-                }
-                setCollectionItems(data.fileList);
-            } catch (error) {
-                console.error('데이터 로딩 실패:', error);
-            }
-        };
-
         fetchCollectionItems();
     }, []);
+
+    const handleItemsChange = async () => {
+        // 아이템이 삭제된 후 목록을 다시 불러옴
+        await fetchCollectionItems();
+    };
 
     const onClickAllButton = () => {
         setFilterButton(0);
     }
+
     const onClickRecentButton = () => {
         setFilterButton(1);
-    }
-
-    // 나중에 Viewer Filter를 통해서 필터링을 해주어야 한다.
-    const updateViewFilter = () => {
     }
 
     const onClickAddButton = () => {
@@ -118,7 +111,11 @@ const LibraryViewer = ({collectionType} : LibraryViewerProps) => {
                     </button>
                 </div>
                 <div className="w-[350px] h-[550px] overflow-y-auto mt-[30px] [&::-webkit-scrollbar]:hidden">
-                    <CollectionGrid items={collectionItems} storageName={collectionType}/>
+                    <CollectionGrid
+                        items={collectionItems}
+                        storageName={collectionType}
+                        onItemsChange={handleItemsChange}
+                    />
                 </div>
             </div>
         </div>
