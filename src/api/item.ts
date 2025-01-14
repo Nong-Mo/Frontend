@@ -12,7 +12,11 @@ export const getItems = async (collectionType: string) => {
     }
 
     try {
-        const {data} = await axiosInstance.get<BookItemResponse>(`/storage/${collectionType}`);
+        const {data} = await axiosInstance.get<BookItemResponse>(`/storage/${collectionType}`, {
+            headers: {
+                'Service-Worker': 'script'
+            }
+        });
         return data;
     } catch (error: any) {
         if (error.response?.status === 401) {
