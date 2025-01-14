@@ -87,7 +87,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text}) => {
                 <div className="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true"/>
 
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <Dialog.Panel className="w-[320px] h-[600px] overflow-y-auto [&::-webkit-scrollbar]:hidden bg-white rounded-lg">
+                    <Dialog.Panel className="w-[320px] h-[600px] overflow-y-auto [&::-webkit-scrollbar]:hidden bg-[#181a20] rounded-lg">
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-4">
                                 <Dialog.Title className={`text-lg font-medium ${isAI ? "text-[#246BFD]" : "text-gray-800"}`}>
@@ -95,13 +95,13 @@ const ChatMessage: React.FC<ChatMessageProps> = ({sender, text}) => {
                                 </Dialog.Title>
                                 <button
                                     onClick={() => setIsModalOpen(false)}
-                                    className="text-gray-500 hover:text-gray-700"
+                                    className="text-gray-500 hover:text-[#246BFD] transition-all"
                                 >
                                     <X className="w-6 h-6"/>
                                 </button>
                             </div>
                             <div
-                                className="text-[1.8em] leading-relaxed whitespace-pre-wrap text-gray-800"
+                                className="text-[1.8em] leading-relaxed whitespace-pre-wrap text-white"
                                 dangerouslySetInnerHTML={{__html: parseMarkdown(text)}}
                             />
                         </div>
