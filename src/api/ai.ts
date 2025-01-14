@@ -46,7 +46,7 @@ export const fetchAIResponse = async (userText: string, new_chat: boolean = fals
 interface SaveStoryRequest {
     storage_name: string;
     title: string;
-    message_id?: string;
+    message_id: string;
 }
 
 interface FileDetailResponse {
