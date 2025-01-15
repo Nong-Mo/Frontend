@@ -131,8 +131,6 @@ const PlayerPdfViewer: React.FC = () => {
     const loadPage = useCallback(async (pageNum: number) => {
         if (pageNum > totalPages || pageNum < 1) return;
 
-        console.log('', pageNum);
-
         // 현재 페이지의 상태 체크
         const existingPage = pdfPages.find(p => p.pageNumber === pageNum);
 
@@ -163,6 +161,7 @@ const PlayerPdfViewer: React.FC = () => {
             setIsLoading(true);
             setError(null);
 
+
             try {
                 if (!window['pdfjs-dist/build/pdf']) {
                     await new Promise((resolve, reject) => {
@@ -178,6 +177,7 @@ const PlayerPdfViewer: React.FC = () => {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
                 const {data} = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
+
                 setPdfTitle(data.fileName);
                 const pdfUrl = (type === 'book') ? data.relatedFile?.fileUrl : data.fileUrl;
 

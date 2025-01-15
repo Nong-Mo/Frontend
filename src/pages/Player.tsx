@@ -29,6 +29,7 @@ const Player: React.FC = () => {
     seek,
   } = useAudioPlayer(audioData?.audioUrl || '');
 
+
   // 렌더링이 완료되기 전, 데이터를 가져옴
   useLayoutEffect(() => {
     const fetchData = async () => {

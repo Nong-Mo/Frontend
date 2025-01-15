@@ -22,7 +22,6 @@ export const useAudioPlayer = (audioUrl: string) => {
         }
 
         const handleLoadedMetadata = () => {
-            console.log('Metadata loaded - Duration:', audio.duration);
             setDuration(audio.duration);
             setIsLoading(false);
         };
@@ -50,7 +49,6 @@ export const useAudioPlayer = (audioUrl: string) => {
         const handleProgress = () => {
             if (audio.buffered.length > 0) {
                 const bufferedEnd = audio.buffered.end(audio.buffered.length - 1);
-                console.log('Buffered until:', bufferedEnd, 'Total duration:', audio.duration);
             }
         };
 
@@ -61,7 +59,6 @@ export const useAudioPlayer = (audioUrl: string) => {
         audio.addEventListener('error', handleError);
         audio.addEventListener('progress', handleProgress);
         audio.addEventListener('durationchange', () => {
-            console.log('Duration changed:', audio.duration);
             setDuration(audio.duration);
         });
 
@@ -82,7 +79,6 @@ export const useAudioPlayer = (audioUrl: string) => {
         const audio = audioRef.current;
         
         if (isLoading) {
-            console.log('Audio is still loading...');
             return;
         }
 
@@ -91,7 +87,6 @@ export const useAudioPlayer = (audioUrl: string) => {
                 case 0:
                     // 재생 전 readyState 확인
                     if (audio.readyState < 2) {
-                        console.log('Audio not ready yet. Current readyState:', audio.readyState);
                         await new Promise<void>((resolve) => {
                             audio.addEventListener('canplay', () => resolve(), { once: true });
                         });
