@@ -303,23 +303,23 @@ const AIAssistantPage: React.FC = () => {
                                                             <button
                                                                 onClick={() => {
                                                                     switch (savedFileInfo.storage) {
-                                                                        case '책':
+                                                                        case '영감':
                                                                             navigate(ROUTES.LIBRARY.BOOK.path);
                                                                             break;
-                                                                        case '영수증':
+                                                                        case '소설':
                                                                             navigate(ROUTES.LIBRARY.RECEIPT.path);
                                                                             break;
-                                                                        case '굿즈':
+                                                                        case '블로그':
                                                                             navigate(ROUTES.GOODS.STORAGE.path);
                                                                             break;
-                                                                        case '필름 사진':
-                                                                            console.error('필름 사진 보관함 경로가 정의되지 않았습니다.');
+                                                                        case '서평':
+                                                                            console.error('서평 보관함 경로가 정의되지 않았습니다.');
                                                                             break;
-                                                                        case '서류':
-                                                                            console.error('서류 보관함 경로가 정의되지 않았습니다.');
+                                                                        case '메모':
+                                                                            console.error('메모 경로가 정의되지 않았습니다.');
                                                                             break;
-                                                                        case '티켓':
-                                                                            console.error('티켓 보관함 경로가 정의되지 않았습니다.');
+                                                                        case '일기':
+                                                                            console.error('일기 경로가 정의되지 않았습니다.');
                                                                             break;
                                                                         default:
                                                                             console.error('알 수 없는 보관함 타입:', savedFileInfo.storage);
