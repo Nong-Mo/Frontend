@@ -29,16 +29,27 @@ export const ROUTES = {
         title: 'Scan Vertex',
         ko: '영역 조정'
     },
+    // 라이브러리 페이지 루트
     LIBRARY: {
         BOOK: {
             path: '/library/book',
-            title: 'Book Library',
-            ko: '내 서재'
+            en_title: 'Book Library',
+            ko_title: '내 서재'
         },
         RECEIPT: {
             path: '/library/receipt',
-            title: 'Receipt Archive',
-            ko: '영수증 보관함'
+            en_title: 'Receipt Library',
+            ko_title: '영수증 보관함'
+        },
+        IDEA : {
+            path: '/library/idea',
+            en_title: 'Idea Library',
+            ko_title: '영감 보관함'
+        },
+        NOVEL : {
+            path: '/library/novel',
+            en_title: 'Novel Library',
+            ko_title: '소설 보관함'
         }
     },
     PLAYER: {
@@ -63,5 +74,6 @@ export const ROUTES = {
 
 export const API_TYPE = {
     BOOK: 'book',
+    SOCIAL: 'social',
     RECEIPT: 'receipt'
 } as const;
