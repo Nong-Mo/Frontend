@@ -56,9 +56,6 @@ const App = () => {
                                element={<LibraryViewer collectionType={API_TYPE.RECEIPT}/>}/>
                         <Route path={ROUTES.AI_ASSISTANT.path}
                                element={<AiAssistant/>}/>
-                        <Route path={ROUTES.GOODS.STORAGE.path}
-                               element={<GoodsStorage/>}/>
-
                     </Route>
                     {/* Redirect */}
                     <Route path="/"

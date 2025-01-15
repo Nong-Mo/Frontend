@@ -54,13 +54,6 @@ export const ROUTES = {
             ko: 'PDF 뷰'
         }
     },
-    GOODS: {
-        STORAGE: {
-            path: '/goods/storage',
-            title: 'Goods Storage',
-            ko: '굿즈 보관함'
-        },
-    },
     AI_ASSISTANT: {
         path : '/ai-assistant',
         title: 'AI 어시스턴트',
