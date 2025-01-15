@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../api/axios';
 import CollectionItem from "./CollectionItem";
@@ -18,9 +18,12 @@ interface CollectionGridProps {
 const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridProps) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
+    const [localItems, setLocalItems] = useState<CollectionItemProps[]>([]);
 
-    // 역순 정렬된 아이템 목록을 메모이제이션
-    const reversedItems = useMemo(() => [...items].reverse(), [items]);
+    // items prop이 변경될 때 localItems 업데이트
+    useEffect(() => {
+        setLocalItems([...items].reverse());
+    }, [items]);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -52,19 +55,20 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
         try {
             await axiosInstance.delete(`/storage/files/${fileID}`);
             const updatedItems = items.filter(item => item.fileID !== fileID);
+            setLocalItems([...updatedItems].reverse());
             onItemsChange?.(updatedItems);
         } catch (error) {
             console.error('파일 삭제 실패:', error);
         } finally {
-            window.location.reload();
             setLoading(prev => ({ ...prev, [fileID]: false }));
+            window.location.reload();
         }
     };
 
     return (
         <div className="w-full overflow-y-auto h-full [&::-webkit-scrollbar]:hidden">
             <div className="grid grid-cols-2 gap-4 pb-8">
-                {reversedItems.map(item => (
+                {localItems.map(item => (
                     <CollectionItem
                         key={item.fileID}
                         id={item.fileID}
