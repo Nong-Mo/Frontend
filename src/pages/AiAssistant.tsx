@@ -153,6 +153,38 @@ const AIAssistantPage: React.FC = () => {
                     addMessage('ai', response.message);
                     speakText(response.message);
                     break;
+
+                case 'analysis':
+                    /**
+                     * 분석 응답
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
+                
+                case 'summary':
+                    /**
+                     * 요약 응답
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
+
+                case 'review':
+                    /**
+                     * 서평 응답
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
+
+                case 'blog':
+                    /**
+                     * 블로그 응답
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
     
                 case 'chat':
                     /**
