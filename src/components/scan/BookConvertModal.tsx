@@ -145,6 +145,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                         clearPhotos();
 
                         navigate(`/library/${api_type}`);
+                        confetti.reset();
                         window.location.reload();
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
