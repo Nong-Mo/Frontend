@@ -50,12 +50,14 @@ const App = () => {
                                element={<Player/>}/>
                         <Route path={`${ROUTES.PLAYER.path}/:type${ROUTES.PLAYER.PDF.path}/:id`}
                                element={<PlayerPdfViewer/>}/>
-                        <Route path={ROUTES.LIBRARY.BOOK.path}
-                               element={<LibraryViewer collectionType={API_TYPE.BOOK}/>}/>
-                        <Route path={ROUTES.LIBRARY.RECEIPT.path}
-                               element={<LibraryViewer collectionType={API_TYPE.RECEIPT}/>}/>
                         <Route path={ROUTES.AI_ASSISTANT.path}
                                element={<AiAssistant/>}/>
+
+                        {/* Library */}
+                        <Route path={ROUTES.LIBRARY.IDEA.path}
+                               element={<LibraryViewer collectionType={API_TYPE.IDEA}/>}/>
+                        <Route path={ROUTES.LIBRARY.NOVEL.path}
+                               element={<LibraryViewer collectionType={API_TYPE.NOVEL}/>}/>
                     </Route>
                     {/* Redirect */}
                     <Route path="/"

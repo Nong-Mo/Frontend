@@ -8,6 +8,7 @@ import React, { useState, useEffect } from "react";
 import useAuth from '../hooks/useAuth';
 import { getStorageList } from '../api/storage';
 import { StorageResponse } from '../api/storage';
+import { ROUTES } from "../routes/constants.ts";
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -32,8 +33,8 @@ const Home: React.FC = () => {
     }, []);
 
     const storageItems = [
-        { id: 1, title: '영감', icon: <FaLightbulb />, path: '/library/book', countColor: '#FFDD72', isActive: true }, // 영감/아이디어를 상징하는 전구 아이콘
-        { id: 2, title: '소설', icon: <FaBook />, path: '/library/receipt', countColor: '#94F0F0', isActive: true }, // 책/소설을 나타내는 북 아이콘
+        { id: 1, title: '영감', icon: <FaLightbulb />, path: ROUTES.LIBRARY.IDEA.path, countColor: '#FFDD72', isActive: true }, // 영감/아이디어를 상징하는 전구 아이콘
+        { id: 2, title: '소설', icon: <FaBook />, path: ROUTES.LIBRARY.NOVEL.path, countColor: '#94F0F0', isActive: true }, // 책/소설을 나타내는 북 아이콘
         { id: 3, title: '블로그', icon: <FaBlog />, path: '', countColor: '#FBA3FF', isActive: false }, // 블로그 전용 아이콘
         { id: 4, title: '서평', icon: <FaBookOpen />, path: '', countColor: '#A5F59C', isActive: false }, // 책을 펼쳐보는 모습으로 서평을 표현
         { id: 5, title: '메모', icon: <FaStickyNote />, path: '', countColor: '#FF968E', isActive: false }, // 메모를 나타내는 스티키노트 아이콘
