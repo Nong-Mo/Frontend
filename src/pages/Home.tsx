@@ -1,4 +1,4 @@
-import { FaPlus } from 'react-icons/fa';
+import {FaBlog, FaBookOpen, FaLightbulb, FaPencilAlt, FaPlus, FaStickyNote} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { NavBar } from '../components/common/NavBar';
 import InfoText from '../components/common/InfoText';
@@ -32,12 +32,12 @@ const Home: React.FC = () => {
     }, []);
 
     const storageItems = [
-        { id: 1, title: '책', icon: <FaBook />, path: '/library/book', countColor: '#FFDD72', isActive : true },
-        { id: 2, title: '영수증', icon: <FaReceipt />, path: '/library/receipt', countColor: '#94F0F0', isActive : true },
-        { id: 3, title: '굿즈', icon: <FaGift />, path: '', countColor: '#FBA3FF', isActive : false },
-        { id: 4, title: '필름 사진', icon: <FaCameraRetro />, path: '', countColor: '#A5F59C', isActive : false },
-        { id: 5, title: '서류', icon: <FaFileAlt />, path: '', countColor: '#FF968E', isActive : false },
-        { id: 6, title: '티켓', icon: <FaTicketAlt />, path: '', countColor: '#FFDD72', isActive : false },
+        { id: 1, title: '영감', icon: <FaLightbulb />, path: '/library/book', countColor: '#FFDD72', isActive: true }, // 영감/아이디어를 상징하는 전구 아이콘
+        { id: 2, title: '소설', icon: <FaBook />, path: '/library/receipt', countColor: '#94F0F0', isActive: true }, // 책/소설을 나타내는 북 아이콘
+        { id: 3, title: '블로그', icon: <FaBlog />, path: '', countColor: '#FBA3FF', isActive: false }, // 블로그 전용 아이콘
+        { id: 4, title: '서평', icon: <FaBookOpen />, path: '', countColor: '#A5F59C', isActive: false }, // 책을 펼쳐보는 모습으로 서평을 표현
+        { id: 5, title: '메모', icon: <FaStickyNote />, path: '', countColor: '#FF968E', isActive: false }, // 메모를 나타내는 스티키노트 아이콘
+        { id: 6, title: '일기', icon: <FaPencilAlt />, path: '', countColor: '#FFDD72', isActive: false }, // 일기장을 나타내는 저널 아이콘
     ];
 
     const getFileCount = (storageName: string) => {
