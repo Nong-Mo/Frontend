@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {useNavigate} from "react-router-dom";
 import {PhotoFile} from "../../types/scan";
-import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+import confetti from "canvas-confetti";
 
 interface BookConvertModalProps {
     photos: PhotoFile[];
@@ -143,6 +143,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                 <button
                     onClick={() => {
                         clearPhotos();
+
                         navigate(`/library/${api_type}`);
                         window.location.reload();
                     }}
