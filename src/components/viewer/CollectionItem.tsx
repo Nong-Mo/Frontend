@@ -4,7 +4,7 @@ import { IoMdMore } from "react-icons/io";
 import { Menu } from '@headlessui/react';
 
 import idea from '../../icons/home/idea.svg';
-import social from '../../icons/home/social.svg';
+import novel from '../../icons/home/novel.svg';
 
 interface CollectionItemProps {
     id: string;
@@ -31,10 +31,10 @@ const CollectionItem = ({
         switch (itemType) {
             case 'idea':
                 return <img src={idea}
-                            className="w-[35px] h-[35px]"/>;
+                            className="w-[35px] h-[35px]" alt="영감 아이콘"/>;
             case 'novel':
-                return <img src={social}
-                            className="w-[35px] h-[35px]"/>;
+                return <img src={novel}
+                            className="w-[35px] h-[35px]" alt="소설 아이콘"/>;
             default:
                 return null;
         }
