@@ -125,8 +125,6 @@ const Scan = () => {
         switch (scanType) {
             case 'book':
                 return <BookConvertModal {...modalProps} />;
-            case 'receipt':
-                return <ReceiptConvertModal {...modalProps} />;
             default:
                 return null;
         }
