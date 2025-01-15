@@ -10,6 +10,7 @@ import useSpeechSynthesis from "../hooks/useSpeechSynthesis";
 import VoiceRecognitionBar from "../components/ai_assistants/VoiceRecognitionBar.tsx";
 import SaveStoryModal from '../components/ai_assistants/SaveStoryModal';
 import { fetchAIResponse, startNewChat, saveStory, getFileDetail } from '../api/ai';
+import LoadingDots from '../components/ai_assistants/LoadingDots.tsx';
 
 interface Message {
     sender: string;
@@ -390,7 +391,7 @@ const AIAssistantPage: React.FC = () => {
                                 )}
                         </div>
                     ))}
-
+                    {isLoading && <LoadingDots />}
                     {!isListening && messages.length === 0 && (
                         <div className="flex mt-auto overflow-x-auto whitespace-nowrap">
                             {buttons.map((text, index) => (

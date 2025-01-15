@@ -65,6 +65,7 @@ export const uploadImages = async ({title, files, type = 1}: UploadImagesParams)
           }
         }
     );
+
     return data;
   } catch (error: any) {
     throw new Error('글자가 잘 나오도록 다시 찍어 주세요! 😊');

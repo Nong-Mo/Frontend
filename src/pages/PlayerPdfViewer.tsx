@@ -131,8 +131,13 @@ const PlayerPdfViewer: React.FC = () => {
     const loadPage = useCallback(async (pageNum: number) => {
         if (pageNum > totalPages || pageNum < 1) return;
 
+        // 현재 페이지의 상태 체크
         const existingPage = pdfPages.find(p => p.pageNumber === pageNum);
-        if (existingPage?.isLoaded) return;
+
+        // isLoaded가 true이고 url이 존재하는 경우에만 로딩된 것으로 간주
+        if (existingPage?.isLoaded && existingPage?.url) {
+            return;
+        }
 
         const renderedPage = await renderPage(pageNum);
         if (renderedPage) {
@@ -156,6 +161,7 @@ const PlayerPdfViewer: React.FC = () => {
             setIsLoading(true);
             setError(null);
 
+
             try {
                 if (!window['pdfjs-dist/build/pdf']) {
                     await new Promise((resolve, reject) => {
@@ -171,6 +177,7 @@ const PlayerPdfViewer: React.FC = () => {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
                 const {data} = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
+
                 setPdfTitle(data.fileName);
                 const pdfUrl = (type === 'book') ? data.relatedFile?.fileUrl : data.fileUrl;
 
@@ -197,9 +204,10 @@ const PlayerPdfViewer: React.FC = () => {
                     );
                     setPdfPages(placeholders);
 
-                    // 초기 5페이지 프리로드
+                    // 수정된 코드
+                    const visiblePages = 5; // 초기 로드할 페이지 수를 5로 증가
                     const initialPages = await Promise.all(
-                        Array.from({length: Math.min(5, pdf.numPages)}, (_, i) => i + 1)
+                        Array.from({length: Math.min(visiblePages, pdf.numPages)}, (_, i) => i + 1)
                             .map(pageNum => renderPage(pageNum))
                     );
 
@@ -268,6 +276,7 @@ const PlayerPdfViewer: React.FC = () => {
             const pageNum = parseInt(currentPageElement.getAttribute('data-page') || '1', 10);
             setCurrentPage(pageNum);
 
+            // 주변 페이지 프리로드만 수행
             const pagesToPreload = [
                 pageNum - 3,
                 pageNum - 2,
@@ -284,17 +293,6 @@ const PlayerPdfViewer: React.FC = () => {
                 })
             );
         }
-
-        setPdfPages(prev => prev.map(page => {
-            if (Math.abs(page.pageNumber - currentPage) > 5) {
-                return {
-                    ...page,
-                    url: '',
-                    isLoaded: false
-                };
-            }
-            return page;
-        }));
     }, [currentPage, totalPages, loadPage]);
 
     const handleModalOpen = () => setIsModalOpen(true);
@@ -328,7 +326,7 @@ const PlayerPdfViewer: React.FC = () => {
                         onScroll={handleScroll}
                     >
                         {isLoading && (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-700">
+                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-200">
                                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-700 mb-2"></div>
                                 <p className="text-sm">{loadingProgress}% 로딩중...</p>
                             </div>
