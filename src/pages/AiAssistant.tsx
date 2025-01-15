@@ -101,39 +101,76 @@ const AIAssistantPage: React.FC = () => {
             // new_chat: false로 설정하여 이전 대화 컨텍스트 유지
             const response = await fetchAIResponse(userText, false);
     
-            if (response?.type === 'file_found') {
-                // 파일을 찾은 경우
-                if (response.data) {
-                    setSavedFileInfo({
-                        fileId: response.data.file_id,
-                        title: response.data.title,
-                        storage: response.data.storage_type || ''
-                    });
-                }
-                addMessage('ai', response.message);
-                speakText(response.message);
+            switch (response?.type) {
+                case 'file_found':
+                    /**
+                     * 파일 검색 결과가 있는 경우
+                     * response.data.files 배열에 여러 파일이 있을 수 있으므로
+                     * UI에 맞춰 처리하면 됩니다.
+                     */
+                    if (response.data?.files?.length) {
+                        // 여러 파일 중 첫 번째 정보를 저장 예시
+                        const firstFile = response.data.files[0];
+                        setSavedFileInfo({
+                            fileId: firstFile.file_id,
+                            title: firstFile.title,
+                            storage: '' // 필요하면 백엔드에서 storage_type도 함께 넘기도록 수정
+                        });
+                    }
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
     
-            } else if (response?.type === 'chat') {
-                // 일반 채팅 응답
-                addMessage('ai', response.message);
-                speakText(response.message);
+                case 'no_results':
+                    /**
+                     * 검색 결과가 없는 경우 또는 연관된 파일을 찾지 못한 경우
+                     * 백엔드에서 가까운 제목 추천(suggestions)을 줄 수도 있으니 활용 가능
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
     
-            // -------------------------------------------
-            // 여기에 story_save_ready 분기 추가
-            // -------------------------------------------
-            } else if (response?.type === 'story_save_ready') {
-                // 예) 백엔드가 "저장 준비"라는 메시지를 준 상태
-                // "방금 작성한 이야기를 저장하시겠습니까?" 라고 안내
-                addMessage('ai', response.message);
-                speakText(response.message);
-
-                const msgId = response.data?.message_id || null;
-                setLastMessageId(msgId);
-                
-                // 필요한 경우, 모달을 자동으로 띄울 수도 있음
-                // setIsSaveModalOpen(true);
-            } else if (response?.type === 'error') {
-                addMessage('ai', response.message);
+                case 'story_save_ready':
+                    /**
+                     * 백엔드가 "저장 준비(story_save_ready)"라고 응답한 경우
+                     * 마지막 생성된 이야기를 저장할 건지 확인하는 안내 메시지
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+    
+                    // 백엔드에서 넘어온 message_id 등을 저장해두어야 나중에 saveStory 요청 시 활용 가능
+                    const msgId = response.data?.message_id || null;
+                    setLastMessageId(msgId);
+    
+                    // 필요한 경우 모달 자동 표시
+                    // setIsSaveModalOpen(true);
+                    break;
+    
+                case 'error':
+                    /**
+                     * 백엔드 처리 중 오류가 발생한 경우
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
+    
+                case 'chat':
+                    /**
+                     * 일반 대화 응답
+                     * 검색/저장/뒷이야기 등의 특별한 분기가 아닐 때 기본적으로 'chat' 타입으로 내려옵니다.
+                     */
+                    addMessage('ai', response.message);
+                    speakText(response.message);
+                    break;
+    
+                default:
+                    /**
+                     * 혹시 예상치 못한 type이 넘어온 경우에 대비한 처리
+                     */
+                    console.warn('Unhandled response type:', response?.type);
+                    addMessage('ai', response.message || '알 수 없는 응답 타입입니다.');
+                    speakText(response.message || '알 수 없는 응답 타입입니다.');
+                    break;
             }
         } catch (error) {
             console.error('Error fetching AI response:', error);

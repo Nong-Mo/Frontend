@@ -53,6 +53,7 @@ interface FileDetailResponse {
     fileID: string;
     fileUrl: string;
     fileType: string;
+    pdfUrl?: string;
     relatedFile: {
         fileUrl: string;
         fileType: string;
