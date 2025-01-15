@@ -14,19 +14,19 @@ const CAPTURE_IMAGE_MIME_TYPES = 'image/png,image/jpeg,image/webp';
 export type ScanType = 'BOOK' | 'RECEIPT' | 'GOODS';
 
 const SCAN_CONFIG: Record<APITypeKeys, { title: string; viewerType: APITypeKeys }> = {
-    book: {
+    idea: {
         title: '스캔',
-        viewerType: 'book'
+        viewerType: 'idea'
     },
-    receipt: {
+    novel: {
         title: '스캔',
-        viewerType: 'receipt'
+        viewerType: 'novel'
     }
 };
 
 const Scan = () => {
     const { id } = useParams<{ id: APITypeKeys }>();
-    const scanType = id || 'book';
+    const scanType = id;
     const isInitialMount = useRef(true);
     const navigate = useNavigate();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -114,6 +114,7 @@ const Scan = () => {
         if (!isModalOpen) return null;
 
         const modalProps = {
+            api_type: currentConfig.viewerType,
             photos: photos,
             onClose: handleCloseModal,
             onUpload: handleUpload, 
@@ -122,12 +123,7 @@ const Scan = () => {
             clearPhotos: clearStorePhotos
         };
 
-        switch (scanType) {
-            case 'book':
-                return <BookConvertModal {...modalProps} />;
-            default:
-                return null;
-        }
+        return <BookConvertModal {...modalProps} />;
     };
 
     if (cameraError) {
@@ -158,7 +154,6 @@ const Scan = () => {
                 rightIcons={[]}
             />
             <div className="w-full flex flex-col items-center">
-
                 <ScanViewer
                     photos={photos.map(photo => ({
                         ...photo,

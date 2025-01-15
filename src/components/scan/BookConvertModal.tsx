@@ -6,13 +6,14 @@ import confetti from 'https://cdn.skypack.dev/canvas-confetti';
 interface BookConvertModalProps {
     photos: PhotoFile[];
     onClose: () => void;
-    onUpload: (photos: PhotoFile[], title: string) => Promise<boolean>;
+    onUpload: (photos: PhotoFile[], title: string, type : string) => Promise<boolean>;
     onComplete: () => void;
     isLoading: boolean;
     clearPhotos: () => void;
 }
 
 const BookConvertModal: React.FC<BookConvertModalProps> = ({
+                                                               api_type,
                                                                photos,
                                                                onClose,
                                                                onUpload,
@@ -62,7 +63,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
 
         try {
             // bookTitle을 onUpload 함수에 전달
-            const uploadResult = await onUpload(photos, bookTitle);
+            const uploadResult = await onUpload(photos, bookTitle, api_type);
 
             if (uploadResult) {
                 setStep(3);
@@ -142,7 +143,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                 <button
                     onClick={() => {
                         clearPhotos();
-                        navigate("/library/book");
+                        navigate(`/library/${api_type}`);
                         window.location.reload();
                     }}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
@@ -169,7 +170,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             angle: 55,
             spread: 150,
             particleCount: 100,
-            origin: { y: 0.5 }
+            origin: {y: 0.5}
         });
     }, []);
 

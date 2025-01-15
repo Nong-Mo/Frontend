@@ -1,4 +1,5 @@
 import {uploadInstance} from "./axios";
+import {API_TYPE, ROUTES} from "../routes/constants.ts";
 
 interface UploadImageItem {
   file: File;
@@ -8,7 +9,7 @@ interface UploadImageItem {
 interface UploadImagesParams {
   title: string;
   files: UploadImageItem[];
-  type: number;
+  type: string;
 }
 
 interface ImageUploadResponse {
@@ -19,25 +20,16 @@ interface ImageUploadResponse {
 // 이미지 업로드 함수
 // title과 files를 인자로 받아 서버에 이미지 파일을 업로드
 // image.ts의 uploadImages 함수 수정
-export const uploadImages = async ({title, files, type = 1}: UploadImagesParams): Promise<ImageUploadResponse> => {
-  const API_DATA_TYPE = {
-    BOOK: {
-      API_PATH: '/images/upload',
-      STORAGE_NAME: '책'
-    },
-    RECEIPT: {
-      API_PATH: '/receipt/ocr',
-      STORAGE_NAME: '영수증'
-    }
-  };
-  const curr_api = (type === 1) ? API_DATA_TYPE.BOOK : API_DATA_TYPE.RECEIPT;
+export const uploadImages = async ({title, files, type}: UploadImagesParams): Promise<ImageUploadResponse> => {
+  const storageData = (type === API_TYPE.NOVEL) ? "소설" : "영감";
+
   const token = sessionStorage.getItem('token');
   if (!token) {
     throw new Error('인증 토큰이 없습니다. 다시 로그인해주세요.');
   }
 
   const formData = new FormData();
-  formData.append('storage_name', curr_api.STORAGE_NAME);
+  formData.append('storage_name', storageData);
   formData.append('title', title);
 
   // 모든 vertices 정보를 하나의 배열로 모아서 전송
@@ -54,13 +46,12 @@ export const uploadImages = async ({title, files, type = 1}: UploadImagesParams)
 
   try {
     const {data} = await uploadInstance.post<ImageUploadResponse>(
-        curr_api.API_PATH,
+        `/images/upload`,
         formData,
         {
           onUploadProgress: (progressEvent) => {
             if (progressEvent.total) {
               const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              console.log(`Upload progress: ${percent}%`);
             }
           }
         }

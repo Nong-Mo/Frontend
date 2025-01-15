@@ -73,7 +73,7 @@ export const ROUTES = {
 } as const;
 
 export const API_TYPE = {
-    IDEA: 'book',
+    IDEA: 'idea',
     NOVEL : 'novel',
     RECEIPT: 'receipt',
 } as const;

@@ -67,7 +67,7 @@ export const usePhotoUpload = () => {
     };
 
     // 이미지 업로드 처리
-    const handleUpload = async (photos: PhotoFile[], title: string, type : number): Promise<boolean> => {
+    const handleUpload = async (photos: PhotoFile[], title: string, type : string): Promise<boolean> => {
         if (isLoading || photos.length === 0) return false;
 
         setIsLoading(true);
@@ -84,6 +84,8 @@ export const usePhotoUpload = () => {
             }
 
             // 이미지 업로드 API 호출
+            // title : 유저가 입력한 데이터 이름
+            console.log(type);
             const response = await uploadImages({
                 title,
                 files: filesWithVertices,

@@ -3,7 +3,7 @@ import { NavBar } from "../components/common/NavBar.tsx";
 import CollectionGrid, { CollectionItemProps } from "../components/viewer/CollectionGrid";
 import { FaPlus } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { API_TYPE } from "../routes/constants";
+import { API_TYPE, ROUTES } from "../routes/constants";
 import { getItems } from "../api/item.ts";
 import { Loader2, AlertCircle } from "lucide-react";
 
@@ -13,22 +13,25 @@ interface LibraryViewerProps {
     collectionType: APITypeKeys;
 }
 
+const EMPTY_LIBRARY_COMMON_TEXT = `보관함이 비었어요!\n데이터를 추가해 주세요.`;
+const LIBRARY_COMMON_TEXT = `확인하고 싶은\n데이터를 선택해 주세요.`;
+
 // 뷰어 타입별 텍스트 설정
 const VIEWER_CONFIGS = {
-    [API_TYPE.BOOK]: {
-        title: '책 보관함',
-        emptyText: '보관함이 비었어요!\n책을 추가해 주세요.',
-        viewerText: '감상하고 싶은\n책을 선택해 주세요.'
+    [API_TYPE.IDEA]: {
+        title: ROUTES.LIBRARY.IDEA.ko_title,
+        emptyText: EMPTY_LIBRARY_COMMON_TEXT,
+        viewerText: LIBRARY_COMMON_TEXT
     },
-    [API_TYPE.RECEIPT]: {
-        title: '영수증 보관함',
-        emptyText: '영수증이 비었어요!\n추가해 주세요.',
-        viewerText: '확인하고 싶은\n영수증을 선택해 주세요.'
+    [API_TYPE.NOVEL]: {
+        title: ROUTES.LIBRARY.NOVEL.ko_title,
+        emptyText: EMPTY_LIBRARY_COMMON_TEXT,
+        viewerText: LIBRARY_COMMON_TEXT
     },
     default: {
-        title: '테스트',
-        emptyText: 'Empty 테스트\n테스트',
-        viewerText: '테스트\n테스트'
+        title: '',
+        emptyText: '',
+        viewerText: ''
     }
 };
 
@@ -88,7 +91,6 @@ const LibraryViewer = ({ collectionType }: LibraryViewerProps) => {
             setCollectionItems(data.fileList);
         } catch (error) {
             setError('데이터를 갱신하는 중 오류가 발생했습니다.');
-            console.error('데이터 갱신 실패:', error);
         } finally {
             setLoading(false);
         }
