@@ -310,7 +310,7 @@ const AIAssistantPage: React.FC = () => {
                                                                             navigate(ROUTES.LIBRARY.RECEIPT.path);
                                                                             break;
                                                                         case '블로그':
-                                                                            navigate(ROUTES.GOODS.STORAGE.path);
+                                                                            console.error('블로그 보관함 경로가 정의되지 않았습니다.');
                                                                             break;
                                                                         case '서평':
                                                                             console.error('서평 보관함 경로가 정의되지 않았습니다.');
