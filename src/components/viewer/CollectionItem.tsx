@@ -1,7 +1,10 @@
 import React from 'react';
-import { FaBook, FaReceipt, FaTrash } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 import { IoMdMore } from "react-icons/io";
 import { Menu } from '@headlessui/react';
+
+import idea from '../../icons/home/idea.svg';
+import social from '../../icons/home/social.svg';
 
 interface CollectionItemProps {
     id: string;
@@ -26,10 +29,12 @@ const CollectionItem = ({
         const iconSize = 15;
 
         switch (itemType) {
-            case 'book':
-                return <FaBook size={iconSize}/>;
-            case 'receipt':
-                return <FaReceipt size={iconSize}/>;
+            case 'idea':
+                return <img src={idea}
+                            className="w-[35px] h-[35px]"/>;
+            case 'novel':
+                return <img src={social}
+                            className="w-[35px] h-[35px]"/>;
             default:
                 return null;
         }
@@ -37,12 +42,10 @@ const CollectionItem = ({
 
     const getIconBackgroundColor = () => {
         switch (itemType) {
-            case 'book':
-                return 'bg-[#FFDD72]';
-            case 'receipt':
+            case 'idea':
                 return 'bg-[#94F0F0]';
-            default:
-                return 'bg-gray-400';
+            case 'novel':
+                return 'bg-[#FFDD72]';
         }
     };
 
