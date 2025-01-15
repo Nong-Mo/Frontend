@@ -38,10 +38,10 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
 
     const handleItemClick = (fileID: string) => {
         switch (storageName) {
-            case 'book':
+            case 'idea':
                 navigate(`/player/${storageName}/audio/${fileID}`);
                 break;
-            case 'receipt':
+            case 'novel':
                 navigate(`/player/${storageName}/pdf/${fileID}`);
                 break;
             default:

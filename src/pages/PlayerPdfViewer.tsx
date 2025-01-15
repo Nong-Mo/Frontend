@@ -179,7 +179,7 @@ const PlayerPdfViewer: React.FC = () => {
                 const {data} = await axiosInstance.get<StorageResponse>(`storage/files/${id}`);
 
                 setPdfTitle(data.fileName);
-                const pdfUrl = (type === 'book') ? data.relatedFile?.fileUrl : data.fileUrl;
+                const pdfUrl = data.relatedFile?.fileUrl;
 
                 if (!pdfUrl) throw new Error('PDF 파일을 찾을 수 없습니다.');
 
