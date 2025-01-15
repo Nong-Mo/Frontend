@@ -56,6 +56,7 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
         } catch (error) {
             console.error('파일 삭제 실패:', error);
         } finally {
+            window.location.reload();
             setLoading(prev => ({ ...prev, [fileID]: false }));
         }
     };
