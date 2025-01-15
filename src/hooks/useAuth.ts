@@ -43,11 +43,7 @@ const useAuth = () => {
 
     // 인증 상태 변경 감지 및 리다이렉션
     useEffect(() => {
-        console.log('Auth state changed:', isAuthenticated);
-        console.log('Current token:', sessionStorage.getItem('token'));
-
         if (isAuthenticated && ['/signin', '/signup'].includes(location.pathname)) {
-            console.log('Redirecting to home...');
             navigate('/home');
         }
     }, [isAuthenticated, location.pathname, navigate]);
