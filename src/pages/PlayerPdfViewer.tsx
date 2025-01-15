@@ -131,6 +131,8 @@ const PlayerPdfViewer: React.FC = () => {
     const loadPage = useCallback(async (pageNum: number) => {
         if (pageNum > totalPages || pageNum < 1) return;
 
+        console.log('', pageNum);
+
         // 현재 페이지의 상태 체크
         const existingPage = pdfPages.find(p => p.pageNumber === pageNum);
 
