@@ -55,7 +55,7 @@ const Scan = () => {
     const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
-            const file = files[0];
+            const file = files[0];  // 원본 File 객체
             const reader = new FileReader();
     
             reader.onloadend = () => {
@@ -63,7 +63,6 @@ const Scan = () => {
                 const photoData = reader.result as string;
                 const img = new Image();
                 img.onload = () => {
-                    console.log("이미지로드~~");
                     addPhoto({
                         id: photoId,
                         data: photoData,
@@ -72,7 +71,8 @@ const Scan = () => {
                     navigate(`/scan/${currentConfig.viewerType}/vertex`, {
                         state: {
                             photoId: photoId,
-                            photoData: photoData
+                            photoData: photoData,
+                            photoFile: file  // 원본 File 객체 전달
                         }
                     });
                 };

@@ -1,4 +1,3 @@
-// src/config/demo.ts
 import { uploadInstance } from '../api/axios';
 
 export const DEMO_MODE = process.env.REACT_APP_DEMO_MODE === 'true';
@@ -13,6 +12,17 @@ interface UploadImageItem {
     vertices?: { x: number; y: number }[];
 }
 
+// Demo titles array and counter
+const DEMO_TITLES = ['demo1', 'demo2', 'demo3'];
+let currentDemoIndex = 0;
+
+// Function to get next demo title
+const getNextDemoTitle = (): string => {
+    const title = DEMO_TITLES[currentDemoIndex];
+    currentDemoIndex = (currentDemoIndex + 1) % DEMO_TITLES.length;  // Cycle through titles
+    return title;
+};
+
 export const uploadDemoImage = async (
     file: File,
     vertices: { x: number; y: number }[]
@@ -22,7 +32,7 @@ export const uploadDemoImage = async (
     try {
         const formData = new FormData();
         formData.append('storage_name', '영감');
-        formData.append('title', 'demo');  // 데모용 기본 제목
+        formData.append('title', getNextDemoTitle());  // Use the next demo title
 
         // 단일 파일이지만 배열 형태로 vertices 데이터 구성
         const files: UploadImageItem[] = [{

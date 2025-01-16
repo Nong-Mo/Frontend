@@ -75,9 +75,6 @@ const ScanVertex: React.FC = () => {
         const normalizedVertices = vertices.map(vertex =>
             screenToImageCoordinates(vertex.x, vertex.y)
         );
-
-        console.log(DEMO_MODE)
-        console.log(photoFile)
     
         try {
             // Demo 모드 업로드 시도
@@ -89,8 +86,6 @@ const ScanVertex: React.FC = () => {
                     // 데모 업로드 실패는 무시하고 계속 진행
                 }
             }
-
-            console.log("안녕하세요")
 
             // 기존 로직 실행
             await updatePhotoVertices(photoId, normalizedVertices);
