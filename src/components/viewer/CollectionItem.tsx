@@ -30,11 +30,9 @@ const CollectionItem = ({
 
         switch (itemType) {
             case 'idea':
-                return <img src={idea}
-                            className="w-[35px] h-[35px]" alt="영감 아이콘"/>;
+                return <img src={idea} className="w-[35px] h-[35px]" alt="영감 아이콘"/>;
             case 'novel':
-                return <img src={novel}
-                            className="w-[35px] h-[35px]" alt="소설 아이콘"/>;
+                return <img src={novel} className="w-[35px] h-[35px]" alt="소설 아이콘"/>;
             default:
                 return null;
         }

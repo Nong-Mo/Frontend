@@ -141,6 +141,7 @@ const AIAssistantPage: React.FC = () => {
     
                     // 백엔드에서 넘어온 message_id 등을 저장해두어야 나중에 saveStory 요청 시 활용 가능
                     const msgId = response.data?.message_id || null;
+                    console.log(msgId);
                     setLastMessageId(msgId);
     
                     // 필요한 경우 모달 자동 표시
@@ -304,10 +305,10 @@ const AIAssistantPage: React.FC = () => {
                                                                 onClick={() => {
                                                                     switch (savedFileInfo.storage) {
                                                                         case '영감':
-                                                                            navigate(ROUTES.LIBRARY.BOOK.path);
+                                                                            navigate(ROUTES.LIBRARY.IDEA.path);
                                                                             break;
                                                                         case '소설':
-                                                                            navigate(ROUTES.LIBRARY.RECEIPT.path);
+                                                                            navigate(ROUTES.LIBRARY.NOVEL.path);
                                                                             break;
                                                                         case '블로그':
                                                                             console.error('블로그 보관함 경로가 정의되지 않았습니다.');
@@ -458,8 +459,8 @@ const AIAssistantPage: React.FC = () => {
 
                     // message_id를 같이 전달
                     const response = await saveStory({
-                        title,
                         storage_name,
+                        title,
                         message_id: lastMessageId
                     });
 

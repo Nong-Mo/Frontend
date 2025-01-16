@@ -12,7 +12,7 @@ const SaveStoryModal: React.FC<SaveStoryModalProps> = ({ isOpen, onClose, onSave
     const [storage, setStorage] = useState(''); // 기본값은 빈 문자열
     const [isLoading, setIsLoading] = useState(false);
 
-    const storageOptions = ['책', '영수증', '굿즈', '필름 사진', '서류', '티켓'];
+    const storageOptions = ['영감', '소설', '블로그', '서평', '메모', '일기'];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -67,7 +67,7 @@ const SaveStoryModal: React.FC<SaveStoryModalProps> = ({ isOpen, onClose, onSave
                                     보관함을 선택해 주세요.
                                 </option>
                                 {storageOptions.map(option => (
-                                    <option key={option} value={option} className="text-black text-[15px] font-bold">
+                                    <option key={option} value={option} className="text-gray-300 text-[15px] font-bold">
                                         {option}
                                     </option>
                                 ))}

@@ -79,7 +79,6 @@ export const getFileDetail = async (fileId: string): Promise<FileDetailResponse>
             {
                 headers: {
                     'Content-Type': 'application/json',
-                    'token': token
                 }
             }
         );
@@ -103,6 +102,8 @@ export const saveStory = async (request: SaveStoryRequest): Promise<SaveStoryRes
     }
 
     try {
+        console.log(request);
+
         const response = await axiosInstance.post(
             '/llm/save-story',
             request,
@@ -113,6 +114,8 @@ export const saveStory = async (request: SaveStoryRequest): Promise<SaveStoryRes
                 }
             }
         );
+
+        console.log(response);
 
         return response.data;
     } catch (error: any) {
