@@ -63,6 +63,7 @@ const Scan = () => {
                 const photoData = reader.result as string;
                 const img = new Image();
                 img.onload = () => {
+                    console.log("이미지로드~~");
                     addPhoto({
                         id: photoId,
                         data: photoData,

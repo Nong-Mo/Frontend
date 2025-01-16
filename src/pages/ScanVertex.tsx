@@ -4,10 +4,12 @@ import { NavBar } from '../components/common/NavBar';
 import { useScanStore } from '../hooks/useScanStore';
 import { useVertexControl } from '../hooks/useVertexControl';
 import { useImageBounds } from '../hooks/useImageBounds';
+import { uploadDemoImage, DEMO_MODE } from '../constants/demo';
 
 interface LocationState {
     photoId: string;
     photoData: string;
+    photoFile?: File;  // Demo mode를 위한 원본 파일
 }
 
 const ScanVertex: React.FC = () => {
@@ -17,7 +19,7 @@ const ScanVertex: React.FC = () => {
     const svgRef = useRef<SVGSVGElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { photoId, photoData } = location.state as LocationState;
+    const { photoId, photoData, photoFile } = location.state as LocationState;
     const { updatePhotoVertices } = useScanStore();
 
     const {
@@ -73,9 +75,25 @@ const ScanVertex: React.FC = () => {
         const normalizedVertices = vertices.map(vertex =>
             screenToImageCoordinates(vertex.x, vertex.y)
         );
+
+        console.log(DEMO_MODE)
+        console.log(photoFile)
     
         try {
-            await updatePhotoVertices(photoId, normalizedVertices, photoData);
+            // Demo 모드 업로드 시도
+            if (DEMO_MODE && photoFile) {
+                try {
+                    await uploadDemoImage(photoFile, normalizedVertices);
+                } catch (demoError) {
+                    console.warn('Demo upload failed:', demoError);
+                    // 데모 업로드 실패는 무시하고 계속 진행
+                }
+            }
+
+            console.log("안녕하세요")
+
+            // 기존 로직 실행
+            await updatePhotoVertices(photoId, normalizedVertices);
             
             navigate(`/scan/${type}`, {
                 replace: true,
