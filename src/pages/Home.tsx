@@ -9,12 +9,12 @@ import {getStorageList, StorageResponse} from '../api/storage';
 import {ROUTES} from "../routes/constants.ts";
 
 // [Import] For SVG
-import idea from '../icons/home/images/image_idea_0.png';
-import novel from '../icons/home/images/image_novel_0.png';
-import chat from '../icons/home/images/image_chat_0.png';
-import pencil from '../icons/home/images/image_pencil_0.png';
-import monitor from '../icons/home/images/image_monitor_0.png';
-import text from '../icons/home/images/image_text_0.png';
+import idea from '../icons/home/images/image_idea_0.webp';
+import novel from '../icons/home/images/image_novel_0.webp';
+import chat from '../icons/home/images/image_chat_0.webp';
+import pencil from '../icons/home/images/image_pencil_0.webp';
+import monitor from '../icons/home/images/image_monitor_0.webp';
+import text from '../icons/home/images/image_text_0.webp';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
