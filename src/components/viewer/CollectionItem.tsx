@@ -3,8 +3,8 @@ import { FaTrash } from 'react-icons/fa';
 import { IoMdMore } from "react-icons/io";
 import { Menu } from '@headlessui/react';
 
-import idea from '../../icons/home/idea.svg';
-import novel from '../../icons/home/novel.svg';
+import idea from '../../icons/home/images/image_idea_0.png';
+import novel from '../../icons/home/images/image_novel_0.png';
 
 interface CollectionItemProps {
     id: string;
