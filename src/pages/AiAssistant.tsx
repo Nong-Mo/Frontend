@@ -232,11 +232,9 @@ const AIAssistantPage: React.FC = () => {
         try {
             const fileDetail = await getFileDetail(fileId);
 
-            if (fileDetail.fileType === 'audio') {
-                navigate(`/player/book/audio/${fileDetail.fileID}`);
-            } else if (fileDetail.fileType === 'pdf') {
-                navigate(`/player/pdf/view/${fileId}`);
-            }
+            const file_storage = (storage === "소설") ? "novel" : "idea";
+
+            navigate(`/player/${file_storage}/audio/${fileDetail.fileID}`);
         } catch (error) {
             console.error('File navigation error:', error);
             addMessage('ai', '파일을 찾을 수 없거나 접근할 수 없습니다.');

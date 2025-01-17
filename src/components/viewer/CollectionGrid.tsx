@@ -37,16 +37,7 @@ const CollectionGrid = ({ items, storageName, onItemsChange }: CollectionGridPro
     };
 
     const handleItemClick = (fileID: string) => {
-        switch (storageName) {
-            case 'idea':
-                navigate(`/player/${storageName}/audio/${fileID}`);
-                break;
-            case 'novel':
-                navigate(`/player/${storageName}/pdf/${fileID}`);
-                break;
-            default:
-                break;
-        }
+        navigate(`/player/${storageName}/audio/${fileID}`);
     };
 
     const handleDeleteItem = async (fileID: string) => {
