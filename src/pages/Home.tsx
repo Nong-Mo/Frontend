@@ -9,13 +9,12 @@ import {getStorageList, StorageResponse} from '../api/storage';
 import {ROUTES} from "../routes/constants.ts";
 
 // [Import] For SVG
-import idea from '../icons/home/idea.svg';
-import novel from '../icons/home/novel.svg';
-import chat from '../icons/home/chat.svg';
-import pencil from '../icons/home/pencil.svg';
-import monitor from '../icons/home/monitor.svg';
-import text from '../icons/home/text.svg';
-
+import idea from '../icons/home/images/image_idea_0.webp';
+import novel from '../icons/home/images/image_novel_0.webp';
+import chat from '../icons/home/images/image_chat_0.webp';
+import pencil from '../icons/home/images/image_pencil_0.webp';
+import monitor from '../icons/home/images/image_monitor_0.webp';
+import text from '../icons/home/images/image_text_0.webp';
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
@@ -43,19 +42,51 @@ const Home: React.FC = () => {
         {
             id: 1,
             title: '영감',
-            icon: <img src={idea} className="w-[35px] h-[35px]" alt="영감 아이콘"/>,
+            icon: <img src={idea} className="w-[35px] h-[35px]" alt="영감 아이콘" />,
             path: ROUTES.LIBRARY.IDEA.path,
             countColor: '#94F0F0',
             isActive: true
-        }, // 영감/아이디어를 상징하는 전구 아이콘
+        },
         {
-            id: 2, title: '소설', icon: <img src={novel} className="w-[35px] h-[35px]" alt="소설 아이콘" />, path: ROUTES.LIBRARY.NOVEL.path, countColor: '#FFDD72', isActive: true
-        }, // 책/소설을 나타내는 북 아이콘
-        {id: 3, title: '블로그', icon: <img src={monitor} className="w-[35px] h-[35px]" alt="블로그 아이콘" />
-            , path: '', countColor: '#FBA3FF', isActive: false}, // 블로그 전용 아이콘
-        {id: 4, title: '서평', icon: <img src={chat} className="w-[35px] h-[35px]" alt="서평 아이콘" />, path: '', countColor: '#A5F59C', isActive: false}, // 책을 펼쳐보는 모습으로 서평을 표현
-        {id: 5, title: '메모', icon: <img src={pencil} className="w-[35px] h-[35px]" alt="메모 아이콘"/>, path: '', countColor: '#FF968E', isActive: false}, // 메모를 나타내는 스티키노트 아이콘
-        {id: 6, title: '일기', icon: <img src={text} className="w-[35px] h-[35px]" alt="일기 아이콘"/>, path: '', countColor: '#FFDD72', isActive: false}, // 일기장을 나타내는 저널 아이콘
+            id: 2,
+            title: '소설',
+            icon: <img src={novel} className="w-[35px] h-[35px]" alt="소설 아이콘" />,
+            path: ROUTES.LIBRARY.NOVEL.path,
+            countColor: '#FFDD72',
+            isActive: true
+        },
+        {
+            id: 3,
+            title: '블로그',
+            icon: <img src={monitor} className="w-[35px] h-[35px]" alt="블로그 아이콘" />,
+            path: '',
+            countColor: '#FBA3FF',
+            isActive: false
+        },
+        {
+            id: 4,
+            title: '서평',
+            icon: <img src={chat} className="w-[35px] h-[35px]" alt="서평 아이콘" />,
+            path: '',
+            countColor: '#A5F59C',
+            isActive: false
+        },
+        {
+            id: 5,
+            title: '메모',
+            icon: <img src={pencil} className="w-[35px] h-[35px]" alt="메모 아이콘" />,
+            path: '',
+            countColor: '#FF968E',
+            isActive: false
+        },
+        {
+            id: 6,
+            title: '일기',
+            icon: <img src={text} className="w-[35px] h-[35px]" alt="일기 아이콘" />,
+            path: '',
+            countColor: '#FFDD72',
+            isActive: false
+        }
     ];
 
     const getFileCount = (storageName: string) => {
