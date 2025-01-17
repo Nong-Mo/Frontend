@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { FaRobot } from 'react-icons/fa';
-import { Search, X } from 'lucide-react';
-import { Dialog } from '@headlessui/react';
+import React, {useState} from 'react';
+import {FaRobot} from 'react-icons/fa';
+import {Search, X} from 'lucide-react';
+import {Dialog} from '@headlessui/react';
 
 interface ChatMessageProps {
     sender: string;
@@ -10,37 +10,34 @@ interface ChatMessageProps {
 
 const parseMarkdown = (text: string): string => {
     let processedText = text;
-    
-    // 1. 모든 따옴표로 감싸진 텍스트를 파란색으로 처리 (볼드체 여부 상관없이)
-    processedText = processedText
-        // 볼드체로 감싸진 따옴표 텍스트 처리
-        .replace(/\*\*"([^"]+)"\*\*/g, '<span class="text-blue-500 font-bold">"$1"</span>')
-        // 일반 따옴표 텍스트 처리
-        .replace(/"([^"]+)"/g, '<span class="text-blue-500">"$1"</span>');
 
-    // 2. 나머지 마크다운 처리
+    // 볼드체 텍스트를 파란색으로 처리
+    processedText = processedText.replace(
+        /\*\*([^*]+)\*\*/g,
+        '<strong class="font-bold text-blue-500 text-[1em]">$1</strong>'
+    );
+
+    // 나머지 마크다운 처리
     return processedText
-        // 코드 블록
+        // Code blocks with relative padding
         .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 p-2 rounded my-2 overflow-x-auto text-[1em]">$1</pre>')
-        // 인라인 코드
+        // Inline code
         .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 rounded text-[1em]">$1</code>')
-        // 일반 볼드체 (따옴표가 아닌 경우)
-        .replace(/\*\*([^*"]+)\*\*/g, '<strong class="font-bold text-white text-[1em]">$1</strong>')
-        // 이탤릭체
+        // Italic
         .replace(/\*([^*]+)\*/g, '<em class="italic text-[1em]">$1</em>')
-        // 헤더
+        // Headers with relative sizes
         .replace(/#{3} ([^\n]+)/g, '<h3 class="font-bold my-2 text-[1.1em]">$1</h3>')
         .replace(/#{2} ([^\n]+)/g, '<h2 class="font-bold my-3 text-[1.2em]">$1</h2>')
         .replace(/# ([^\n]+)/g, '<h1 class="font-bold my-4 text-[1.3em]">$1</h1>')
-        // 리스트 아이템
+        // List items
         .replace(/^\s*[-*+]\s+([^\n]+)/gm, '<li class="ml-2 text-[1em]">$1</li>')
-        // 링크
+        // Links
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-500 hover:underline text-[1em]">$1</a>')
-        // 줄바꿈
+        // Line breaks
         .replace(/\n/g, '<br />');
 };
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ sender, text }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({sender, text}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const isAI = sender === "ai";
 
@@ -71,7 +68,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ sender, text }) => {
                     >
                         <div
                             className="text-[18px] font-bold p-[14px] leading-tight"
-                            dangerouslySetInnerHTML={{ __html: parseMarkdown(text) }}
+                            dangerouslySetInnerHTML={{__html: parseMarkdown(text)}}
                         />
                     </div>
                     <button
@@ -112,7 +109,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ sender, text }) => {
                             </div>
                             <div
                                 className="text-[1.8em] leading-relaxed whitespace-pre-wrap text-white"
-                                dangerouslySetInnerHTML={{ __html: parseMarkdown(text) }}
+                                dangerouslySetInnerHTML={{__html: parseMarkdown(text)}}
                             />
                         </div>
                     </Dialog.Panel>
