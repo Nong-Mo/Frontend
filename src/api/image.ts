@@ -35,7 +35,9 @@ export const uploadImages = async ({title, files, type}: UploadImagesParams): Pr
     
     // vertices가 있는 경우 추가
     if (item.vertices) {
-      formData.append(`vertices_${index}`, JSON.stringify(item.vertices));
+        // 모든 vertices 정보를 하나의 배열로 모아서 전송
+    const pagesData = files.map(item => item.vertices || null);
+    formData.append('pages_vertices_data', JSON.stringify(pagesData));
     }
   });
   

@@ -19,7 +19,6 @@ const ScanVertex: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const { photoId, photoData } = location.state as LocationState;
     const { updatePhotoVertices } = useScanStore();
-    const verticesInitializedRef = useRef(false);
 
     const {
         imageBounds,
@@ -27,21 +26,31 @@ const ScanVertex: React.FC = () => {
     } = useImageBounds({
         imgRef,
         containerRef,
-        onBoundsCalculated: (bounds) => {
-            if (!verticesInitializedRef.current && bounds) {
-                const PADDING = 40;
-                const paddedOffsetX = bounds.x + PADDING;
-                const paddedOffsetY = bounds.y + PADDING;
-                const paddedWidth = bounds.width - (PADDING * 2);
-                const paddedHeight = bounds.height - (PADDING * 2);
+        onBoundsCalculated: (bounds, originalSize) => {
+            // 안쪽으로 들어온 여백 설정
+            const PADDING = 40;
+            const paddedOffsetX = bounds.x + PADDING;
+            const paddedOffsetY = bounds.y + PADDING;
+            const paddedWidth = bounds.width - (PADDING * 2);
+            const paddedHeight = bounds.height - (PADDING * 2);
 
+            if (vertices.length === 0) {
                 setVertices([
-                    { x: paddedOffsetX, y: paddedOffsetY },
-                    { x: paddedOffsetX + paddedWidth, y: paddedOffsetY },
-                    { x: paddedOffsetX + paddedWidth, y: paddedOffsetY + paddedHeight },
-                    { x: paddedOffsetX, y: paddedOffsetY + paddedHeight }
+                    { x: paddedOffsetX, y: paddedOffsetY }, // 좌상단
+                    { x: paddedOffsetX + paddedWidth, y: paddedOffsetY }, // 우상단
+                    { x: paddedOffsetX + paddedWidth, y: paddedOffsetY + paddedHeight }, // 우하단
+                    { x: paddedOffsetX, y: paddedOffsetY + paddedHeight } // 좌하단
                 ]);
-                verticesInitializedRef.current = true;
+            } else {
+                const updatedVertices = vertices.map(vertex => {
+                    const normalizedX = (vertex.x - bounds.x) / bounds.scale;
+                    const normalizedY = (vertex.y - bounds.y) / bounds.scale;
+                    return {
+                        x: normalizedX * bounds.scale + bounds.x,
+                        y: normalizedY * bounds.scale + bounds.y
+                    };
+                });
+                setVertices(updatedVertices);
             }
         }
     });
@@ -113,7 +122,7 @@ const ScanVertex: React.FC = () => {
                     className="absolute top-0 left-0 w-full h-full"
                 >
                     {vertices.length > 0 && imageBounds && (
-                        <g>
+                        <g style={{ pointerEvents: 'all' }}>
                             <path
                                 d={`M ${vertices.map(v => `${v.x},${v.y}`).join(' L ')} Z`}
                                 stroke="#2563EB"
