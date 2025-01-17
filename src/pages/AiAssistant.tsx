@@ -328,7 +328,7 @@ const AIAssistantPage: React.FC = () => {
                                                                 }}
                                                                 className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                             >
-                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                <span className="text-[18px] font-bold leading-[20px] p-[14px]">
                                                     보관함 이동
                                                 </span>
                                                             </button>
@@ -338,7 +338,7 @@ const AIAssistantPage: React.FC = () => {
                                                                 onClick={async () => await handleFileNavigation(savedFileInfo.fileId, savedFileInfo.storage)}
                                                                 className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                             >
-                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                <span className="text-[18px] font-bold leading-[20px] p-[14px]">
                                                     파일 감상
                                                 </span>
                                                             </button>
@@ -358,7 +358,7 @@ const AIAssistantPage: React.FC = () => {
                                                                 className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                                 disabled={isLoading}
                                                             >
-                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                <span className="text-[18px] font-bold leading-[20px] p-[14px]">
                                                     파일 이동
                                                 </span>
                                                             </button>
@@ -377,7 +377,7 @@ const AIAssistantPage: React.FC = () => {
                                                                 className="w-full rounded-[16.5px] flex items-center justify-center bg-[#262A34] text-white text-[14px] font-bold leading-[20px]"
                                                                 disabled={isLoading}
                                                             >
-                                                <span className="text-[14px] font-bold leading-[20px] p-[14px]">
+                                                <span className="text-[18px] font-bold leading-[20px] p-[14px]">
                                                     파일 저장
                                                 </span>
                                                             </button>
