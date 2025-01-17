@@ -9,13 +9,22 @@ interface ChatMessageProps {
 }
 
 const parseMarkdown = (text: string): string => {
-    return text
+    let processedText = text;
+    
+    // 먼저 볼드체로 감싸진 따옴표 텍스트를 처리
+    processedText = processedText.replace(
+        /\*\*"([^"]+)"\*\*/g, 
+        '<strong class="font-bold text-blue-500 text-[1em]">"$1"</strong>'
+    );
+
+    // 나머지 마크다운 처리
+    return processedText
         // Code blocks with relative padding
         .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 p-2 rounded my-2 overflow-x-auto text-[1em]">$1</pre>')
         // Inline code
         .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 rounded text-[1em]">$1</code>')
-        // Bold
-        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-[1em]">$1</strong>')
+        // Regular bold (not quotes)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-bold text-white text-[1em]">$1</strong>')
         // Italic
         .replace(/\*([^*]+)\*/g, '<em class="italic text-[1em]">$1</em>')
         // Headers with relative sizes
