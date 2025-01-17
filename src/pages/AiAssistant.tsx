@@ -46,9 +46,9 @@ const AIAssistantPage: React.FC = () => {
     });
 
     const buttons = [
-        "마지막으로 열어 본 파일을 보여줘",
         "A2D 서비스 사용 방법을 알려줘",
-        "내 보관함 통계를 보여줘"
+        "스토리 창작은 어떻게 하면 돼?",
+        "A2D 서비스는 누가 개발했어?"
     ];
 
     const addMessage = (

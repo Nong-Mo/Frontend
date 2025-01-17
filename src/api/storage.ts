@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../constants/config";
+
 export interface StorageItem {
     storageName: string;
     fileCount: number;
@@ -17,7 +19,7 @@ export interface StorageItem {
     }
   
     try {
-      const response = await fetch('https://nongmo-a2d.com/storage/list', {
+      const response = await fetch(`${API_BASE_URL}/storage/list`, {
         method: 'GET',
         headers: {
           'token': token,
