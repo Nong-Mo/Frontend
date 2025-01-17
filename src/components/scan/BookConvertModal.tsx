@@ -13,14 +13,14 @@ interface BookConvertModalProps {
 }
 
 const BookConvertModal: React.FC<BookConvertModalProps> = ({
-                                                               api_type,
-                                                               photos,
-                                                               onClose,
-                                                               onUpload,
-                                                               onComplete,
-                                                               isLoading,
-                                                               clearPhotos,
-                                                           }) => {
+    api_type,
+    photos,
+    onClose,
+    onUpload,
+    onComplete,
+    isLoading,
+    clearPhotos,
+}) => {
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(1);
     const [bookTitle, setBookTitle] = useState<string>("");
@@ -74,6 +74,21 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             setStep(1);
         }
     };
+
+    const handleGoToLibrary = useCallback(() => {
+        // Safari 스크롤 이슈 해결을 위한 처리
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+        
+        clearPhotos();
+        confetti.reset();
+        
+        // RAF를 사용하여 레이아웃 업데이트 보장
+        requestAnimationFrame(() => {
+            navigate(`/library/${api_type}`);
+            window.location.reload();
+        });
+    }, [navigate, api_type, clearPhotos]);
 
     const renderStep1 = () => (
         <div className="w-full">
@@ -143,13 +158,7 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
                  className="mb-3"/>
             <div className="flex justify-center space-x-4">
                 <button
-                    onClick={() => {
-                        clearPhotos();
-
-                        navigate(`/library/${api_type}`);
-                        confetti.reset();
-                        window.location.reload();
-                    }}
+                    onClick={handleGoToLibrary}
                     className="flex justify-center items-center w-[100px] h-[35px] bg-blue-600 text-white rounded-3xl font-[15px] hover:bg-blue-700"
                 >
                     보관함으로
@@ -163,7 +172,6 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
             </div>
         </div>
     );
-
 
     const makeConfetti = useCallback(() => {
         const randomInRange = (min, max) => {

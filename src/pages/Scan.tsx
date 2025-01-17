@@ -24,6 +24,16 @@ const SCAN_CONFIG: Record<APITypeKeys, { title: string; viewerType: APITypeKeys 
     }
 };
 
+// Safari 스크롤 이슈를 해결하기 위한 함수
+const resetScroll = () => {
+    requestAnimationFrame(() => {
+        document.documentElement.style.overflow = 'auto';
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.height = 'auto';
+        document.body.style.height = 'auto';
+    });
+};
+
 const Scan = () => {
     const { id } = useParams<{ id: APITypeKeys }>();
     const scanType = id;
@@ -43,26 +53,21 @@ const Scan = () => {
         resetUploadState
     } = usePhotoUpload();
 
-    // 현재 스캔 타입에 따른 설정
     const currentConfig = SCAN_CONFIG[scanType];
 
-    // overflow 초기화를 위한 useEffect 추가
+    // overflow 초기화를 위한 useEffect 수정
     useEffect(() => {
-        // 컴포넌트 마운트 시 overflow 초기화
-        document.body.style.overflow = '';
-        
-        // cleanup 함수
+        resetScroll();
         return () => {
-            document.body.style.overflow = '';
+            resetScroll();
         };
     }, []);
 
-    // fromVertex 상태에 따른 처리 및 cleanup
+    // fromVertex 상태에 따른 처리 수정
     useEffect(() => {
         if(location.state?.fromVertex == null) {
             clearStorePhotos();
-            // overflow 상태도 초기화
-            document.body.style.overflow = '';
+            resetScroll();
         }
     }, [location.state?.fromVertex]);
 
@@ -113,8 +118,7 @@ const Scan = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         resetUploadState();
-        // 모달 닫을 때 overflow 상태 초기화
-        document.body.style.overflow = '';
+        resetScroll();
     };
 
     const handlePhotoUpload = async () => {
@@ -124,8 +128,7 @@ const Scan = () => {
     const handleUploadComplete = () => {
         setIsModalOpen(false);
         clearStorePhotos();
-        // 업로드 완료 시 overflow 상태 초기화
-        document.body.style.overflow = '';
+        resetScroll();
     };
 
     const renderModal = () => {
@@ -135,7 +138,7 @@ const Scan = () => {
             api_type: currentConfig.viewerType,
             photos: photos,
             onClose: handleCloseModal,
-            onUpload: handleUpload, 
+            onUpload: handleUpload,
             onComplete: handleUploadComplete,
             isLoading: isLoading,
             clearPhotos: clearStorePhotos
@@ -166,9 +169,9 @@ const Scan = () => {
                 hideLeftIcon={false}
                 showMenu={false}
                 iconNames={{
-                    backIcon: "뒤로가기"  
+                    backIcon: "뒤로가기"
                 }}
-                backPageName={ `/library/${scanType}` }
+                backPageName={`/library/${scanType}`}
                 rightIcons={[]}
             />
             <div className="w-full flex flex-col items-center">
@@ -206,7 +209,6 @@ const Scan = () => {
                     className="hidden"
                     ref={galleryInputRef}
                 />
-
             </div>
             {renderModal()}
         </div>
