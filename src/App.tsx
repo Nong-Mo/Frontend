@@ -17,34 +17,8 @@ import MainLayout from "./components/common/MainLayout";
 import {API_TYPE, ROUTES} from "./routes/constants";
 import AiAssistant from "./pages/AiAssistant.tsx";
 import ScanVertex from "./pages/ScanVertex.tsx";
-import BrowserWarning from "./components/common/BrowserWarning.tsx"; 
-import { useEffect } from "react";
-import { useState } from "react";
-
-const isIOSSafari = (): boolean => {
-       const userAgent = window.navigator.userAgent.toLowerCase();
-       const isIOS = /iphone|ipad|ipod/.test(userAgent);
-       const isChromeOnIOS = userAgent.includes('crios');
-       return isIOS && !isChromeOnIOS;
-   };
 
 const App = () => {
-       const [isUnsupportedBrowser, setIsUnsupportedBrowser] = useState(false);
-
-       useEffect(() => {
-              setIsUnsupportedBrowser(isIOSSafari());
-       }, []);
-
-       // 서버 경로 체크 함수
-       const isServerRoute = (path) => {
-              const serverPaths = ['/docs', '/health'];
-              return serverPaths.includes(path);
-       };
-
-       // 지원하지 않는 브라우저일 경우 경고 화면 표시
-       if (isUnsupportedBrowser) {
-              return <BrowserWarning />;
-       }
 
        return (
        <Router>
@@ -83,19 +57,6 @@ const App = () => {
                             element={<Navigate to={ROUTES.INTRO.path}
                                                  replace/>}/>
 
-                     {/* Catch-all route with server route exclusion */}
-                     <Route
-                            path="*"
-                            element={
-                            isServerRoute(window.location.pathname)
-                                   ? null
-                                   : <Navigate
-                                          to={ROUTES.INTRO.path}
-                                          replace
-                                          state={{from: window.location.pathname}}
-                                   />
-                            }
-                     />
                      </Route>
               </Routes>
        </Router>
