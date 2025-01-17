@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://127.0.0.1:8000';
+export const API_BASE_URL = 'https://nongmo-a2d.com';
 
 // 다른 환경별 URL이 필요한 경우를 위한 설정
 export const getApiUrl = () => {
