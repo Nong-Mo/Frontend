@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { NavBar } from "../components/common/NavBar.tsx";
 import { CameraControls } from "../components/scan/CameraControls.tsx";
 import { ScanViewer } from "../components/scan/ScanViewer.tsx";
@@ -34,7 +34,6 @@ const Scan = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [cameraError, setCameraError] = useState<string | null>(null);
     const { photos, addPhoto, clearPhotos: clearStorePhotos } = useScanStore();
-
     const location = useLocation();
 
     const {
@@ -47,9 +46,24 @@ const Scan = () => {
     // 현재 스캔 타입에 따른 설정
     const currentConfig = SCAN_CONFIG[scanType];
 
-    useEffect( () => {
-        if(location.state?.fromVertex == null)
+    // overflow 초기화를 위한 useEffect 추가
+    useEffect(() => {
+        // 컴포넌트 마운트 시 overflow 초기화
+        document.body.style.overflow = '';
+        
+        // cleanup 함수
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
+
+    // fromVertex 상태에 따른 처리 및 cleanup
+    useEffect(() => {
+        if(location.state?.fromVertex == null) {
             clearStorePhotos();
+            // overflow 상태도 초기화
+            document.body.style.overflow = '';
+        }
     }, [location.state?.fromVertex]);
 
     const handleImageCapture = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +113,8 @@ const Scan = () => {
     const handleCloseModal = () => {
         setIsModalOpen(false);
         resetUploadState();
+        // 모달 닫을 때 overflow 상태 초기화
+        document.body.style.overflow = '';
     };
 
     const handlePhotoUpload = async () => {
@@ -108,6 +124,8 @@ const Scan = () => {
     const handleUploadComplete = () => {
         setIsModalOpen(false);
         clearStorePhotos();
+        // 업로드 완료 시 overflow 상태 초기화
+        document.body.style.overflow = '';
     };
 
     const renderModal = () => {
@@ -150,7 +168,7 @@ const Scan = () => {
                 iconNames={{
                     backIcon: "뒤로가기"  
                 }}
-                backPageName= { `/library/${scanType}` }
+                backPageName={ `/library/${scanType}` }
                 rightIcons={[]}
             />
             <div className="w-full flex flex-col items-center">
