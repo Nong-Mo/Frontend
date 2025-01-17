@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import homeImage from "../icons/intro/home.svg";
+import homeImage from "../icons/intro/home.webp";
 import SubmitButton from '../components/features/Sign/SubmitButton.tsx';
 
 const Intro: FC = () => {
