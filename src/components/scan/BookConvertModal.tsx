@@ -116,15 +116,16 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
     );
 
     const renderStep2 = () => (
-        <div className="w-full text-center relative">
+        <div className="w-full h-full text-center flex flex-col justify-center items-center">
             <div className="mx-[14px] my-[42px] flex items-center flex-col">
                 <h2 className="text-white font-bold text-[25px] mb-[30px]">파일 변환 중...</h2>
                 <div className="w-full flex justify-center h-28">
-                    <div className="w-[100px] h-[100px] text-center">
-                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Smileys/Zany%20Face.webp"
+                    <div className="w-[150px] h-[150px] text-center">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Animals%20and%20Nature/Cloud.webp"
                              alt="Zany Face"
-                             width="100"
-                             height="100"/>
+                             width="150"
+                             height="150"
+                             className="mb-2"/>
                     </div>
                 </div>
             </div>
@@ -134,11 +135,12 @@ const BookConvertModal: React.FC<BookConvertModalProps> = ({
     const renderStep3 = () => (
         <div className="w-full h-full text-center flex flex-col justify-center items-center">
             {makeConfetti()}
-            <h2 className="text-white text-[25px] font-bold mb-2">변환 완료!</h2>
+            <h2 className="text-white text-[25px] font-bold mb-3">변환 완료!</h2>
             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Party%20Popper.webp"
                  alt="Party Popper"
                  width="100"
-                 height="100"/>
+                 height="100"
+                 className="mb-3"/>
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => {
